@@ -12,6 +12,7 @@
 - 图片上传到github自带的repo中（市面所有应用都没做到）
 - 同时支持desktop和iphone和web page
 - 界面和笔记应用相同（如note.app）
+- 可以设定某个文集的来源，如github或Bitbucket, 这样可以bitbuckets设置私密文集。
 
 实现主要技巧：
 - 将issues映射到其repo的某一特定分支，每个comment为单独md文件
