@@ -13,6 +13,7 @@
 - 同时支持desktop和iphone和web page
 - 界面和笔记应用相同（如note.app）
 - 可以设定某个文集的来源，如github或Bitbucket, 这样可以bitbuckets设置私密文集。
+- 还可以同时监控多repo中的issues，集合到一处（为不同来源到issues设置lables或tags）
 
 ## 实现主要技巧：
 - 将issues映射到其repo的某一特定分支，每个comment为单独md文件
