@@ -1,5 +1,5 @@
 # gitissues
-> Focus on making git issues to a blog or a note, with a whole set of access method such as desktop, iphone and web page.
+> Focus on making git issues to a RELIABLE notebook, with a RELIABLE backup solution and a whole set of access method such as desktop, iphone and web page(as blog).
 
 专注于issues博客功能，出发点就不同于桌面已有的和手机上鲜有的应用。
 
