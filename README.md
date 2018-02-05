@@ -18,10 +18,11 @@
 ## 实现主要技巧：
 - 将issues映射到其repo的某一特定分支，每个comment为单独md文件
 - 图片上传到repo中并引用其raw链接
-- 建立每条comment和其md文件的对应表
+- 建立每条comment和其md文件的对应表，是个独立文件，对应comment-id和md文件的sha
 - 实时监控本地更新，并push到远端；定期查询远端更新，pull到本地。如有冲突，则跳过有冲突的文件，让用户选择方案
 - 一个issue转化后是一个文件夹，issue描述和更新信息在README和commit log中;一个comment是文件夹里面的一个md文件.
 - 可以设置监控脚本在自己的server服务器上24/7运行，本地和自己的服务器连接。待考虑是否直接和github连接合适。
+
 
 ## TO-DO
 - [ ] 利用insomia或postman测试github api可行性
