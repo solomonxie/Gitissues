@@ -28,4 +28,3 @@
 - [ ] 利用insomia或postman测试github api可行性
 - [ ] 设计issues和repo的映射方案
 - [ ] 设计python伪代码：抓取isssues的json数据保存为本地md
-- [ ] 
