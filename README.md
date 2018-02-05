@@ -14,8 +14,15 @@
 - 界面和笔记应用相同（如note.app）
 - 可以设定某个文集的来源，如github或Bitbucket, 这样可以bitbuckets设置私密文集。
 
-实现主要技巧：
+## 实现主要技巧：
 - 将issues映射到其repo的某一特定分支，每个comment为单独md文件
 - 图片上传到repo中并引用其raw链接
 - 建立每条comment和其md文件的对应表
 - 实时监控本地更新，并push到远端；定期查询远端更新，pull到本地。如有冲突，则跳过有冲突的文件，让用户选择方案
+- 一个issue转化后是一个文件夹，issue描述和更新信息在README和commit log中;一个comment是文件夹里面的一个md文件.
+
+## TO-DO
+- [ ] 利用insomia或postman测试github api可行性
+- [ ] 设计issues和repo的映射方案
+- [ ] 设计python伪代码：抓取isssues的json数据保存为本地md
+- [ ] 
