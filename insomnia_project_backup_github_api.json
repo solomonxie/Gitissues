@@ -1,0 +1,556 @@
+{
+	"_type": "export",
+	"__export_format": 3,
+	"__export_date": "2018-02-05T16:50:32.427Z",
+	"__export_source": "insomnia.desktop.app:v5.12.4",
+	"resources": [
+		{
+			"_id": "wrk_35700ae4a9cd49598240d119b8d51224",
+			"created": 1517821089746,
+			"description": "",
+			"modified": 1517821089746,
+			"name": "github api",
+			"parentId": null,
+			"_type": "workspace"
+		},
+		{
+			"_id": "env_a42fd30c8b08450cb495572b067024c0",
+			"color": null,
+			"created": 1517821089782,
+			"data": {},
+			"isPrivate": false,
+			"modified": 1517821089782,
+			"name": "New Environment",
+			"parentId": "wrk_35700ae4a9cd49598240d119b8d51224",
+			"_type": "environment"
+		},
+		{
+			"_id": "jar_612d90f93f244fdf9193aa589e898360",
+			"cookies": [],
+			"created": 1517821089793,
+			"modified": 1517821089793,
+			"name": "Default Jar",
+			"parentId": "wrk_35700ae4a9cd49598240d119b8d51224",
+			"_type": "cookie_jar"
+		},
+		{
+			"_id": "req_3d2e2b6106a2433c9db61ed30113ac24",
+			"authentication": {},
+			"body": {},
+			"created": 1517824642049,
+			"description": "",
+			"headers": [],
+			"metaSortKey": -1517833342212,
+			"method": "GET",
+			"modified": 1517838505552,
+			"name": "Root Endpoints",
+			"parameters": [],
+			"parentId": "wrk_35700ae4a9cd49598240d119b8d51224",
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"settingSendCookies": true,
+			"settingStoreCookies": true,
+			"url": "https://api.github.com/",
+			"_type": "request"
+		},
+		{
+			"_id": "req_eef586ea4ac648d79056a2a6dcaf7022",
+			"authentication": {},
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n  \"message\": \"commit from INSOMNIA\",\n  \"content\": \"bXkgbmV3IGZpbGUgY29udGVudHM=\"\n}"
+			},
+			"created": 1517833342112,
+			"description": "",
+			"headers": [
+				{
+					"id": "pair_13879857b90747f28d248cd2fa3703d4",
+					"multiline": "text/plain",
+					"name": "Authorization",
+					"type": "text",
+					"value": "token bd09be82311c5e9d72f824f5f29afbd8421fa4bd"
+				}
+			],
+			"metaSortKey": -1517833342112,
+			"method": "PUT",
+			"modified": 1517839839153,
+			"name": "create content",
+			"parameters": [],
+			"parentId": "wrk_35700ae4a9cd49598240d119b8d51224",
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"settingSendCookies": true,
+			"settingStoreCookies": true,
+			"url": "https://api.github.com/repos/solomonxie/starter-practice/contents/github-api-test/create-file.md",
+			"_type": "request"
+		},
+		{
+			"_id": "req_0284b66897b0438996da32ef4a06c23b",
+			"authentication": {
+				"disabled": true,
+				"password": "chichi224",
+				"type": "basic",
+				"username": "solomonxie"
+			},
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n  \"message\": \"update from INSOMNIA\",\n  \"content\": \"Y3JlYXRlIGZpbGUgZnJvbSBJTlNPTU5JQQoKSXQncyB1cGRhdGVkISEhCgpJdCdzIHVwZGF0ZWQgYWdhaW4hIQ==\",\n  \"sha\": \"57642f5283c98f6ffa75d65e2bf49d05042b4a6d\"\n}\n"
+			},
+			"created": 1517837570747,
+			"description": "",
+			"headers": [
+				{
+					"disabled": false,
+					"id": "pair_13879857b90747f28d248cd2fa3703d4",
+					"multiline": "text/plain",
+					"name": "Authorization",
+					"type": "text",
+					"value": "token bd09be82311c5e9d72f824f5f29afbd8421fa4bd"
+				},
+				{
+					"disabled": false,
+					"id": "pair_cdeb4cd937be4702a5189af88232c9b5",
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"metaSortKey": -1517828992080.5,
+			"method": "PUT",
+			"modified": 1517840358915,
+			"name": "update content",
+			"parameters": [],
+			"parentId": "wrk_35700ae4a9cd49598240d119b8d51224",
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"settingSendCookies": true,
+			"settingStoreCookies": true,
+			"url": "https://api.github.com/repos/solomonxie/starter-practice/contents/github-api-test/update-file.md",
+			"_type": "request"
+		},
+		{
+			"_id": "req_dd67bc4c4ca9479b91c313f4e959d97b",
+			"authentication": {},
+			"body": {},
+			"created": 1517838419473,
+			"description": "",
+			"headers": [],
+			"metaSortKey": -1517833342162,
+			"method": "GET",
+			"modified": 1517838500161,
+			"name": "get content",
+			"parameters": [],
+			"parentId": "wrk_35700ae4a9cd49598240d119b8d51224",
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"settingSendCookies": true,
+			"settingStoreCookies": true,
+			"url": "https://api.github.com/repos/solomonxie/starter-practice/contents/github-api-test/update-file.md",
+			"_type": "request"
+		},
+		{
+			"_id": "req_eab460c7ba6b4bc7b0c9c952adb15f60",
+			"authentication": {
+				"disabled": true,
+				"password": "chichi224",
+				"type": "basic",
+				"username": "solomonxie"
+			},
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n  \"message\": \"delete a file\",\n  \"sha\": \"46d2b1f2ef54669a974165d0b37979e9adba1ab2\"\n}"
+			},
+			"created": 1517841069962,
+			"description": "",
+			"headers": [
+				{
+					"disabled": false,
+					"id": "pair_13879857b90747f28d248cd2fa3703d4",
+					"multiline": "text/plain",
+					"name": "Authorization",
+					"type": "text",
+					"value": "token bd09be82311c5e9d72f824f5f29afbd8421fa4bd"
+				},
+				{
+					"disabled": false,
+					"id": "pair_cdeb4cd937be4702a5189af88232c9b5",
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"metaSortKey": -1517826133879.75,
+			"method": "DELETE",
+			"modified": 1517841435231,
+			"name": "delete content",
+			"parameters": [],
+			"parentId": "wrk_35700ae4a9cd49598240d119b8d51224",
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"settingSendCookies": true,
+			"settingStoreCookies": true,
+			"url": "https://api.github.com/repos/solomonxie/starter-practice/contents/github-api-test/file-for-deleting3.md",
+			"_type": "request"
+		},
+		{
+			"_id": "req_ac984909b6a8428a8da6bc31fe4b5085",
+			"authentication": {},
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n  \"message\": \"delete from INSOMNIA\",\n  \"content\":\"SSdtIGEgZmlsZSBmb3IgZGVsZXRpbmcgZnJvbSBHaXRodWIgQVBJLn5+fn4=\"\n}"
+			},
+			"created": 1517841134630,
+			"description": "",
+			"headers": [
+				{
+					"id": "pair_13879857b90747f28d248cd2fa3703d4",
+					"multiline": "text/plain",
+					"name": "Authorization",
+					"type": "text",
+					"value": "token bd09be82311c5e9d72f824f5f29afbd8421fa4bd"
+				},
+				{
+					"id": "pair_bf1bc52a6be246ab90ad468513924d47",
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"metaSortKey": -1517831167096.25,
+			"method": "PUT",
+			"modified": 1517841332366,
+			"name": "create content (Copy)",
+			"parameters": [],
+			"parentId": "wrk_35700ae4a9cd49598240d119b8d51224",
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"settingSendCookies": true,
+			"settingStoreCookies": true,
+			"url": "https://api.github.com/repos/solomonxie/starter-practice/contents/github-api-test/file-for-deleting3.md",
+			"_type": "request"
+		},
+		{
+			"_id": "req_16c7f26554cb4e588354c8541a72cbac",
+			"authentication": {
+				"disabled": true,
+				"password": "chichi224",
+				"type": "basic",
+				"username": "solomonxie"
+			},
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n  \"body\": \"Create a comment from INSOMNIA\"\n}"
+			},
+			"created": 1517842125928,
+			"description": "",
+			"headers": [
+				{
+					"disabled": false,
+					"id": "pair_13879857b90747f28d248cd2fa3703d4",
+					"multiline": "text/plain",
+					"name": "Authorization",
+					"type": "text",
+					"value": "token bd09be82311c5e9d72f824f5f29afbd8421fa4bd"
+				},
+				{
+					"disabled": false,
+					"id": "pair_cdeb4cd937be4702a5189af88232c9b5",
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"metaSortKey": -1517690153513.875,
+			"method": "POST",
+			"modified": 1517842218905,
+			"name": "create comment",
+			"parameters": [],
+			"parentId": "wrk_35700ae4a9cd49598240d119b8d51224",
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"settingSendCookies": true,
+			"settingStoreCookies": true,
+			"url": "https://api.github.com/repos/solomonxie/starter-practice/issues/1/comments",
+			"_type": "request"
+		},
+		{
+			"_id": "req_3136a9d2292641ea9f8fc69bac162d7d",
+			"authentication": {
+				"disabled": true,
+				"password": "chichi224",
+				"type": "basic",
+				"username": "solomonxie"
+			},
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n  \"title\": \"Creating issue from API\",\n  \"body\": \"Posting a issue from Insomnia\"\n}"
+			},
+			"created": 1517842226825,
+			"description": "",
+			"headers": [
+				{
+					"disabled": false,
+					"id": "pair_13879857b90747f28d248cd2fa3703d4",
+					"multiline": "text/plain",
+					"name": "Authorization",
+					"type": "text",
+					"value": "token bd09be82311c5e9d72f824f5f29afbd8421fa4bd"
+				},
+				{
+					"disabled": false,
+					"id": "pair_cdeb4cd937be4702a5189af88232c9b5",
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"metaSortKey": -1517758143696.8125,
+			"method": "POST",
+			"modified": 1517842729425,
+			"name": "create issue",
+			"parameters": [],
+			"parentId": "wrk_35700ae4a9cd49598240d119b8d51224",
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"settingSendCookies": true,
+			"settingStoreCookies": true,
+			"url": "https://api.github.com/repos/solomonxie/starter-practice/issues",
+			"_type": "request"
+		},
+		{
+			"_id": "req_57e9f57767eb451ba3e16a35ee2cbcfd",
+			"authentication": {
+				"disabled": true,
+				"password": "chichi224",
+				"type": "basic",
+				"username": "solomonxie"
+			},
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n  \"title\": \"Creating issue from API(updated title)\",\n  \"body\": \"Posting a issue from Insomnia \\n\\n Updated from insomnia.\",\n  \"state\": \"open\"\n}"
+			},
+			"created": 1517842862696,
+			"description": "",
+			"headers": [
+				{
+					"disabled": false,
+					"id": "pair_13879857b90747f28d248cd2fa3703d4",
+					"multiline": "text/plain",
+					"name": "Authorization",
+					"type": "text",
+					"value": "token bd09be82311c5e9d72f824f5f29afbd8421fa4bd"
+				},
+				{
+					"disabled": false,
+					"id": "pair_cdeb4cd937be4702a5189af88232c9b5",
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"metaSortKey": -1517724148605.3438,
+			"method": "PATCH",
+			"modified": 1517849332863,
+			"name": "edit issue",
+			"parameters": [],
+			"parentId": "wrk_35700ae4a9cd49598240d119b8d51224",
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"settingSendCookies": true,
+			"settingStoreCookies": true,
+			"url": "https://api.github.com/repos/solomonxie/starter-practice/issues/1",
+			"_type": "request"
+		},
+		{
+			"_id": "req_3cda18310d1e4d319a5abe203c555114",
+			"authentication": {
+				"disabled": true,
+				"password": "chichi224",
+				"type": "basic",
+				"username": "solomonxie"
+			},
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n  \"locked\": true,\n  \"active_lock_reason\": \"too heated\"\n}"
+			},
+			"created": 1517843383521,
+			"description": "",
+			"headers": [
+				{
+					"disabled": false,
+					"id": "pair_13879857b90747f28d248cd2fa3703d4",
+					"multiline": "text/plain",
+					"name": "Authorization",
+					"type": "text",
+					"value": "token bd09be82311c5e9d72f824f5f29afbd8421fa4bd"
+				},
+				{
+					"disabled": false,
+					"id": "pair_cdeb4cd937be4702a5189af88232c9b5",
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"metaSortKey": -1517707151059.6094,
+			"method": "PUT",
+			"modified": 1517843510724,
+			"name": "lock issue",
+			"parameters": [],
+			"parentId": "wrk_35700ae4a9cd49598240d119b8d51224",
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"settingSendCookies": true,
+			"settingStoreCookies": true,
+			"url": "https://api.github.com/repos/solomonxie/starter-practice/issues/1/lock",
+			"_type": "request"
+		},
+		{
+			"_id": "req_3a79df0b2ed449599920f207dbee0d05",
+			"authentication": {
+				"disabled": true,
+				"password": "chichi224",
+				"type": "basic",
+				"username": "solomonxie"
+			},
+			"body": {},
+			"created": 1517843882837,
+			"description": "",
+			"headers": [
+				{
+					"disabled": false,
+					"id": "pair_13879857b90747f28d248cd2fa3703d4",
+					"multiline": "text/plain",
+					"name": "Authorization",
+					"type": "text",
+					"value": "token bd09be82311c5e9d72f824f5f29afbd8421fa4bd"
+				}
+			],
+			"metaSortKey": -1517698652286.7422,
+			"method": "DELETE",
+			"modified": 1517843908125,
+			"name": "unlock issue",
+			"parameters": [],
+			"parentId": "wrk_35700ae4a9cd49598240d119b8d51224",
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"settingSendCookies": true,
+			"settingStoreCookies": true,
+			"url": "https://api.github.com/repos/solomonxie/starter-practice/issues/1/lock",
+			"_type": "request"
+		},
+		{
+			"_id": "req_7a1e4e93edd647d2a9d7045da2459543",
+			"authentication": {
+				"disabled": true,
+				"password": "chichi224",
+				"type": "basic",
+				"username": "solomonxie"
+			},
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n  \"body\": \"Create a comment from INSOMNIA \\n\\n ----updated\"\n}"
+			},
+			"created": 1517844310844,
+			"description": "",
+			"headers": [
+				{
+					"disabled": false,
+					"id": "pair_13879857b90747f28d248cd2fa3703d4",
+					"multiline": "text/plain",
+					"name": "Authorization",
+					"type": "text",
+					"value": "token bd09be82311c5e9d72f824f5f29afbd8421fa4bd"
+				},
+				{
+					"disabled": false,
+					"id": "pair_cdeb4cd937be4702a5189af88232c9b5",
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"metaSortKey": -1517622163330.9375,
+			"method": "PATCH",
+			"modified": 1517847440103,
+			"name": "Edit comment",
+			"parameters": [],
+			"parentId": "wrk_35700ae4a9cd49598240d119b8d51224",
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"settingSendCookies": true,
+			"settingStoreCookies": true,
+			"url": "https://api.github.com/repos/solomonxie/starter-practice/issues/comments/363116557",
+			"_type": "request"
+		},
+		{
+			"_id": "req_251f9f84d8dc46939be00188c16344fe",
+			"authentication": {
+				"disabled": true,
+				"password": "chichi224",
+				"type": "basic",
+				"username": "solomonxie"
+			},
+			"body": {},
+			"created": 1517844470648,
+			"description": "",
+			"headers": [
+				{
+					"disabled": false,
+					"id": "pair_13879857b90747f28d248cd2fa3703d4",
+					"multiline": "text/plain",
+					"name": "Authorization",
+					"type": "text",
+					"value": "token bd09be82311c5e9d72f824f5f29afbd8421fa4bd"
+				}
+			],
+			"metaSortKey": -1517588168239.4688,
+			"method": "DELETE",
+			"modified": 1517844502609,
+			"name": "delete comment",
+			"parameters": [],
+			"parentId": "wrk_35700ae4a9cd49598240d119b8d51224",
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"settingSendCookies": true,
+			"settingStoreCookies": true,
+			"url": "https://api.github.com/repos/solomonxie/starter-practice/issues/comments/363118249",
+			"_type": "request"
+		},
+		{
+			"_id": "req_daf29758d3bc4e459bb7bf6d47c7312d",
+			"authentication": {
+				"disabled": true,
+				"password": "chichi224",
+				"type": "basic",
+				"username": "solomonxie"
+			},
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n  \"body\": \"Create a comment with picture from Insomnia \\n\\n ![img](https://user-images.githubusercontent.com/14041622/35807698-77cf55d8-0abe-11e8-9677-59f2961b5b0f.png)\"\n}"
+			},
+			"created": 1517845259863,
+			"description": "",
+			"headers": [
+				{
+					"disabled": false,
+					"id": "pair_13879857b90747f28d248cd2fa3703d4",
+					"multiline": "text/plain",
+					"name": "Authorization",
+					"type": "text",
+					"value": "token bd09be82311c5e9d72f824f5f29afbd8421fa4bd"
+				},
+				{
+					"disabled": false,
+					"id": "pair_cdeb4cd937be4702a5189af88232c9b5",
+					"name": "Content-Type",
+					"value": "application/json"
+				}
+			],
+			"metaSortKey": -1517656158422.4062,
+			"method": "POST",
+			"modified": 1517845412501,
+			"name": "create comment with img",
+			"parameters": [],
+			"parentId": "wrk_35700ae4a9cd49598240d119b8d51224",
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"settingSendCookies": true,
+			"settingStoreCookies": true,
+			"url": "https://api.github.com/repos/solomonxie/starter-practice/issues/1/comments",
+			"_type": "request"
+		}
+	]
+}
