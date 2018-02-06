@@ -71,9 +71,18 @@ layout: post
 
 %s'''%(issue['title'], issue['created_at'], issue['body'])
 
-    fn = str( issue['number'] )
-    with open(fn+'.md', 'w') as f:
-        f.write( info.encode('utf-8') )
+    number = issue['number'] # Integer
     
-#     with open('.md', 'w') as f:
-#         f.write( info )
+    # 读取本issue的所有comments
+    url = "https://api.github.com/repos/solomonxie/gitissues/issues/%d/comments"%number
+    response = requests.request('GET', url, headers=headers)
+    resp = response.text.encode('utf-8')
+    comments = json.loads( resp )
+    s_comments = ''
+    for comment in comments:
+        print comment['url']
+        s_comments += '\n\n\n'+ comment['body']
+
+    with open('%d.md'%number, 'w') as f:
+        f.write( info.encode('utf-8') + s_comments.encode('utf-8') )
+    
