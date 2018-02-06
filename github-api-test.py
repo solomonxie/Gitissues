@@ -1,88 +1,48 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+def __unicoding__(txt=u'', outsource=False):
+    if outsource: 
+        if type(txt) == type(u''): 
+            # return bytes(txt)
+            return txt.encode('utf-8')
+        else:
+            return txt
+    else: # 统一转化为unicode
+        if type(txt) == type(u''):
+            return txt
+        else:
+            return unicode(txt)
+
+
 import requests, json
 
 url = 'https://api.github.com/repos/solomonxie/gitissues/issues'
 
 headers = {
-    'Connection': 'keep-alive',
-    'Cache-Control': 'max-age=0',
-    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-    'Accept-Encoding': 'gzip, deflate, sdch',
-    'Accept-Language': 'en,zh-CN;q=0.8,zh;q=0.6'
+    'Connection': 'keep-alive'
 }
 
 response = requests.request('GET', url, headers=headers)
 
-# 处理接收到的文章中文编码 至关重要！！
-
-# cn = '你好'
-# ss = cn.decode('utf-8')
-# print repr(ss)
-# print ss.encode('utf-8')
-# with open('test.txt', 'wt') as f:
-#     f.write(ss.encode('utf-8'))
-# 
-# with open('test.txt', 'r') as f:
-# 	print( f.read() )
-# 
-
-# rsb = response.text.decode('utf-8')  # 不成功 总是反应某个字符无法编译 
-
-
-# 获取网络内容时候成功 还没试过获取本地内容 
-# rsb = ''
-# rsb = response.text.encode('utf-8')
-# with open('test.md', 'w') as f:
-#     f.write(rsb)
-
-
-
-# from urllib import quote
-# from urllib import unquote
-# rsb = quote( str(response.text) )
-# # print rsb
-# with open('test.md', 'w') as f:
-#     f.write( unquote(rsb) )
-
-
-# exit()
-
-resp = ''
-resp = response.text.encode('utf-8')
-
-issues = json.loads( resp )
-# print( type(issues) )
+resp = __unicoding__(response.text, True)
+# print(type(resp))
+issues = json.loads(resp)
 
 for issue in issues :
-#     print( issue['title']  )
-#     print( issue['created_at']  )
-#     print( issue['labels']  )
-#     print( issue['body']  )
-#     title = ''+ issue['title'].encode('utf-8')
-#     date = ''+ issue['created_at'].encode('utf-8')
-#     body = '' + issue['body'].encode('utf-8')
-
-    info = '''
-title: %s
-date: %s
-layout: post
-
-%s'''%(issue['title'], issue['created_at'], issue['body'])
-
+    info = 'title: %s \ndate: %s \nlayout: post \n%s'%(issue['title'], issue['created_at'], issue['body'])
     number = issue['number'] # Integer
     
     # 读取本issue的所有comments
     url = "https://api.github.com/repos/solomonxie/gitissues/issues/%d/comments"%number
     response = requests.request('GET', url, headers=headers)
-    resp = response.text.encode('utf-8')
-    comments = json.loads( resp )
-    s_comments = ''
+    resp = __unicoding__(response.text, True)
+    comments = json.loads(resp)
+    s_comments = u''
     for comment in comments:
         print comment['url']
         s_comments += '\n\n\n'+ comment['body']
 
     with open('%d.md'%number, 'w') as f:
-        f.write( info.encode('utf-8') + s_comments.encode('utf-8') )
+        f.write( __unicoding__(info,True) + __unicoding__(s_comments,True) )
     
