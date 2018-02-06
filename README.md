@@ -17,7 +17,7 @@
 
 ## 实现主要技巧：
 - 将issues映射到其repo的某一特定分支，每个comment为单独md文件
-- 图片上传到repo中并引用其raw链接
+- 图片上传到某个独立的专门放媒体文件的repo中，和文章等都不一样，并引用其raw链接
 - 建立每条comment和其md文件的对应表，是个独立文件，对应comment-id和md文件的sha
 - 实时监控本地更新，并push到远端；定期查询远端更新，pull到本地。如有冲突，则跳过有冲突的文件，让用户选择方案
 - 一个issue转化后是一个文件夹，issue描述和更新信息在README和commit log中;一个comment是文件夹里面的一个md文件.
