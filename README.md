@@ -24,7 +24,3 @@
 - 可以设置监控脚本在自己的server服务器上24/7运行，实际上国外server访问github要快很多秒已验证，本地和自己的服务器连接。待考虑是否直接和github连接合适。
 - 前期不用python的git库，而是直接调用curl命令实现。容易调试和功能实现，后期再来优化代码。
 
-## TO-DO
-- [ ] 利用insomia或postman测试github api可行性
-- [ ] 设计issues和repo的映射方案
-- [ ] 设计python伪代码：抓取isssues的json数据保存为本地md
