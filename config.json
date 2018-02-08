@@ -1,0 +1,10 @@
+{
+    "username":"solomonxie",
+    "repos":[
+        "solomonxie.github.io",
+        "gitissues"
+    ],
+    "backupto": "/Volumes/SD/Workspace/autobackup",
+    "zipto": "/Volumes/SD/Downloads",
+    "frequency": 30
+}

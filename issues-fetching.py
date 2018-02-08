@@ -4,11 +4,18 @@
 import os, requests, json, shutil
 from datetime import date
 
+# loading configs from local json file 
+with open('config.json', 'r') as f:
+    config = json.loads( f.read() )
+
+
+
 # Customize repo and local folder for sotrage
-user     = 'solomonxie'
-repo     = 'gitissues'
-user_dir = '/Volumes/SD/Workspace/autobackup/%s'%user
-repo_dir = '%s/%s'%(user_dir,repo)
+user       = config['username']
+repo       = config['repos'][1]
+backupto   = config['backupto']
+zipto      = config['zipto']
+repo_dir   = config['backupto'] +'/%s/%s'%(user,repo)
 
 r      = requests.get( 'https://api.github.com/repos/%s/%s/issues'%(user,repo) )
 issues = json.loads(r.content)
@@ -39,11 +46,10 @@ for issue in issues :
 print 'all issues fetched.'
 
 # zip the folder for backup
-output = '/Volumes/SD/Downloads/%s'%repo
 shutil.make_archive(
         format   = 'zip',
-        base_name= output, # full output path and name of zip file
-        root_dir = user_dir, # folder path to store zip file
+        base_name= zipto+'/'+repo, # full output path and name of zip file
+        root_dir = backupto, # folder path to store zip file
         base_dir = repo) # internal folder structure in zip file
 
-print 'data archived to %s.zip'%output
+print 'data archived to %s/%s.zip'%(zipto,repo)
