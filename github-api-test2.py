@@ -3,19 +3,20 @@
 
 import requests, json
 
-url = 'https://api.github.com/repos/solomonxie/solomonxie.github.io/issues'
+user = 'solomonxie'
+repo = 'gitissues'
 
-r = requests.get( url )
-
+r      = requests.get( 'https://api.github.com/repos/%s/%s/issues'%(user,repo) )
 issues = json.loads(r.content)
 
 for issue in issues :
     title = issue['title']
-    info = issue['body']
+    info  = issue['body']
     index = issue['number']
+
     # 读取本issue的所有comments
-    r_ = requests.get("https://api.github.com/repos/solomonxie/solomonxie.github.io/issues/%d/comments"%index)
-    comments = json.loads(r_.content)
+    r_ = requests.get( "https://api.github.com/repos/%s/%s/issues/%d/comments"%(user,repo,index) )
+    comments  = json.loads(r_.content)
     fcontents = [info + '\n\n\n']
     for cm in comments:
         fcontents.append( cm['body'] +'\n\n\n' )
