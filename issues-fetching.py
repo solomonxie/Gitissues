@@ -9,13 +9,13 @@ with open('config.json', 'r') as f:
     config = json.loads( f.read() )
 
 
-
 # Customize repo and local folder for sotrage
 user       = config['username']
 repo       = config['repos'][1]
-backupto   = config['backupto']
 zipto      = config['zipto']
 repo_dir   = config['backupto'] +'/%s/%s'%(user,repo)
+backupto   = config['backupto'] # for zip archiving
+
 
 r      = requests.get( 'https://api.github.com/repos/%s/%s/issues'%(user,repo) )
 issues = json.loads(r.content)
@@ -45,11 +45,12 @@ for issue in issues :
 
 print 'all issues fetched.'
 
+
 # zip the folder for backup
 shutil.make_archive(
         format   = 'zip',
-        base_name= zipto+'/'+repo, # full output path and name of zip file
+        base_name= zipto+'/'+repo+str(date.today()), # full output path and name of zip file
         root_dir = backupto, # folder path to store zip file
-        base_dir = repo) # internal folder structure in zip file
+        base_dir = user+'/'+repo) # internal folder structure in zip file
 
 print 'data archived to %s/%s.zip'%(zipto,repo)
