@@ -1,12 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import requests, json
+import os, requests, json
 
 user = 'solomonxie'
 repo = 'gitissues'
+folder = '/Volumes/SD/Workspace/autobackup'
 
-r      = requests.get( 'https://api.github.com/repos/%s/%s/issues'%(user,repo) )
+r = requests.get( 'https://api.github.com/repos/%s/%s/issues'%(user,repo) )
 issues = json.loads(r.content)
 
 for issue in issues :
@@ -23,5 +24,11 @@ for issue in issues :
 
     print '%d comments for issue[%s] loaded.'%(len(fcontents), title)
 
-    with open('%d-%s.md'%(index, title), 'w') as f:
+    if not os.path.exists(folder):
+        os.makedirs(folder)
+
+    with open('%s/%d-%s.md'%(folder,index,title), 'w+') as f:
         f.write( '\n\n\n'.join(fcontents).encode('utf-8') )
+
+
+
