@@ -1,14 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os, requests, json, shutil
-from datetime import date
+import os, requests, json
 
 # Customize repo and local folder for sotrage
-user     = 'solomonxie'
-repo     = 'gitissues'
-user_dir = '/Volumes/SD/Workspace/autobackup/%s'%user
-repo_dir = '%s/%s'%(user_dir,repo)
+user   = 'solomonxie'
+repo   = 'gitissues'
+folder = '/Volumes/SD/Workspace/autobackup/%s/%s'%(user,repo)
 
 r      = requests.get( 'https://api.github.com/repos/%s/%s/issues'%(user,repo) )
 issues = json.loads(r.content)
@@ -29,21 +27,12 @@ for issue in issues :
 
     print '%d comments for issue[%s] loaded.'%(len(fcontents), title)
 
-    if not os.path.exists(repo_dir):
-        os.makedirs(repo_dir)
+    if not os.path.exists(folder):
+        os.makedirs(folder)
 
     # output comments into one issue file, named like <1.A-issue-today.md>
-    with open('%s/%d.%s.md'%(repo_dir,index,title), 'w+') as f:
+    with open('%s/%d.%s.md'%(folder,index,title), 'w+') as f:
         f.write( '\n\n\n'.join(fcontents).encode('utf-8') )
 
-print 'all issues fetched.'
 
-# zip the folder for backup
-output = '/Volumes/SD/Downloads/%s'%repo
-shutil.make_archive(
-        format   = 'zip',
-        base_name= output, # full output path and name of zip file
-        root_dir = user_dir, # folder path to store zip file
-        base_dir = repo) # internal folder structure in zip file
 
-print 'data archived to %s.zip'%output
