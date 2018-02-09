@@ -50,7 +50,7 @@ def fetch_issues(config={}, repo=''):
         info  = issue['body']
         index = issue['number']
 
-        # fetching a comment list (already include full content for each comment)
+        # fetching a comment list (it already includes full content for each comment)
         _r        = requests.get(uri_comments%(user,repo,index,api_token),timeout=10)
         comments  = json.loads(_r.content)
         fcontents = [info + '\n\n\n']
