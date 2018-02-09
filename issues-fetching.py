@@ -1,28 +1,31 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os
+import os           # for folder detecting
+import pdb          # for debugging
 import json
-import shutil
-import requests
+import shutil       # for zipping files
+import requests     # for retrieving web resources
 from datetime import date
 
+pdb.set_trace()     # start debugging mode
 
 # loading settings from customized configs (json)
 with open('config.json', 'r') as f:
     config = json.loads( f.read() )
-    user        = config['username']
-    repo        = config['repos'][0]        # repo's name, could be multiple
-    backup_dir  = config['backup_dir']      # backup everything to a place under this folder
-    repo_dir    = config['backup_dir'] +'/%s/%s'%(user,repo)  # specify the backuped repo's path
-    zip_dir     = config['zip_dir']         # where this zip file will be stored
+    user       = config['username']
+    repo       = config['repos'][0]        # repo's name, could be multiple
+    backup_dir = config['backup_dir']      # backup everything to a place under this folder
+    repo_dir   = config['backup_dir'] +'/%s/%s'%(user,repo)  # specify the backuped repo's path
+    zip_dir    = config['zip_dir']         # where this zip file will be stored
+    uri_issues   = 'https://api.github.com/repos/%s/%s/issues'                # uri with formats, should be formated before use
+    uri_comments = 'https://api.github.com/repos/%s/%s/issues/%d/comments'    # uri with formats, should be formated before use
 
 # Prepare for fetching logs, means each fetching will be recorded as a log file.
 if os.path.exists(repo_dir+'/log') is not True:
     os.mkdir(repo_dir+'/log')
 
-
-r      = requests.get( 'https://api.github.com/repos/%s/%s/issues'%(user,repo) )
+r      = requests.get(uri_issues%(user,repo))
 issues = json.loads(r.content)
 
 # iterate each issue for further fetching
@@ -32,7 +35,7 @@ for issue in issues :
     index = issue['number']
 
     # fetching a comment list (already include full content for each comment)
-    _r        = requests.get("https://api.github.com/repos/%s/%s/issues/%d/comments"%(user,repo,index))
+    _r        = requests.get(uri_comments%(user,repo,index))
     comments  = json.loads(_r.content)
     fcontents = [info + '\n\n\n']
 
@@ -59,4 +62,4 @@ shutil.make_archive(
         root_dir = backup_dir,                                # folder path to store zip file
         base_dir = user+'/'+repo)                             # internal folder structure in zip file
 
-print 'data archived to %s/%s.zip'%(zip_dir,repo)
+print 'data archived to %s/%s%s.zip'%(zip_dir,repo, str(date.today())

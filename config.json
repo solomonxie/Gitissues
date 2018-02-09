@@ -1,10 +1,13 @@
 {
-    "username":"solomonxie",
-    "repos":[
-        "gitissues",
-        "solomonxie.github.io"
+    "username": "solomonxie",
+    "repos": [
+        "gitissues"
     ],
-    "backup_to": "/Volumes/SD/Workspace/autobackup",
-    "zip_to": "/Volumes/SD/Downloads",
-    "frequency": 30
+    "backup_dir": "/Volumes/SD/Workspace/autobackup",
+    "zip_dir": "/Volumes/SD/Downloads",
+    "remote": {
+        "username": "solomonxiewise",
+        "repo": "test",
+        "repo_url": "https://solomonxiewise@bitbucket.org/solomonxiewise/test.git"
+    }
 }
