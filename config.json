@@ -3,6 +3,7 @@
     "repos": [
         "gitissues"
     ],
+    "api_token": "fb2339e5f6062ab6a6dbd0714d6c8c499a953523",
     "backup_dir": "/Volumes/SD/Workspace/autobackup",
     "zip_dir": "/Volumes/SD/Downloads",
     "remote": {
