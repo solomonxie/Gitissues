@@ -1,9 +1,10 @@
 {
     "username": "solomonxie",
     "repos": [
-        "gitissues"
+        "gitissues",
+        "solomonxie.github.io"
     ],
-    "api_token": "fb2339e5f6062ab6a6dbd0714d6c8c499a953523",
+    "api_token": "828bb827fcd449455d59c0549e4db1101fa7ff29",
     "backup_dir": "/Volumes/SD/Workspace/autobackup",
     "zip_dir": "/Volumes/SD/Downloads",
     "remote": {

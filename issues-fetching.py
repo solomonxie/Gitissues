@@ -20,7 +20,7 @@ def main():
 
 
 # @1 Fetch one repo's issues @2 archive to a local folder @3 pack into a zip file
-def fetch_issues(config={}, repo):
+def fetch_issues(config={}, repo=''):
 
     # loading settings from customized configs (json)
     user       = config['username']
@@ -28,17 +28,20 @@ def fetch_issues(config={}, repo):
     backup_dir = config['backup_dir']      # backup everything to a place under this folder
     repo_dir   = config['backup_dir'] +'/%s/%s'%(user,repo)  # specify the backuped repo's path
     zip_dir    = config['zip_dir']         # where this zip file will be stored
+    today      = str(date.today())
     # uri with formats, should be formated before use
     uri_issues   = 'https://api.github.com/repos/%s/%s/issues?access_token=%s'
     # uri with formats, should be formated before use
     uri_comments = 'https://api.github.com/repos/%s/%s/issues/%d/comments?access_token=%s'
 
-    # Prepare for fetching logs, means each fetching will be recorded as a log file.
-    if os.path.exists(repo_dir+'/log') is not True:
-        os.mkdir(repo_dir+'/log')
-
-    r      = requests.get(uri_issues%(user,repo,api_token))
+    r      = requests.get(uri_issues%(user,repo,api_token),timeout=10)
     issues = json.loads(r.content)
+
+    # logging issue list for future comparing
+    if os.path.exists(repo_dir+'/log') is not True:
+        os.makedirs(repo_dir+'/log')
+    with open(repo_dir+'/log/issues-last-fetching.json', 'w') as f:
+        f.write(r.content)
 
     # iterate each issue for further fetching
     for issue in issues :
@@ -47,7 +50,7 @@ def fetch_issues(config={}, repo):
         index = issue['number']
 
         # fetching a comment list (already include full content for each comment)
-        _r        = requests.get(uri_comments%(user,repo,index,api_token))
+        _r        = requests.get(uri_comments%(user,repo,index,api_token),timeout=10)
         comments  = json.loads(_r.content)
         fcontents = [info + '\n\n\n']
 
@@ -69,11 +72,11 @@ def fetch_issues(config={}, repo):
     # zip the folder for backup
     shutil.make_archive(
             format   = 'zip',
-            base_name= zip_dir+'/'+repo+str(date.today()),        # full output path and name of zip file
+            base_name= zip_dir+'/'+repo+today,        # full output path and name of zip file
             root_dir = backup_dir,                                # folder path to store zip file
             base_dir = user+'/'+repo)                             # internal folder structure in zip file
 
-    print 'data archived to %s/%s%s.zip'%(zip_dir,repo, str(date.today()))
+    print 'data archived to %s/%s%s.zip'%(zip_dir,repo,today)
 
 
 
