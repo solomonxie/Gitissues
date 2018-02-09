@@ -1,20 +1,25 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os, requests, json, shutil
+import os
+import json
+import shutil
+import requests
 from datetime import date
 
-# loading configs from local json file 
+
+# loading settings from customized configs (json)
 with open('config.json', 'r') as f:
     config = json.loads( f.read() )
+    user        = config['username']
+    repo        = config['repos'][0]        # repo's name, could be multiple
+    backup_dir  = config['backup_dir']      # backup everything to a place under this folder
+    repo_dir    = config['backup_dir'] +'/%s/%s'%(user,repo)  # specify the backuped repo's path
+    zip_dir     = config['zip_dir']         # where this zip file will be stored
 
-
-# Customize repo and local folder for sotrage
-user       = config['username']
-repo       = config['repos'][1]
-zipto      = config['zipto']
-repo_dir   = config['backupto'] +'/%s/%s'%(user,repo)
-backupto   = config['backupto'] # for zip archiving
+# Prepare for fetching logs, means each fetching will be recorded as a log file.
+if os.path.exists(repo_dir+'/log') is not True:
+    os.mkdir(repo_dir+'/log')
 
 
 r      = requests.get( 'https://api.github.com/repos/%s/%s/issues'%(user,repo) )
@@ -27,16 +32,17 @@ for issue in issues :
     index = issue['number']
 
     # fetching a comment list (already include full content for each comment)
-    r_        = requests.get( "https://api.github.com/repos/%s/%s/issues/%d/comments"%(user,repo,index) )
-    comments  = json.loads(r_.content)
+    _r        = requests.get("https://api.github.com/repos/%s/%s/issues/%d/comments"%(user,repo,index))
+    comments  = json.loads(_r.content)
     fcontents = [info + '\n\n\n']
+
     # loop reading each comments
     for cm in comments:
         fcontents.append( cm['body'] +'\n\n\n' )
 
     print '%d comments for issue[%s] loaded.'%(len(fcontents), title)
 
-    if not os.path.exists(repo_dir):
+    if os.path.exists(repo_dir) is not True:
         os.makedirs(repo_dir)
 
     # output comments into one issue file, named like <1.A-issue-today.md>
@@ -49,8 +55,8 @@ print 'all issues fetched.'
 # zip the folder for backup
 shutil.make_archive(
         format   = 'zip',
-        base_name= zipto+'/'+repo+str(date.today()), # full output path and name of zip file
-        root_dir = backupto, # folder path to store zip file
-        base_dir = user+'/'+repo) # internal folder structure in zip file
+        base_name= zip_dir+'/'+repo+str(date.today()),        # full output path and name of zip file
+        root_dir = backup_dir,                                # folder path to store zip file
+        base_dir = user+'/'+repo)                             # internal folder structure in zip file
 
-print 'data archived to %s/%s.zip'%(zipto,repo)
+print 'data archived to %s/%s.zip'%(zip_dir,repo)
