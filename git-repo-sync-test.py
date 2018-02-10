@@ -1,4 +1,4 @@
-import pdb; pdb.set_trace()
+import pdb; pdb.set_trace()   # debugging mode
 
 import git
 
