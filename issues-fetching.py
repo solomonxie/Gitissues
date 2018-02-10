@@ -39,10 +39,10 @@ def fetch_issues(config={}, repo=''):
     issues = json.loads(r.content)
 
     # logging issue list for future comparing
-    if os.path.exists(repo_dir+'/log') is not True:
-        os.makedirs(repo_dir+'/log')
-    with open(repo_dir+'/log/issues-last-fetching.json', 'w') as f:
-        f.write(r.content)
+    #if os.path.exists(repo_dir+'/log') is not True:
+    #    os.makedirs(repo_dir+'/log')
+    #with open(repo_dir+'/log/issues-last-fetching.json', 'w') as f:
+    #    f.write(r.content)
 
     # iterate each issue for further fetching
     for issue in issues :
