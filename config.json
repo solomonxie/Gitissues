@@ -3,8 +3,8 @@
     "repos": [
         "gitissues"
     ],
-    "api_token": "828bb827fcd449455d59c0549e4db1101fa7ff29",
-    "backup_dir": "/Volumes/SD/Workspace/autobackup",
+    "api_token": "450a75d961ed1dc24b8a063f5b0ca7470b083f2d",
+    "backup_dir": "/Volumes/SD/Workspace/autobackup/test",
     "zip_dir": "/Volumes/SD/Downloads",
     "remote": {
         "username": "solomonxiewise",

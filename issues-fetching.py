@@ -2,15 +2,13 @@
 # -*- coding: utf-8 -*-
 
 import os           # for folder detecting
-import pdb          # for debugging
 import json
 import shutil       # for zipping files
 import requests     # for retrieving web resources
 from datetime import date
 
-def main():
 
-    #pdb.set_trace()     # start debugging mode
+def main():
 
     with open('config.json', 'r') as f:
         config = json.loads( f.read() )
@@ -29,12 +27,15 @@ def fetch_issues(config={}, repo=''):
     backup_dir = config['backup_dir']      # backup everything to a place under this folder
     repo_dir   = config['backup_dir'] +'/%s/%s'%(user,repo)  # specify the backuped repo's path
     zip_dir    = config['zip_dir']         # where this zip file will be stored
+    # logging fetching date
     today      = str(date.today())
-    # uri with formats, should be formated before use
+    # formated uri. should be formated before use
     uri_issues   = 'https://api.github.com/repos/%s/%s/issues?access_token=%s'
-    # uri with formats, should be formated before use
     uri_comments = 'https://api.github.com/repos/%s/%s/issues/%d/comments?access_token=%s'
 
+    #import pdb; pdb.set_trace() # debugging mode
+
+    # retrieving data from internet
     r      = requests.get(uri_issues%(user,repo,api_token),timeout=10)
     issues = json.loads(r.content)
 
