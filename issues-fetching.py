@@ -53,7 +53,7 @@ def fetch_issues(config={}, repo=''):
         # fetching a comment list (it already includes full content for each comment)
         _r        = requests.get(uri_comments%(user,repo,index,api_token),timeout=10)
         comments  = json.loads(_r.content)
-        fcontents = [info + '\n\n\n']
+        fcontents = ['# ' + title + '\n' + info + '\n\n\n']
 
         # loop reading each comments
         for cm in comments:
@@ -64,8 +64,8 @@ def fetch_issues(config={}, repo=''):
         if os.path.exists(repo_dir) is not True:
             os.makedirs(repo_dir)
 
-        # output comments into one issue file, named like <1.A-issue-today.md>
-        with open('%s/%d.%s.md'%(repo_dir,index,title), 'w+') as f:
+        # output comments into one issue file, named strictly be <ISSUE-INDEX.md>
+        with open('%s/%d.md'%(repo_dir,index), 'w+') as f:
             f.write( '\n\n\n'.join(fcontents).encode('utf-8') )
 
     print 'all issues fetched.'
