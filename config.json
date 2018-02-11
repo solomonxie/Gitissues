@@ -7,8 +7,8 @@
     "backup_dir": "/Volumes/SD/Workspace/autobackup/test",
     "zip_dir": "/Volumes/SD/Downloads",
     "remote": {
-        "username": "solomonxiewise",
-        "repo": "test",
-        "repo_url": "https://solomonxiewise@bitbucket.org/solomonxiewise/test.git"
+        "remote_username": "solomonxiewise",
+        "remote_repo": "test",
+        "remote_url": "git@bitbucket.org:solomonxiewise/test.git"
     }
 }
