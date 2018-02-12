@@ -17,6 +17,7 @@ def main():
     # @@ initialize config variables
     repos       = config['repos']
     backup_dir  = config['backup_dir']
+    user_dir    = config['backup_dir'] + '/' + config['username']
     remote_repo = config['remote']['remote_repo']
     remote_url  = config['remote']['remote_url']
     today       = str(date.today())
@@ -24,8 +25,9 @@ def main():
     # @@ connect, init or clone to a local repo directory
     repo = git.Repo.init(backup_dir)
 
-    # @ check status and commit untracked changes
-    if repo.is_dirty() is False :
+    # @ check untracked files and commit 
+    #for u in repo.untracked_files:
+    if repo.is_dirty():
         repo.git.add('.')
         repo.git.commit(m='Commit before fetching new on [%s]'%today)
 
@@ -36,9 +38,9 @@ def main():
     # @ pull changes from remote and solve conflicts
     remote.pull()
     
-    # @ clear all files but ".git", for the next fetching
-    #os.system('find %s ! -iname ".git" -delete'%backup_dir)
-    os.system('rm -rf %s'%repo)
+    # @ not blindly remove everything but only remove repos will be renewed
+    for rp in repos:
+        os.system('rm -rf %s/%s'%(backup_url,rp))
     
 
     # @ fetching issues from internet
