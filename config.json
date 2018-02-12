@@ -1,14 +1,18 @@
 {
-    "username": "solomonxie",
-    "repos": [
-        "gitissues"
-    ],
-    "access_token": "a1217cc31f87838d714aea3bf93490663eb2faa2",
-    "backup_dir": "/Volumes/SD/Workspace/autobackup/test",
-    "zip_dir": "/Volumes/SD/Downloads",
+    "fetch": {
+        "user": "solomonxie",
+        "repos": [
+            "gitissues"
+        ],
+        "access_token": ""
+    },
+    "local": {
+        "root_dir": "/Volumes/SD/Workspace/autobackup/issues-mapping"
+    },
     "remote": {
-        "remote_username": "solomonxiewise",
-        "remote_repo": "test",
-        "remote_url": "git@bitbucket.org:solomonxiewise/test.git"
-    }
+        "user": "solomonxiewise",
+        "repo": "test",
+        "ssh": "git@bitbucket.org:solomonxiewise/test.git"
+    },
+    "zip_dir": "/Volumes/SD/Downloads"
 }

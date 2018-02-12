@@ -15,28 +15,29 @@ def main():
         config = json.loads(f.read())
 
     # @ loading settings from customized configs (json)
-    user = config['username']
-    access_token = '' # '?access_token='+ config['access_token']       # api's authentication token string
+    user = config['fetch']['user']
+    root = config['local']['root_dir']
+    access_token = '?access_token='+ config['fetch']['access_token']       # api's authentication token string
     # logging fetching date
     today = str(date.today())
 
-    #import pdb; pdb.set_trace() # debugging mode
-    # @@ fetch each repo and generate issue files
-    for repo in config['repos']:
+    import pdb; pdb.set_trace() # debugging mode
+    # @ fetch each repo and generate issue files
+    for repo in config['fetch']['repos']:
         #if fetch_issues(config, repo) is False: 
         #    print 'Failed to fetch the repo [%s]'%repo
-        repo_dir = '%s/%s/%s'%(config['backup_dir'], config['username'],repo)  # specify the backuped repo's path
-        if generate_docs(repo_dir) is False:
+        repo_dir = '%s/%s/%s'%(root,user,repo)  # specify the backuped repo's path
+        if generate_docs(fetch_dir='%s/%s/%s'%(root,user,repo)) is False:
             print 'Failed to fetch the repo [%s]'%repo
 
     # @@ zip the folder for backup
     shutil.make_archive(
             format   = 'zip',
-            base_name= config['zip_dir']+'/'+repo+today,        # full output path and name of zip file
-            root_dir = config['backup_dir'],                                # folder path to store zip file
-            base_dir = user)                             # internal folder structure in zip file
+            base_name= config['zip_dir']+'/'+user+today, # path to load files
+            root_dir = root,                             # path to store zip file
+            base_dir = user)                             # zip internal folder wrapper
 
-    print 'data archived to %s/%s%s.zip'%(config['backup_dir'],repo,today)
+    print 'data archived to %s/%s%s.zip'%(root,user,today)
 
 
 
@@ -85,13 +86,13 @@ def fetch_issues(config={}, repo=''):
 
 
 # @ generate issues markdown files from local json files fetched beforehead
-def generate_docs(repo_dir=''):
+def generate_docs(fetch_dir=''):
 
     # @@ check source folder's existance
-    if os.path.exists(repo_dir) is False: return False
+    if os.path.exists(fetch_dir) is False: return False
 
     # @ load issues from local json file 
-    with open(repo_dir+'/log/issues.json', 'r') as f:
+    with open(fetch_dir+'/log/issues.json', 'r') as f:
         issues = json.loads(f.read())
 
     # @ iterate each issue for further fetching
@@ -104,7 +105,7 @@ def generate_docs(repo_dir=''):
         fcontents = ['# ' + title + '\n' + info + '\n\n\n']
 
         # @ load comments
-        with open(repo_dir+'/log/issues.json', 'r') as f:
+        with open(fetch_dir+'/log/issues.json', 'r') as f:
             comments = json.loads(f.read())
 
         # @@ consit the content of file with each comment
@@ -115,7 +116,7 @@ def generate_docs(repo_dir=''):
 
 
         # @@ output comments into one issue file, named strictly be <ISSUE-INDEX.md>
-        with open('%s/%d.md'%(repo_dir,index), 'w+') as f:
+        with open('%s/%d.md'%(fetch_dir,index), 'w+') as f:
             f.write( '\n\n\n'.join(fcontents).encode('utf-8') )
 
     print 'all issues file (markdown) generated.'
