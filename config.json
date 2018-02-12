@@ -3,7 +3,7 @@
     "repos": [
         "gitissues"
     ],
-    "api_token": "450a75d961ed1dc24b8a063f5b0ca7470b083f2d",
+    "access_token": "a1217cc31f87838d714aea3bf93490663eb2faa2",
     "backup_dir": "/Volumes/SD/Workspace/autobackup/test",
     "zip_dir": "/Volumes/SD/Downloads",
     "remote": {
