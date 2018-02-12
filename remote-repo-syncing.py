@@ -1,6 +1,7 @@
 
 import shutil
 from datetime import date
+import time
 
 import json
 import git
@@ -15,14 +16,16 @@ def main():
         config = json.loads(f.read())
 
     # @@ initialize config variables
-    repos       = config['fetch']['repos']
-    root        = config['fetch']['root_dir']
-    remote_name = config['remote']['repo']
-    remote_url  = config['remote']['ssh']
-    today       = str(date.today())
+    fetched_user = config['fetch']['user']
+    root         = config['fetch']['root_dir']
+    remote_name  = config['remote']['repo']
+    remote_url   = config['remote']['ssh']
+    today        = str(date.today())
 
     # @@ connect, init or clone to a local repo directory
     repo = git.Repo.init(root)
+
+    # (Workflow: before download new data, commit local repo first, then pull remote changes, then download new data and push to remote)
 
     # @ check untracked files and commit 
     #for u in repo.untracked_files:
@@ -30,17 +33,21 @@ def main():
         repo.git.add('.')
         repo.git.commit(m='Commit before fetching new on [%s]'%today)
 
-    # @ config and connenct with remote
+    # @ setup remote address and authentication
     remote = repo.create_remote(name=remote_name, url=remote_url)
     remote = repo.remote()
 
     # @ pull changes from remote and solve conflicts
     remote.pull()
     
-    # @ not blindly remove everything but only remove repos will be renewed
+    # @ clear directory before download new data. Not blindly remove everything but only remove repos will be renewed
+    shutil.rmtree(root+'/'+fetched_user)
     
 
     # @ fetching issues from internet
+
+
+    # @ mapping json dato to markdown files
 
 
     # @ commit newly fetched changes to local repo
