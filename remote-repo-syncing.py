@@ -1,4 +1,7 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
+import os
 import shutil
 from datetime import date
 import time
@@ -28,17 +31,23 @@ def main():
     # (Workflow: before download new data, commit local repo first, then pull remote changes, then download new data and push to remote)
 
     # @ check untracked files and commit 
+    os.system('git add .')
+    os.system('git commit -m "Commit before fetching new on [%s]"'%today)
     #for u in repo.untracked_files:
-    if repo.is_dirty():
-        repo.git.add('.')
-        repo.git.commit(m='Commit before fetching new on [%s]'%today)
+    #if repo.is_dirty():
+    #    repo.git.add('.')
+    #    repo.git.commit(m='Commit before fetching new on [%s]'%today)
 
     # @ setup remote address and authentication
-    remote = repo.create_remote(name=remote_name, url=remote_url)
-    remote = repo.remote()
+    os.system('')
+    os.system('')
+    os.system('')
+    #remote = repo.create_remote(name=remote_name, url=remote_url)
+    #remote = repo.remote()
 
     # @ pull changes from remote and solve conflicts
-    remote.pull()
+    os.system('git pull')
+    #remote.pull()
     
     # @ clear directory before download new data. Not blindly remove everything but only remove repos will be renewed
     shutil.rmtree(root+'/'+fetched_user)
@@ -51,11 +60,14 @@ def main():
 
 
     # @ commit newly fetched changes to local repo
-    repo.git.add('.')
-    repo.git.commit(m='Commit newly fetched data on [%s]'%today)
+    os.system('git add .')
+    os.system('git commit -m "Commit newly fetched data on [%s]"'%today)
+    #repo.git.add('.')
+    #repo.git.commit(m='Commit newly fetched data on [%s]'%today)
 
     # @ push to remote repo
-    remote.push()
+    os.system('git push')
+    #remote.push()
 
 
 
