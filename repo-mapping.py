@@ -9,20 +9,7 @@ from datetime import date
 
 def main():
 
-    # @@ load local config file
-    with open('config.json', 'r') as f:
-        config = json.loads(f.read())
-
-    # @@ loading settings from customized configs (json)
-    user = config['fetch']['user']
-    repo = config['fetch']['repo']
-    root = config['local']['root_dir']
-    # indicate mapping date
-    today = str(date.today())
-
-    # @@ fetch each repo and generate issue files
-    if mapping_repo('%s/%s/%s'%(root,user,repo),repo) is False:
-        print 'Failed to map issues from the repo [%s]'%repo
+    mapping_repo()
 
     # @@ zip the folder for backup
     #shutil.make_archive(
@@ -35,9 +22,23 @@ def main():
 
 
 # @@ map issues from json data to markdown files 
-def mapping_repo(repo_dir='',repo=''):
+def mapping_repo():
+    """
+    GENERATE json data to markdown files
+    """
 
-    #import pdb; pdb.set_trace() # debugging mode
+    # @@ load local config file
+    with open('config.json', 'r') as f:
+        config = json.loads(f.read())
+
+    # @@ loading settings from customized configs (json)
+    user = config['fetch']['user']
+    repo = config['fetch']['repo']
+    root = config['local']['root_dir']
+    # indicate mapping date
+    today = str(date.today())
+
+
     # @@ check source folder's existance
     if os.path.exists(repo_dir) is False: return False
 

@@ -12,6 +12,15 @@ import git
 
 def main():
 
+    remote_repo_sync()
+
+
+
+def remote_repo_sync():
+    """
+    Push newly fetched data to remote repository
+    """
+
     #import pdb; pdb.set_trace()   # debugging mode
 
     # @@ read config file
