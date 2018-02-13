@@ -40,7 +40,9 @@ def fetch_issues():
         return False
 
     # @@ clear directory before download new data. 
-    shutil.rmtree(repo_dir) 
+    try:
+        shutil.rmtree(repo_dir) 
+    except: pass
 
 
     if os.path.exists(repo_dir+'/log') is False:

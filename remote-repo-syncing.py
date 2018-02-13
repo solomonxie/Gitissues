@@ -12,7 +12,7 @@ import git
 
 def main():
 
-    import pdb; pdb.set_trace()   # debugging mode
+    #import pdb; pdb.set_trace()   # debugging mode
 
     # @@ read config file
     with open('config.json', 'r') as f:
@@ -26,9 +26,12 @@ def main():
     # @@ connect, init or clone to a local repo directory
     repo = git.Repo.init(root)
 
+    #import pdb; pdb.set_trace()   # debugging mode
+
     # @@ check untracked files and commit 
-    repo.git.add('.')
-    repo.git.commit(m='Commit before fetching new on [%s]'%today)
+    if repo.is_dirty():
+        print repo.git.add('.')
+        print repo.git.commit(m='Commit before fetching new on [%s]'%today)
 
     # @@ setup remote connection
     remote = repo.remote()
@@ -37,8 +40,7 @@ def main():
     remote.pull()
     
     # @@ push to remote repo
-    remote.push()
-
+    remote.push() 
 
 
 if __name__ == "__main__":
