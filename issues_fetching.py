@@ -28,9 +28,19 @@ def fetch_issues():
     user         = config['fetch']['user']
     repo         = config['fetch']['repo']
     issues_url   = config['fetch']['issues_url']
+    remote_url   = config['remote']['https']
+    email        = config['remote']['email']
     root         = config['local']['root_dir']
     repo_dir     = '%s/%s/%s'%(root,user,repo)
     today        = str(date.today())
+
+    #import pdb; pdb.set_trace()      ## debugging mode
+
+    # @ prepare local git repo for the first time
+    if os.path.exists(root) is False:
+        os.system('git clone %s %s'%(remote_url, root))
+        os.system('git -C %s credential.helper cache'%root)
+        os.system('git -C %s config user.email %s'%(root,email))
 
 
     # @@ retrieving data from internet, @ with response validation
