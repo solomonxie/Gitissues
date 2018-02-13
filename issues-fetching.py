@@ -45,9 +45,14 @@ def fetch_issues(config={}, repo=''):
     if r.status_code is not 200:
         raise NameError('Failed on fetching [%s] due to unexpected response'%url_issues)
 
-    # @@ log issues as original json file, for future restoration or further use
-    if os.path.exists(repo_dir+'/log') is False:
+    # @ check if there's change from internet, abord mission if there's no change.
+    if os.path.exists(repo_dir+'/log') is True:
+        with open(repo_dir+'/log', 'r') as f:
+            if f.read() is r.content: return         # stop further fetching if no new thing added
+    else:
         os.makedirs(repo_dir+'/log')
+
+    # @@ log issues as original json file, for future restoration or further use
     with open(repo_dir+'/log/issues.json', 'w') as f:
         f.write(r.content)
 
