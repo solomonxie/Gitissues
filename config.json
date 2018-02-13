@@ -1,10 +1,7 @@
 {
     "fetch": {
         "user": "solomonxie",
-        "repo": "solomonxie.github.io",
-        "repos": [
-            "gitissues"
-        ],
+        "repo": "gitissues",
         "issues_url": "https://api.github.com/repos/solomonxie/gitissues/issues"
     },
     "local": {

@@ -15,14 +15,14 @@ def main():
 
     # @@ loading settings from customized configs (json)
     user = config['fetch']['user']
+    repo = config['fetch']['repo']
     root = config['local']['root_dir']
     # indicate mapping date
     today = str(date.today())
 
     # @@ fetch each repo and generate issue files
-    for repo in config['fetch']['repos']:
-        if mapping_repo('%s/%s/%s'%(root,user,repo),repo) is False:
-            print 'Failed to map issues from the repo [%s]'%repo
+    if mapping_repo('%s/%s/%s'%(root,user,repo),repo) is False:
+        print 'Failed to map issues from the repo [%s]'%repo
 
     # @@ zip the folder for backup
     #shutil.make_archive(
