@@ -39,10 +39,10 @@ def fetch_issues():
         print 'Failed on fetching [%s] due to unexpected response'%issues_url
         return False
 
-    # @@ clear directory before download new data. 
+    # @@ REMOVE user directory before download new data. 
     try:
         #shutil.rmtree(repo_dir) 
-        os.system('rm -rf %s'%repo_dir)
+        os.system('rm -rf %s/%s'%(root,user))
     except: pass
 
 
