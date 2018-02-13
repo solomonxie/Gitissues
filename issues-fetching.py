@@ -40,15 +40,14 @@ def fetch_issues():
         return False
 
     # @ check if there's change from internet, abord mission if there's no change.
-    if os.path.exists(repo_dir+'/log') is True:
+    if os.path.exists(repo_dir+'/log/issues.json') is True:
         with open(repo_dir+'/log/issues.json', 'r') as f:
-            if f.read() is r.content: return         # stop further fetching if no new thing added
+            if json.loads(f.read()) is r.json(): return         # stop further fetching if no new thing added
     else:
+        # @@ log issues as original json file, for future restoration or further use
         os.makedirs(repo_dir+'/log')
-
-    # @@ log issues as original json file, for future restoration or further use
-    with open(repo_dir+'/log/issues.json', 'w') as f:
-        f.write(r.content)
+        with open(repo_dir+'/log/issues.json', 'w') as f:
+            f.write(r.content)
 
     # @ load issues and record amount for comparision
     issues = r.json()
