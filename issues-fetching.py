@@ -39,6 +39,10 @@ def fetch_issues():
         print 'Failed on fetching [%s] due to unexpected response'%issues_url
         return False
 
+    # @@ clear directory before download new data. 
+    shutil.rmtree(repo_dir) 
+
+
     if os.path.exists(repo_dir+'/log') is False:
         os.makedirs(repo_dir+'/log')
 

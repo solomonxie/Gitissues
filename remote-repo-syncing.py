@@ -18,11 +18,9 @@ def main():
     with open('config.json', 'r') as f:
         config = json.loads(f.read())
 
-    # @@ initialize config variables
+    # @@ load config variables 
     fetched_user = config['fetch']['user']
     root         = config['fetch']['root_dir']
-    remote_name  = config['remote']['repo']
-    remote_url   = config['remote']['ssh']
     today        = str(date.today())
 
     # @@ connect, init or clone to a local repo directory
@@ -31,23 +29,14 @@ def main():
     # (Workflow: before download new data, commit local repo first, then pull remote changes, then download new data and push to remote)
 
     # @ check untracked files and commit 
-    os.system('git add .')
-    os.system('git commit -m "Commit before fetching new on [%s]"'%today)
-    #for u in repo.untracked_files:
-    #if repo.is_dirty():
-    #    repo.git.add('.')
-    #    repo.git.commit(m='Commit before fetching new on [%s]'%today)
+    repo.git.add('.')
+    repo.git.commit(m='Commit before fetching new on [%s]'%today)
 
     # @ setup remote address and authentication
-    os.system('')
-    os.system('')
-    os.system('')
-    #remote = repo.create_remote(name=remote_name, url=remote_url)
-    #remote = repo.remote()
+    remote = repo.remote()
 
     # @ pull changes from remote and solve conflicts
-    os.system('git pull')
-    #remote.pull()
+    remote.pull()
     
     # @ clear directory before download new data. Not blindly remove everything but only remove repos will be renewed
     shutil.rmtree(root+'/'+fetched_user)
