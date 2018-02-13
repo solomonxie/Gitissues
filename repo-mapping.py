@@ -13,13 +13,13 @@ def main():
     with open('config.json', 'r') as f:
         config = json.loads(f.read())
 
-    # @ loading settings from customized configs (json)
+    # @@ loading settings from customized configs (json)
     user = config['fetch']['user']
     root = config['local']['root_dir']
     # indicate mapping date
     today = str(date.today())
 
-    # @ fetch each repo and generate issue files
+    # @@ fetch each repo and generate issue files
     for repo in config['fetch']['repos']:
         if mapping_repo('%s/%s/%s'%(root,user,repo),repo) is False:
             print 'Failed to map issues from the repo [%s]'%repo
@@ -34,27 +34,27 @@ def main():
 
 
 
-# @ map issues from json data to markdown files 
+# @@ map issues from json data to markdown files 
 def mapping_repo(repo_dir='',repo=''):
 
     #import pdb; pdb.set_trace() # debugging mode
     # @@ check source folder's existance
     if os.path.exists(repo_dir) is False: return False
 
-    # @ load issues
+    # @@ load issues
     with open(repo_dir+'/log/issues.json', 'r') as f:
         issues = json.loads(f.read())
 
-    # @ iterate each issue for further fetching
+    # @@ iterate each issue for further fetching
     for issue in issues:
         title = issue['title']
         info  = issue['body']
         index = issue['number']
 
-        # @ prepare contents for output markdown file
+        # @@ prepare contents for output markdown file
         fcontents = ['# ' + title + '\n' + info + '\n\n\n']
 
-        # @ load comments
+        # @@ load comments
         with open(repo_dir+'/log/issue-%d.json'%index, 'r') as f:
             comments = json.loads(f.read())
 
