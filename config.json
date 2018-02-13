@@ -12,7 +12,8 @@
     "remote": {
         "user": "solomonxiewise",
         "repo": "test",
-        "ssh": "git@bitbucket.org:solomonxiewise/test.git"
+        "ssh": "git@bitbucket.org:solomonxiewise/test.git",
+        "https": "https://solomonxiewise@bitbucket.org/solomonxiewise/test.git"
     },
     "zip_dir": "/Volumes/SD/Downloads"
 }
