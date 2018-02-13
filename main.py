@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 
 from issues_fetching import fetch_issues
-from repo-mapping import mapping_repo
-from remote-repo-syncing import remote_repo_sync
+from repo_mapping import mapping_repo
+from remote_syncing import remote__sync
 
 
 def main():
@@ -11,6 +11,10 @@ def main():
     CONNECT 3 scripts in a row as a workflow: Fetching -> mapping -> uploading
     """
     print 'hello'
+    
+    #import pdb; pdb.set_trace()
+
+    mapping_repo()
 
 
 
