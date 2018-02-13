@@ -8,7 +8,8 @@
         "root_dir": "/Volumes/SD/Workspace/autobackup/issues-mapping"
     },
     "remote": {
-        "user": "solomonxiewise",
+        "user": "Solomon Xie",
+        "email": "solomonxie@foxmail.com",
         "repo": "test",
         "ssh": "git@bitbucket.org:solomonxiewise/test.git",
         "https": "https://solomonxiewise@bitbucket.org/solomonxiewise/test.git"

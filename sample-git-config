@@ -1,0 +1,17 @@
+[core]
+	repositoryformatversion = 0
+	filemode = true
+	bare = false
+	logallrefupdates = true
+[remote "origin"]
+	url = {remote_url}
+	fetch = +refs/heads/*:refs/remotes/origin/*
+[user]
+	email = {email}
+
+[branch "master"]
+	remote = origin
+	merge = refs/heads/master
+
+[credential]
+	helper = cache
