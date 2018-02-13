@@ -38,7 +38,7 @@ def remote_sync():
     repo = git.Repo.init(root)
     print 'git repo created: %s'%root
 
-    import pdb; pdb.set_trace()   # debugging mode
+    #import pdb; pdb.set_trace()   # debugging mode
 
     # @@ check untracked files and commit 
     #if repo.is_dirty():
