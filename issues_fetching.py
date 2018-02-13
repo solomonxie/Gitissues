@@ -41,7 +41,8 @@ def fetch_issues():
 
     # @@ clear directory before download new data. 
     try:
-        shutil.rmtree(repo_dir) 
+        #shutil.rmtree(repo_dir) 
+        os.system('rm -rf %s'%repo_dir)
     except: pass
 
 
