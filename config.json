@@ -9,10 +9,10 @@
     },
     "remote": {
         "user": "Solomon Xie",
-        "email": "solomonxie@foxmail.com",
-        "repo": "test",
-        "ssh": "git@bitbucket.org:solomonxiewise/test.git",
-        "https": "https://solomonxiewise@bitbucket.org/solomonxiewise/test.git"
+        "email": "solomonxiewise@gmail.com",
+        "repo": "user-content",
+        "ssh": "git@github.com:solomonxie/user-content.git",
+        "https": "https://github.com/solomonxie/user-content.git"
     },
     "zip_dir": "/Volumes/SD/Downloads"
 }

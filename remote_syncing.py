@@ -41,26 +41,30 @@ def remote_sync():
     import pdb; pdb.set_trace()   # debugging mode
 
     # @@ check untracked files and commit 
-    if repo.is_dirty():
-        print repo.git.add('.')
-        print repo.git.commit(m='Fetched on [%s]'%today)
+    #if repo.is_dirty():
+    repo.git.add('.')
+    try:
+        repo.git.commit(m='Fetched on [%s]'%today)
         print 'change committed.'
-
-    # @@ setup remote connection
-    remote = repo.remote()
+    except: pass
 
     # @@ run script to make a `.git/config` file
     with open('sample-git-config', 'r') as f:
         git_config = f.read()
 
-    with open(root+'/.git/config', 'w') as f:
-        f.write(git_config.format(remote_url=remote_url, email=email))
+    with open(root+'/.git/config', 'rw') as f:
+        if len(f.read()) is 0:
+            f.write(git_config.format(remote_url=remote_url, email=email))
+
+
+    # @@ setup remote connection
+    remote = repo.remote()
 
     # @@ pull changes from remote and solve conflicts
     remote.fetch()
     print 'fetched.'
-    remote.pull()
-    print 'pulled.'
+    #remote.pull()
+    #print 'pulled.'
     
     # @@ push to remote repo
     remote.push() 
