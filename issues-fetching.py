@@ -10,44 +10,38 @@ from datetime import date
 
 
 def main():
+    
+    fetch_issues()
+
+
+def fetch_issues():
+    """
+    Fetch one repo's issues @2 archive to a local folder @3 pack into a zip file
+    """
 
     # @@ load local config file
     with open('config.json', 'r') as f:
         config = json.loads(f.read())
 
-    #import pdb; pdb.set_trace() # debugging mode
-    # @@ fetch each repo and generate issue files
-    for repo in config['fetch']['repos']:
-        try:
-            fetch_issues(config, repo)
-        except NameError:
-            print 'Error on fetching the repo[%s], trying to fetch again...'
-            fetch_issues(config, repo)
-
-
-
-# @@ Fetch one repo's issues @2 archive to a local folder @3 pack into a zip file
-def fetch_issues(config={}, repo=''):
-
     # @@ loading settings from customized configs (json)
     user         = config['fetch']['user']
+    repo         = config['fetch']['repo']
+    issues_url   = config['fetch']['issues_url']
     root         = config['local']['root_dir']
     repo_dir     = '%s/%s/%s'%(root,user,repo)
-    access_token = '' #'?access_token='+ config['fetch']['access_token']       # api's authentication token string
     today        = str(date.today())
 
-    #import pdb; pdb.set_trace() # debugging mode
+    import pdb; pdb.set_trace() # debugging mode
 
     # @@ retrieving data from internet, @ with response validation
-    url_issues = 'https://api.github.com/repos/%s/%s/issues%s'\
-            %(user,repo,access_token)
-    r = requests.get(url_issues,timeout=10)
+    r = requests.get(issues_url,timeout=10)
     if r.status_code is not 200:
-        raise NameError('Failed on fetching [%s] due to unexpected response'%url_issues)
+        print 'Failed on fetching [%s] due to unexpected response'%issues_url
+        return False
 
     # @ check if there's change from internet, abord mission if there's no change.
     if os.path.exists(repo_dir+'/log') is True:
-        with open(repo_dir+'/log', 'r') as f:
+        with open(repo_dir+'/log/issues.json', 'r') as f:
             if f.read() is r.content: return         # stop further fetching if no new thing added
     else:
         os.makedirs(repo_dir+'/log')
@@ -66,16 +60,16 @@ def fetch_issues(config={}, repo=''):
         title = issue['title']
         info  = issue['body']
         index = issue['number']
+        comments_url = issue['comments_url']
 
         # @ pause for awhile before fetch to reduce risk of being banned from server
         time.sleep(1)     # sleep 60sec
 
         # @@ fetch comments, @ with response validation 
-        url_comments = 'https://api.github.com/repos/%s/%s/issues/%d/comments%s'\
-                %(user,repo,index,access_token)
-        _r = requests.get(url_comments,timeout=10)
+        _r = requests.get(comments_url,timeout=10)
         if _r.status_code is not 200:
-            raise NameError('Failed on fetching [%s] due to enexpected response'%url_comments) 
+            print 'Failed on fetching [%s] due to enexpected response'%comments_url
+            return False
 
         # @ log comments as original json file, for future restoration or further use
         with open(repo_dir+'/log/issue-%d.json'%index, 'w') as f:

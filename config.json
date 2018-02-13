@@ -1,10 +1,11 @@
 {
     "fetch": {
         "user": "solomonxie",
+        "repo": "solomonxie.github.io",
         "repos": [
             "solomonxie.github.io"
         ],
-        "access_token": ""
+        "issues_url": "https://api.github.com/repos/solomonxie/solomonxie.github.io/issues"
     },
     "local": {
         "root_dir": "/Volumes/SD/Workspace/autobackup/issues-mapping"
