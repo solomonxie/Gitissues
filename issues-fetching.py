@@ -39,43 +39,18 @@ def fetch_issues():
         print 'Failed on fetching [%s] due to unexpected response'%issues_url
         return False
 
-    # @@ check if there's change from internet, abord mission if there's no change.
-    updates = []
-    deletions = []
-    if os.path.exists(repo_dir+'/log/issues.json') is True:
-
-
-        with open(repo_dir+'/log/issues.json', 'r') as f:
-            # @@ compare two json files with updated time. (can't directly compare two json files)
-            #old = set([d['updated_at'] for d in json.loads(f.read())])
-            #new = set([d['updated_at'] for d in r.json()])
-            old = [{iss['number']:iss['updated_at']} for iss in json.loads(f.read())]
-            new = [{iss['number']:iss['updated_at']} for iss in r.json()]
-
-        for iss in r.json():
-            if 
-
-        #ups  = new - old       # udpates and adds
-        #dels = old - new       # deletions
-
-        # quit, if no changes at all
-        #if len(ups) is 0 and len(dels) is 0: return    
-
-        # filter out updates and deletions
-        #updates = [iss for iss in r.json() if iss['updated_at'] in ups]
-
-    else:
-        # @@ log issues as original json file, for future restoration or further use
+    # @@ log issues as original json file, for future restoration or further use
+    if os.path.exists(repo_dir+'/log') is False:
         os.makedirs(repo_dir+'/log')
         with open(repo_dir+'/log/issues.json', 'w') as f:
             f.write(r.content)
 
-        updates = r.json()
 
-    import pdb; pdb.set_trace() # debugging mode
+    #import pdb; pdb.set_trace() # debugging mode
     
     # @@ iterate each issue for further fetching
-    for issue in updates:
+    issues = r.json()
+    for issue in r.json():
         title = issue['title']
         info  = issue['body']
         index = issue['number']
