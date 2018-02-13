@@ -39,11 +39,12 @@ def fetch_issues():
         print 'Failed on fetching [%s] due to unexpected response'%issues_url
         return False
 
-    # @@ log issues as original json file, for future restoration or further use
     if os.path.exists(repo_dir+'/log') is False:
         os.makedirs(repo_dir+'/log')
-        with open(repo_dir+'/log/issues.json', 'w') as f:
-            f.write(r.content)
+
+    # @@ log issues as original json file, for future restoration or further use
+    with open(repo_dir+'/log/issues.json', 'w') as f:
+        f.write(r.content)
 
 
     #import pdb; pdb.set_trace() # debugging mode
@@ -55,9 +56,9 @@ def fetch_issues():
         info  = issue['body']
         index = issue['number']
         comments_url = issue['comments_url']
-        counts = issues['comments']
+        counts = issue['comments']
 
-        # @ pause for awhile before fetch to reduce risk of being banned from server
+        # @@ pause for awhile before fetch to reduce risk of being banned from server
         time.sleep(1)     # sleep 60sec
 
         # @@ fetch comments, @ with response validation 
@@ -66,7 +67,7 @@ def fetch_issues():
             print 'Failed on fetching [%s] due to enexpected response'%comments_url
             return False              # if failed one comment, then restart whole process on this issue
 
-        # @ log comments as original json file, for future restoration or further use
+        # @@ log comments as original json file, for future restoration or further use
         with open(repo_dir+'/log/issue-%d.json'%index, 'w') as f:
             f.write(_r.content)
 
