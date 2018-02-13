@@ -3,11 +3,13 @@
 	filemode = true
 	bare = false
 	logallrefupdates = true
+
+[user]
+	email = {email}
+
 [remote "origin"]
 	url = {remote_url}
 	fetch = +refs/heads/*:refs/remotes/origin/*
-[user]
-	email = {email}
 
 [branch "master"]
 	remote = origin

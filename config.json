@@ -13,6 +13,5 @@
         "repo": "user-content",
         "ssh": "git@github.com:solomonxie/user-content.git",
         "https": "https://github.com/solomonxie/user-content.git"
-    },
-    "zip_dir": "/Volumes/SD/Downloads"
+    }
 }
