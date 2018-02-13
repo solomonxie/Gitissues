@@ -3,7 +3,6 @@
 
 import os
 import json
-from datetime import date
 
 
 def main():
@@ -16,17 +15,19 @@ def remote_sync():
     Push newly fetched data to remote repository
     """
 
-    #import pdb; pdb.set_trace()   # debugging mode
-    today        = str(date.today())
+    import pdb; pdb.set_trace()   # debugging mode
+
 
     # @@ read config file
     with open('config.json', 'r') as f:
-        root = json.loads(f.read())
+        config = json.loads(f.read())
+
+    root = config['local']['root_dir']
 
     # run standard git workflow to push updates
-    os.system('git -C %s add .'%(root))
-    os.system('git -C %s commit -m "Update issues on %s"'%(root,today))
     os.system('git -C %s pull origin master'%(root))
+    os.system('git -C %s add .'%(root))
+    os.system('git -C %s commit -m "Update at `date`'%(root))
     os.system('git -C %s push origin master'%(root))
 
 
