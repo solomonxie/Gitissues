@@ -12,11 +12,11 @@ import git
 
 def main():
 
-    remote_repo_sync()
+    remote_sync()
 
 
 
-def remote_repo_sync():
+def remote__sync():
     """
     Push newly fetched data to remote repository
     """
