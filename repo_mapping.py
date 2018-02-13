@@ -35,6 +35,7 @@ def mapping_repo():
     user = config['fetch']['user']
     repo = config['fetch']['repo']
     root = config['local']['root_dir']
+    repo_dir = '%s/%s/%s'%(root,user,repo)
     # indicate mapping date
     today = str(date.today())
 

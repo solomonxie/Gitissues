@@ -16,7 +16,7 @@ def main():
 
 
 
-def remote__sync():
+def remote_sync():
     """
     Push newly fetched data to remote repository
     """
