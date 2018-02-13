@@ -29,6 +29,7 @@ def fetch_issues():
     repo         = config['fetch']['repo']
     issues_url   = config['fetch']['issues_url']
     remote_url   = config['remote']['https']
+    remote_user  = config['remote']['user']
     email        = config['remote']['email']
     root         = config['local']['root_dir']
     repo_dir     = '%s/%s/%s'%(root,user,repo)
@@ -41,6 +42,7 @@ def fetch_issues():
         os.system('git clone %s %s'%(remote_url, root))
         os.system('git -C %s config credential.helper cache'%root)
         os.system('git -C %s config user.email %s'%(root,email))
+        os.system('git -C %s config user.name %s'%(root,remote_user))
 
 
     # @@ retrieving data from internet, @ with response validation
