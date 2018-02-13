@@ -15,7 +15,7 @@ def remote_sync():
     Push newly fetched data to remote repository
     """
 
-    import pdb; pdb.set_trace()   # debugging mode
+    #import pdb; pdb.set_trace()   # debugging mode
 
 
     # @@ read config file
@@ -27,7 +27,7 @@ def remote_sync():
     # run standard git workflow to push updates
     os.system('git -C %s pull origin master'%(root))
     os.system('git -C %s add .'%(root))
-    os.system('git -C %s commit -m "Update at `date`'%(root))
+    os.system('git -C %s commit -m "Update at `date`"'%(root))
     os.system('git -C %s push origin master'%(root))
 
 
