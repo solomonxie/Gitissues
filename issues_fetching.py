@@ -39,7 +39,7 @@ def fetch_issues():
     # @ prepare local git repo for the first time
     if os.path.exists(root) is False:
         os.system('git clone %s %s'%(remote_url, root))
-        os.system('git -C %s credential.helper cache'%root)
+        os.system('git -C %s config credential.helper cache'%root)
         os.system('git -C %s config user.email %s'%(root,email))
 
 
