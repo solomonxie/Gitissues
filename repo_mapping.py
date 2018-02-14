@@ -62,7 +62,7 @@ def mapping_repo(config):
         for cm in comments:
             fcontents.append( cm['body'] +'\n\n\n' )
 
-        print '%d comments for issue-%d[%s] mapped.'%(len(fcontents)+1,index,title)
+        print '%d comments for issue-%d[%s] mapped.'%(len(fcontents)-1,index,title)
 
 
         # @@ output comments into one issue file, named strictly be <ISSUE-INDEX.md>

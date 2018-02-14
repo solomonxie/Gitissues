@@ -24,10 +24,6 @@ def fetch_issues(config):
     IF there's no change from internet, then abord fetching and writing to local files
     """
 
-    # @@ load local config file
-    with open('config.json', 'r') as f:
-        config = json.loads(f.read())
-
     # @@ loading settings from customized configs (json)
     user         = config['fetch']['user']
     repo         = config['fetch']['repo']
@@ -56,6 +52,8 @@ def fetch_issues(config):
         print 'Failed on fetching [%s] due to unexpected response'%issues_url
         return False
 
+    #print 'Remaining %s requests limit for this hour.'%r.headers['X-RateLimit-Remaining']
+
     # @@ REMOVE user directory before download new data. 
     try:
         #shutil.rmtree(repo_dir) 
@@ -75,7 +73,7 @@ def fetch_issues(config):
     
     # @@ iterate each issue for further fetching
     issues = r.json()
-    for issue in r.json():
+    for issue in issues:
         title = issue['title']
         info  = issue['body']
         index = issue['number']
@@ -95,9 +93,9 @@ def fetch_issues(config):
         with open(repo_dir+'/log/issue-%d.json'%index, 'w') as f:
             f.write(_r.content)
 
-        print '%d comments for issue-%d[%s] fetched.'%(len(_r.json())+1,index, title)
+        print '%d comments for issue-%d[%s] fetched.'%(counts,index, title)
 
-    print 'all %d issues for %s fetched.'%(counts,repo)
+    print 'all %d issues for %s fetched.'%(len(issues),repo)
 
 
 

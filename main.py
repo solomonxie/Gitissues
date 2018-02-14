@@ -26,15 +26,7 @@ def main(auth):
 
 if __name__ == "__main__":
 
-    import pdb; pdb.set_trace()
-
-
-    #main(auth)
-
-    import requests
-    r = requests.get('https://api.github.com/repos/solomonxie/solomonxie.github.io/issues'+auth)
-    print r.status_code
-    print r.headers['X-RateLimit-Remaining']
+    main()
 
     # @@ run script for every 5 minutes
     #while True:

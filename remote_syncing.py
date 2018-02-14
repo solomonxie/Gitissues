@@ -11,16 +11,15 @@ def main():
     with open('/Volumes/SD/Workspace/etc/gitissues-config.json', 'r') as f:
         config = json.loads(f.read())
 
-    remote_sync()
+    remote_sync(config)
 
 
-def remote_sync():
+def remote_sync(config):
     """
     Push newly fetched data to remote repository
     """
 
     #import pdb; pdb.set_trace()   # debugging mode
-
 
     root = config['local']['root_dir']
 
