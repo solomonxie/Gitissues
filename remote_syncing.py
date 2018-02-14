@@ -7,8 +7,12 @@ import json
 
 def main():
 
-    # @@ read config file
-    with open('/Volumes/SD/Workspace/etc/gitissues-config.json', 'r') as f:
+    if len(sys.argv) is 1:
+        print 'Please indicate the path of config file.'
+        return
+
+    # @@ load local config file
+    with open(sys.argv[1], 'r') as f:
         config = json.loads(f.read())
 
     remote_sync(config)

@@ -9,8 +9,12 @@ from datetime import date
 
 def main():
 
+    if len(sys.argv) is 1:
+        print 'Please indicate the path of config file.'
+        return
+
     # @@ load local config file
-    with open('/Volumes/SD/Workspace/etc/gitissues-config.json', 'r') as f:
+    with open(sys.argv[1], 'r') as f:
         config = json.loads(f.read())
 
     mapping_repo(config)
@@ -42,7 +46,7 @@ def mapping_repo(config):
     if os.path.exists(repo_dir) is False: return False
 
     # @@ load issues
-    with open(repo_dir+'/log/issues.json', 'r') as f:
+    with open(repo_dir+'/src/issues.json', 'r') as f:
         issues = json.loads(f.read())
 
     # @@ iterate each issue for further fetching
@@ -55,7 +59,7 @@ def mapping_repo(config):
         fcontents = ['# ' + title + '\n' + info + '\n\n\n']
 
         # @@ load comments
-        with open(repo_dir+'/log/issue-%d.json'%index, 'r') as f:
+        with open(repo_dir+'/src/issue-%d.json'%index, 'r') as f:
             comments = json.loads(f.read())
 
         # @@ consit the content of file with each comment

@@ -11,9 +11,14 @@ from datetime import date
 
 def main():
     
+    if len(sys.argv) is 1:
+        print 'Please indicate the path of config file.'
+        return
+    
     # @@ load local config file
-    with open('/Volumes/SD/Workspace/etc/gitissues-config.json', 'r') as f:
+    with open(sys.argv[1], 'r') as f:
         config = json.loads(f.read())
+
 
     fetch_issues(config)
 
@@ -61,11 +66,11 @@ def fetch_issues(config):
     except: pass
 
 
-    if os.path.exists(repo_dir+'/log') is False:
-        os.makedirs(repo_dir+'/log')
+    if os.path.exists(repo_dir+'/src') is False:
+        os.makedirs(repo_dir+'/src')
 
     # @@ log issues as original json file, for future restoration or further use
-    with open(repo_dir+'/log/issues.json', 'w') as f:
+    with open(repo_dir+'/src/issues.json', 'w') as f:
         f.write(r.content)
 
 
@@ -90,7 +95,7 @@ def fetch_issues(config):
             return False              # if failed one comment, then restart whole process on this issue
 
         # @@ log comments as original json file, for future restoration or further use
-        with open(repo_dir+'/log/issue-%d.json'%index, 'w') as f:
+        with open(repo_dir+'/src/issue-%d.json'%index, 'w') as f:
             f.write(_r.content)
 
         print '%d comments for issue-%d[%s] fetched.'%(counts,index, title)

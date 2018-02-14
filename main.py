@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import sys
 import time
 import json
 
@@ -13,12 +14,18 @@ def main():
     """
     CONNECT 3 scripts in a row as a workflow: Fetching -> mapping -> uploading
     """
+
+    #import pdb;pdb.set_trace()
+
+    if len(sys.argv) is 1:
+        print 'Please indicate the path of config file.'
+        return
    
     # @@ load local config file
-    with open('/Volumes/SD/Workspace/etc/gitissues-config.json', 'r') as f:
+    with open(sys.argv[1], 'r') as f:
         config = json.loads(f.read())
 
-    # @@ run workflow
+    # @@ run workflow step-by-step
     fetch_issues(config)
     mapping_repo(config)
     remote_sync(config)
