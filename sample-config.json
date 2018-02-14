@@ -1,0 +1,19 @@
+{
+    "fetch": {
+        "user": "solomonxie",
+        "repo": "gitissues",
+        "issues_url": "https://api.github.com/repos/solomonxie/gitissues/issues",
+        "auth2_ks": "?client_id=9999999999999&client_secret=777777777777777777"
+    },
+    "local": {
+        "root_dir": "/home/pi/autobackup/user_content_issues_blog",
+        "archive_dir": "/home/pi/Downloads"
+    },
+    "remote": {
+        "user": "Solomon Xie",
+        "email": "solomonxiewise@gmail.com",
+        "repo": "user_content_issues_blog",
+        "ssh": "git@github.com:solomonxie/user_content_issues_blog.git",
+        "https": "https://github.com/solomonxie/user_content_issues_blog.git"
+    }
+}
