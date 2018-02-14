@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import os
+import sys
 import json
 
 
@@ -28,7 +29,7 @@ def remote_sync(config):
     root = config['local']['root_dir']
 
     # run standard git workflow to push updates
-    os.system('git -C %s pull origin master'%(root))
+    #os.system('git -C %s pull origin master'%(root))
     os.system('git -C %s add .'%(root))
     os.system('git -C %s commit -m "Update at `date`"'%(root))
     os.system('git -C %s push origin master'%(root))

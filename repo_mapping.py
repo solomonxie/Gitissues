@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import os           # for folder detecting
+import sys
 import json
 import shutil       # for zipping files
 from datetime import date
