@@ -7,6 +7,10 @@ import json
 
 def main():
 
+    # @@ read config file
+    with open('/Volumes/SD/Workspace/etc/gitissues-config.json', 'r') as f:
+        config = json.loads(f.read())
+
     remote_sync()
 
 
@@ -17,10 +21,6 @@ def remote_sync():
 
     #import pdb; pdb.set_trace()   # debugging mode
 
-
-    # @@ read config file
-    with open('config.json', 'r') as f:
-        config = json.loads(f.read())
 
     root = config['local']['root_dir']
 

@@ -9,7 +9,11 @@ from datetime import date
 
 def main():
 
-    mapping_repo()
+    # @@ load local config file
+    with open('/Volumes/SD/Workspace/etc/gitissues-config.json', 'r') as f:
+        config = json.loads(f.read())
+
+    mapping_repo(config)
 
     # @@ zip the folder for backup
     #shutil.make_archive(
@@ -22,14 +26,10 @@ def main():
 
 
 # @@ map issues from json data to markdown files 
-def mapping_repo():
+def mapping_repo(config):
     """
     GENERATE json data to markdown files
     """
-
-    # @@ load local config file
-    with open('config.json', 'r') as f:
-        config = json.loads(f.read())
 
     # @@ loading settings from customized configs (json)
     user = config['fetch']['user']

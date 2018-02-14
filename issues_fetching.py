@@ -11,10 +11,14 @@ from datetime import date
 
 def main():
     
-    fetch_issues()
+    # @@ load local config file
+    with open('/Volumes/SD/Workspace/etc/gitissues-config.json', 'r') as f:
+        config = json.loads(f.read())
+
+    fetch_issues(config)
 
 
-def fetch_issues():
+def fetch_issues(config):
     """
     FETCH one repo's issues, @2 archive to a local folder
     IF there's no change from internet, then abord fetching and writing to local files
@@ -28,6 +32,7 @@ def fetch_issues():
     user         = config['fetch']['user']
     repo         = config['fetch']['repo']
     issues_url   = config['fetch']['issues_url']
+    auth         = config['fetch']['auth2_ks']
     remote_url   = config['remote']['https']
     remote_user  = config['remote']['user']
     email        = config['remote']['email']
@@ -46,7 +51,7 @@ def fetch_issues():
 
 
     # @@ retrieving data from internet, @ with response validation
-    r = requests.get(issues_url,timeout=10)
+    r = requests.get(issues_url+auth,timeout=10)
     if r.status_code is not 200:
         print 'Failed on fetching [%s] due to unexpected response'%issues_url
         return False
@@ -78,10 +83,10 @@ def fetch_issues():
         counts = issue['comments']
 
         # @@ pause for awhile before fetch to reduce risk of being banned from server
-        time.sleep(1)     # sleep 60sec
+        time.sleep(1)     # sleep 1 sec
 
         # @@ fetch comments, @ with response validation 
-        _r = requests.get(comments_url,timeout=10)
+        _r = requests.get(comments_url+auth,timeout=10)
         if _r.status_code is not 200:
             print 'Failed on fetching [%s] due to enexpected response'%comments_url
             return False              # if failed one comment, then restart whole process on this issue
