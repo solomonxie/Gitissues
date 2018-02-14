@@ -34,13 +34,15 @@ def main():
 
 if __name__ == "__main__":
 
+    main()
+
     # @@ run script for every 5 minutes
-    while True:
-        try:
-            main()
+    #while True:
+    #    try:
+    #        main()
 
-        except Exception as e:
-            print e.message
-            continue
+    #    except Exception as e:
+    #        print e.message
+    #        continue
 
-        time.sleep(5*60)
+    #    time.sleep(5*60)
