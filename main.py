@@ -2,13 +2,14 @@
 # -*- coding: utf-8 -*-
 
 import time
+import json
 
 from issues_fetching import fetch_issues
 from repo_mapping import mapping_repo
 from remote_syncing import remote_sync
 
 
-def main(auth):
+def main():
     """
     CONNECT 3 scripts in a row as a workflow: Fetching -> mapping -> uploading
     """
@@ -31,7 +32,7 @@ if __name__ == "__main__":
     # @@ run script for every 5 minutes
     #while True:
     #    try:
-    #        main(auth)
+    #        main()
 
     #    except Exception as e:
     #        print e.message
