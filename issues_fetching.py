@@ -38,7 +38,6 @@ def fetch_issues(config):
     email        = config['remote']['email']
     root         = config['local']['root_dir']
     repo_dir     = '%s/%s/%s'%(root,user,repo)
-    today        = str(date.today())
 
     #import pdb; pdb.set_trace()      ## debugging mode
 
@@ -52,6 +51,7 @@ def fetch_issues(config):
 
     # @@ retrieving data from internet, @ with response validation
     r = requests.get(issues_url+auth,timeout=10)
+
     if r.status_code is not 200:
         print 'Failed on fetching [%s] due to unexpected response'%issues_url
         return False

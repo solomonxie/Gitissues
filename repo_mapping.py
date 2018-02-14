@@ -18,7 +18,7 @@ def main():
     # @@ zip the folder for backup
     #shutil.make_archive(
     #        format   = 'zip',
-    #        base_name= config['zip_dir']+'/'+user+today, # path to load files
+    #        base_name= config['archive_dir']+'/'+user+str(date.today()), # path to load files
     #        root_dir = root,                             # path to store zip file
     #        base_dir = user)                             # zip internal folder wrapper
     #print 'data archived to %s/%s%s.zip'%(root,user,today)
@@ -36,8 +36,6 @@ def mapping_repo(config):
     repo = config['fetch']['repo']
     root = config['local']['root_dir']
     repo_dir = '%s/%s/%s'%(root,user,repo)
-    # indicate mapping date
-    today = str(date.today())
 
 
     # @@ check source folder's existance
