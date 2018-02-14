@@ -57,7 +57,7 @@ def fetch_issues(config):
         print 'Failed on fetching [%s] due to unexpected response'%issues_url
         return False
 
-    #print 'Remaining %s requests limit for this hour.'%r.headers['X-RateLimit-Remaining']
+    print 'Remaining %s requests limit for this hour.'%r.headers['X-RateLimit-Remaining']
 
     # @@ REMOVE user directory before download new data. 
     try:
