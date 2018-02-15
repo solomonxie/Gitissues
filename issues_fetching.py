@@ -71,7 +71,6 @@ def fetch_issues(config):
     updates = [n for n in new if n not in old]
     deletes = [o for o in old if o not in new]
 
-
     # @ CLEAR items that removed in the remote 
     try:
         for d in deletes:
