@@ -1,0 +1,7 @@
+WARNING:root:Please indicate the path of config file.
+INFO:root:config loaded.
+INFO:2018-02-15 00:54:19,943:config loaded.
+INFO:2018-02-15 00:55:04,639:
+	config loaded.
+	INFO:2018-02-15 00:55:25,899:
+config loaded.

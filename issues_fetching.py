@@ -6,6 +6,7 @@ import sys
 import json
 import shutil       # for zipping files
 import requests     # for retrieving web resources
+import logging
 import time
 from datetime import date
 
@@ -13,7 +14,7 @@ from datetime import date
 def main():
     
     if len(sys.argv) is 1:
-        print 'Please indicate the path of config file.'
+        logging.warn('Please indicate the path of config file.')
         return
     
     # @@ load local config file
@@ -30,6 +31,8 @@ def fetch_issues(config):
     IF there's no change from internet, then abord fetching and writing to local files
     """
 
+    log = logging.getLogger('root')
+
     # @@ loading settings from customized configs (json)
     user         = config['fetch']['user']
     repo         = config['fetch']['repo']
@@ -45,6 +48,8 @@ def fetch_issues(config):
 
     # @ prepare local git repo for the first time
     if os.path.exists(root) is False:
+        log.info('local repo doesn\'t exist, setting up now...')
+
         os.system('git clone %s %s'%(remote_url, root))
         os.system('git -C %s config credential.helper cache'%root)
         os.system('git -C %s config user.email %s'%(root,email))
@@ -52,19 +57,23 @@ def fetch_issues(config):
 
 
     # @@ retrieving data from internet, @ with response validation
+    log.info('retriving [%s] now...'%(issues_url+auth))
     r = requests.get(issues_url+auth,timeout=10)
 
     if r.status_code is not 200:
-        print 'Failed on fetching [%s] due to unexpected response'%issues_url
+        log.error('Failed on fetching [%s] due to unexpected response'%issues_url)
         return False
 
-    print 'Remaining %s requests limit for this hour.'%r.headers['X-RateLimit-Remaining']
+    log.info('Remaining %s requests limit for this hour.'%r.headers['X-RateLimit-Remaining'])
 
     # @@ REMOVE user directory before download new data. 
     try:
+        log.info('clearing previous fetched data on [%s/%s]...'%(root,user))
         #shutil.rmtree(repo_dir) 
         os.system('rm -rf %s/%s'%(root,user))
-    except: pass
+    except Exception as e:
+        log.error(e.message)
+        pass
 
 
     if os.path.exists(repo_dir+'/src') is False:
@@ -92,16 +101,16 @@ def fetch_issues(config):
         # @@ fetch comments, @ with response validation 
         _r = requests.get(comments_url+auth,timeout=10)
         if _r.status_code is not 200:
-            print 'Failed on fetching [%s] due to enexpected response'%comments_url
+            log.error('Failed on fetching [%s] due to enexpected response'%comments_url)
             return False              # if failed one comment, then restart whole process on this issue
 
         # @@ log comments as original json file, for future restoration or further use
         with open(repo_dir+'/src/issue-%d.json'%index, 'w') as f:
             f.write(_r.content)
 
-        print '%d comments for issue-%d[%s] fetched.'%(counts,index, title)
+        log.info('%d comments for issue-%d[%s] fetched.'%(counts,index, title))
 
-    print 'all %d issues for %s fetched.'%(len(issues),repo)
+    log.info('all %d issues for %s fetched.'%(len(issues),repo))
 
 
 
