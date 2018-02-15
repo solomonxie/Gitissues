@@ -63,6 +63,7 @@ def fetch_issues(config):
 
     # @ match updated issues and deleted items
     print('Matching updated items and deleted items')
+
     new = r.json()
     with open(repo_dir+'/issues.json', 'r') as f:
         old = json.loads(f.read())
@@ -74,11 +75,12 @@ def fetch_issues(config):
     # @ CLEAR items that removed in the remote 
     try:
         for d in deletes:
-            tmp = '%s/issue-%d.json'%(repo_dir,d['number'])
             os.system('rm %s/issue-%d.json'%(repo_dir,d['number']))
             os.system('rm %s/markdown/%d.md'%(repo_dir,d['number']))
+
             print('Deleted issue-%d[%s].'%(d['number'],d['title']))
     except Exception as e:
+
         print(e.message)
 
 
