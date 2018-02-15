@@ -39,7 +39,6 @@ def fetch_issues(config):
     root         = config['local']['root_dir']
     repo_dir     = '%s/%s/%s'%(root,user,repo)
 
-    #import pdb; pdb.set_trace()      ## debugging mode
 
     # @ prepare local git repo for the first time
     if os.path.exists(root) is False:
@@ -63,6 +62,7 @@ def fetch_issues(config):
     
 
     # @ match updated issues and deleted items
+    print('Matching updated items and deleted items')
     new = r.json()
     with open(repo_dir+'/issues.json', 'r') as f:
         old = json.loads(f.read())
@@ -71,40 +71,25 @@ def fetch_issues(config):
     deletes = [o for o in old if o not in new]
 
 
-
-    print updates
-    print '\n\n\n'
-    print deletes
-
-
-    return
-    
-
-
-
-
-
-    # @@ REMOVE user directory before download new data. 
+    # @ CLEAR items that removed in the remote 
     try:
-        print('clearing previous fetched data on [%s/%s]...'%(root,user))
-        #shutil.rmtree(repo_dir) 
-        os.system('rm -rf %s/%s'%(root,user))
+        print('deleting items...')
+        for d in deletes:
+            tmp = '%s/issue-%d.json'%(repo_dir,d['number'])
+            if os.path.exists(tmp):
+                os.system('rm '+tmp)
     except Exception as e:
-        log.error(e.message)
-        pass
+        print(e.message)
 
 
+    # create local folder for fetching the first time or after deletion
     if os.path.exists(repo_dir) is False:
         os.makedirs(repo_dir)
 
-    # @@ log issues as original json file, for future restoration or further use
-    with open(repo_dir+'/issues.json', 'w') as f:
-        f.write(r.content)
-
+    #import pdb; pdb.set_trace()      ## debugging mode
 
     # @@ iterate each issue for further fetching
-    issues = r.json()
-    for issue in issues:
+    for issue in updates:
         title = issue['title']
         info  = issue['body']
         index = issue['number']
@@ -112,7 +97,7 @@ def fetch_issues(config):
         counts = issue['comments']
 
         # @@ pause for awhile before fetch to reduce risk of being banned from server
-        time.sleep(1)     # sleep 1 sec
+        #time.sleep(1)     # sleep 1 sec
 
         # @@ fetch comments, @ with response validation 
         _r = requests.get(comments_url+auth,timeout=10)
@@ -126,7 +111,11 @@ def fetch_issues(config):
 
         print('%d comments for issue-%d[%s] fetched.'%(counts,index, title))
 
-    print('all %d issues for %s fetched.'%(len(issues),repo))
+    # @@ save original issues data fetched from github api
+    with open(repo_dir+'/issues.json', 'w') as f:
+        f.write(r.content)
+
+    print('%d issues updated for repository [%s] fetched.'%(len(updates),repo))
 
 
 
