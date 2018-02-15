@@ -60,6 +60,29 @@ def fetch_issues(config):
         return False
 
     print('Remaining %s requests limit for this hour.'%r.headers['X-RateLimit-Remaining'])
+    
+
+    # @ match updated issues and deleted items
+    new = r.json()
+    with open(repo_dir+'/issues.json', 'r') as f:
+        old = json.loads(f.read())
+
+    updates = [n for n in new if n not in old]
+    deletes = [o for o in old if o not in new]
+
+
+
+    print updates
+    print '\n\n\n'
+    print deletes
+
+
+    return
+    
+
+
+
+
 
     # @@ REMOVE user directory before download new data. 
     try:
@@ -79,8 +102,6 @@ def fetch_issues(config):
         f.write(r.content)
 
 
-    #import pdb; pdb.set_trace() # debugging mode
-    
     # @@ iterate each issue for further fetching
     issues = r.json()
     for issue in issues:
