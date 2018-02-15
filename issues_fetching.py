@@ -89,7 +89,7 @@ def fetch_issues(config):
     #import pdb; pdb.set_trace()      ## debugging mode
 
     # @@ iterate each issue for further fetching
-    for issue in updates:
+    for issue in r.json():
         title = issue['title']
         info  = issue['body']
         index = issue['number']
@@ -99,17 +99,20 @@ def fetch_issues(config):
         # @@ pause for awhile before fetch to reduce risk of being banned from server
         #time.sleep(1)     # sleep 1 sec
 
-        # @@ fetch comments, @ with response validation 
-        _r = requests.get(comments_url+auth,timeout=10)
-        if _r.status_code is not 200:
-            print('Failed on fetching [%s] due to enexpected response'%comments_url)
-            return False              # if failed one comment, then restart whole process on this issue
+        issue_path = '%s/issue-%d.json'%(repo_dir,index)
+        if issue in updates or os.path.exists(issue_path) is not True:
 
-        # @@ log comments as original json file, for future restoration or further use
-        with open(repo_dir+'/issue-%d.json'%index, 'w') as f:
-            f.write(_r.content)
+            # @@ fetch comments, @ with response validation 
+            _r = requests.get(comments_url+auth,timeout=10)
+            if _r.status_code is not 200:
+                print('Failed on fetching [%s] due to enexpected response'%comments_url)
+                return False              # if failed one comment, then restart whole process on this issue
 
-        print('%d comments for issue-%d[%s] fetched.'%(counts,index, title))
+            # @@ log comments as original json file, for future restoration or further use
+            with open(issue_path, 'w') as f:
+                f.write(_r.content)
+
+            print('%d comments for issue-%d[%s] fetched.'%(counts,index, title))
 
     # @@ save original issues data fetched from github api
     with open(repo_dir+'/issues.json', 'w') as f:
