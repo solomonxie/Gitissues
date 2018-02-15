@@ -73,11 +73,11 @@ def fetch_issues(config):
 
     # @ CLEAR items that removed in the remote 
     try:
-        print('deleting items...')
         for d in deletes:
             tmp = '%s/issue-%d.json'%(repo_dir,d['number'])
-            if os.path.exists(tmp):
-                os.system('rm '+tmp)
+            os.system('rm %s/issue-%d.json'%(repo_dir,d['number']))
+            os.system('rm %s/markdown/%d.md'%(repo_dir,d['number']))
+            print('Deleted issue-%d[%s].'%(d['number'],d['title']))
     except Exception as e:
         print(e.message)
 
@@ -112,13 +112,13 @@ def fetch_issues(config):
             with open(issue_path, 'w') as f:
                 f.write(_r.content)
 
-            print('%d comments for issue-%d[%s] fetched.'%(counts,index, title))
+            print('Fetched for issue-%d[%s] with %d comments'%(index,title,counts))
 
     # @@ save original issues data fetched from github api
     with open(repo_dir+'/issues.json', 'w') as f:
         f.write(r.content)
 
-    print('%d issues updated for repository [%s] fetched.'%(len(updates),repo))
+    print('Updated %d issues for repository [%s].'%(len(updates),repo))
 
 
 
