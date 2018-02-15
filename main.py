@@ -37,8 +37,8 @@ if __name__ == "__main__":
     while True:
         try:
             main()
-            print('It will run again in 1 minutes...')
-            time.sleep(60)
+            print('It will run again in 5 minutes...')
+            time.sleep(5*60)
         except Exception as e:
             print(e.message)
 
