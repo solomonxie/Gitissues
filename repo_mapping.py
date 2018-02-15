@@ -63,7 +63,7 @@ def mapping_repo(config):
         for cm in comments:
             fcontents.append( cm['body'] +'\n\n\n' )
 
-        print 'Generated markdown file for issue-%d[%s].'%(index,title)
+        #print 'Generated markdown file for issue-%d[%s].'%(index,title)
 
 
         if os.path.exists(repo_dir+'/markdown') is False:
@@ -73,7 +73,7 @@ def mapping_repo(config):
         with open('%s/markdown/%d.md'%(repo_dir,index), 'w+') as f:
             f.write( '\n\n\n'.join(fcontents).encode('utf-8') )
 
-    print 'all issues for [%s] mapped to markdown file.'%repo
+    print 'all %d issues for [%s] mapped to markdown file.'%(len(issues),repo)
 
 
 

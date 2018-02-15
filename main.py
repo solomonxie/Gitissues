@@ -32,5 +32,13 @@ def main():
 
 if __name__ == "__main__":
 
-    main()
+    #main()
+
+    while True:
+        try:
+            main()
+            print('It will run again in 1 minutes...')
+            time.sleep(60)
+        except Exception as e:
+            print(e.message)
 
