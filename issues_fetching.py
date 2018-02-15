@@ -64,7 +64,12 @@ def fetch_issues(config):
     #import pdb;pdb.set_trace()
 
 
-    if os.path.exists(repo_dir+'/issues.json') is True:
+    if os.path.exists(repo_dir+'/issues.json') is not True:
+
+        # @@ updates all data if it's the first run
+        updates = r.json()
+
+    else:
 
         print('Matching updated items and deleted items...')
 
@@ -75,6 +80,9 @@ def fetch_issues(config):
 
         updates = [n for n in new if n not in old]
         deletes = [o for o in old if o not in new]
+
+        print('%d updates to be fetched...'%len(updates))
+        print('%d deletes to be executed...'%len(deletes))
 
         # @@ CLEAR items that removed in the remote 
         try:
@@ -92,7 +100,6 @@ def fetch_issues(config):
     if os.path.exists(repo_dir) is False:
         os.makedirs(repo_dir)
 
-    updates = r.json()
 
     #import pdb; pdb.set_trace()      ## debugging mode
 
