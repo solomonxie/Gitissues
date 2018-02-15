@@ -40,5 +40,6 @@ if __name__ == "__main__":
             print('It will run again in 5 minutes...')
             time.sleep(5*60)
         except Exception as e:
+            print('something wrong with main.py')
             print(e.message)
 

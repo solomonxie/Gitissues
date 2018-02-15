@@ -61,31 +61,38 @@ def fetch_issues(config):
     print('Remaining %s requests limit for this hour.'%r.headers['X-RateLimit-Remaining'])
     
 
-    # @ match updated issues and deleted items
-    print('Matching updated items and deleted items')
+    #import pdb;pdb.set_trace()
 
-    new = r.json()
-    with open(repo_dir+'/issues.json', 'r') as f:
-        old = json.loads(f.read())
 
-    updates = [n for n in new if n not in old]
-    deletes = [o for o in old if o not in new]
+    if os.path.exists(repo_dir+'/issues.json') is True:
 
-    # @ CLEAR items that removed in the remote 
-    try:
-        for d in deletes:
-            os.system('rm %s/issue-%d.json'%(repo_dir,d['number']))
-            os.system('rm %s/markdown/%d.md'%(repo_dir,d['number']))
+        print('Matching updated items and deleted items...')
 
-            print('Deleted issue-%d[%s].'%(d['number'],d['title']))
-    except Exception as e:
+        # @@ match updated issues and deleted items
+        new = r.json()
+        with open(repo_dir+'/issues.json', 'r') as f:
+            old = json.loads(f.read())
 
-        print(e.message)
+        updates = [n for n in new if n not in old]
+        deletes = [o for o in old if o not in new]
+
+        # @@ CLEAR items that removed in the remote 
+        try:
+            for d in deletes:
+                os.system('rm %s/issue-%d.json'%(repo_dir,d['number']))
+                os.system('rm %s/markdown/%d.md'%(repo_dir,d['number']))
+
+                print('Deleted issue-%d[%s].'%(d['number'],d['title']))
+        except Exception as e:
+
+            print(e.message)
 
 
     # create local folder for fetching the first time or after deletion
     if os.path.exists(repo_dir) is False:
         os.makedirs(repo_dir)
+
+    updates = r.json()
 
     #import pdb; pdb.set_trace()      ## debugging mode
 
@@ -100,7 +107,7 @@ def fetch_issues(config):
         # @@ pause for awhile before fetch to reduce risk of being banned from server
         #time.sleep(1)     # sleep 1 sec
 
-        issue_path = '%s/issue-%d.json'%(repo_dir,index)
+        issue_path = '%s/comments-for-issue-%d.json'%(repo_dir,index)
         if issue in updates or os.path.exists(issue_path) is not True:
 
             # @@ fetch comments, @ with response validation 

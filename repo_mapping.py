@@ -56,7 +56,7 @@ def mapping_repo(config):
         fcontents = ['# ' + title + '\n' + info + '\n\n\n']
 
         # @@ load comments
-        with open(repo_dir+'/issue-%d.json'%index, 'r') as f:
+        with open(repo_dir+'/comments-for-issue-%d.json'%index, 'r') as f:
             comments = json.loads(f.read())
 
         # @@ consit the content of file with each comment
@@ -73,7 +73,7 @@ def mapping_repo(config):
         with open('%s/markdown/%d.md'%(repo_dir,index), 'w+') as f:
             f.write( '\n\n\n'.join(fcontents).encode('utf-8') )
 
-    print 'all %d issues for [%s] mapped to markdown file.'%(len(issues),repo)
+    print 'Generated %d issues from [%s] to markdown file.'%(len(issues),repo)
 
 
 
