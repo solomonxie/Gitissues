@@ -82,6 +82,9 @@ def fetch_issues(config):
         deletes = [o for o in old if o not in new]
         updates = [n for n in new if n not in old]
 
+        # !@ filter out same issues from deletes that also exist in updates
+        # not compeleted...
+
         print('%d updates to be fetched...'%len(updates))
         print('%d deletes to be executed...'%len(deletes))
 
