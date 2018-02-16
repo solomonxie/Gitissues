@@ -2,14 +2,14 @@
 # -*- coding: utf-8 -*-
 
 import os
-import sys
 import json
 
 
 def main():
 
     # @@ load local config file
-    with open('config.json', 'r') as f:
+    cfg = os.path.dirname(os.path.realpath(__file__)) + '/config.json'
+    with open(cfg, 'r') as f:
         config = json.loads(f.read())
 
     remote_sync(config)
