@@ -110,7 +110,6 @@ def fetch_issues(config):
     # @@ iterate each issue for further fetching
     for issue in r.json():
         title = issue['title']
-        info  = issue['body']
         index = issue['number']
         comments_url = issue['comments_url']
         counts = issue['comments']
