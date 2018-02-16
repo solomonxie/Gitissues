@@ -38,3 +38,8 @@ Changes not staged for commit:
 	modified:   log/log.txt
 
 no changes added to commit (use "git add" and/or "git commit -a")
+Pushing to https://github.com/solomonxie/gitissues.git
+POST git-receive-pack (766 bytes)
+To https://github.com/solomonxie/gitissues.git
+   cc6e759..2ba6267  master -> master
+updating local tracking ref 'refs/remotes/origin/master'
