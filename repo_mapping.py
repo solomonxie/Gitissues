@@ -11,7 +11,7 @@ from datetime import date
 def main():
 
     # @@ load local config file
-    cfg = os.path.dirname(sys.argv[0]) + '/config.json'
+    cfg = os.path.dirname(os.path.realpath(sys.argv[0])) + '/config.json'
     with open(cfg, 'r') as f:
         config = json.loads(f.read())
 

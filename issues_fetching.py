@@ -14,7 +14,7 @@ from datetime import date
 def main():
     
     # @@ load local config file
-    cfg = os.path.dirname(sys.argv[0]) + '/config.json'
+    cfg = os.path.dirname(os.path.realpath(sys.argv[0])) + '/config.json'
     with open(cfg, 'r') as f:
         config = json.loads(f.read())
 
@@ -75,12 +75,12 @@ def fetch_issues(config):
         print('Matching updated items and deleted items...')
 
         # @@ match updated issues and deleted items
-        new = r.json()
         with open(repo_dir+'/issues.json', 'r') as f:
             old = json.loads(f.read())
+        new = r.json()
 
-        updates = [n for n in new if n not in old]
         deletes = [o for o in old if o not in new]
+        updates = [n for n in new if n not in old]
 
         print('%d updates to be fetched...'%len(updates))
         print('%d deletes to be executed...'%len(deletes))
