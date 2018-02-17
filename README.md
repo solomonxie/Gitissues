@@ -3,6 +3,10 @@
 
 专注于issues博客功能，出发点就不同于桌面已有的和手机上鲜有的应用。
 
+关于此项目的Jupyter Note笔记浏览地址：[https://nbviewer.jupyter.org/github/solomonxie/gitissues/blob/master/notes-gitissues.ipynb](https://nbviewer.jupyter.org/github/solomonxie/gitissues/blob/master/notes-gitissues.ipynb)
+
+
+
 ## 特点：
 - 每个issues笔记都算为github的contribution，美化profile工作日历
 - 自动转md文件并上传到github中的repo，更填改完全对应
