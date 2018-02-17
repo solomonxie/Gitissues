@@ -1,0 +1,921 @@
+{
+	"_type": "export",
+	"__export_format": 3,
+	"__export_date": "2018-02-17T08:21:07.380Z",
+	"__export_source": "insomnia.desktop.app:v5.14.7",
+	"resources": [
+		{
+			"_id": "wrk_35700ae4a9cd49598240d119b8d51224",
+			"created": 1517821089746,
+			"description": "",
+			"modified": 1517821089746,
+			"name": "github api",
+			"parentId": null,
+			"_type": "workspace"
+		},
+		{
+			"_id": "env_a42fd30c8b08450cb495572b067024c0",
+			"color": null,
+			"created": 1517821089782,
+			"data": {
+				"client_id": "0c08b801005ee3005ded",
+				"client_secret": "da1a866f28556cc27e6ee12ca7c07c35bb548e5b",
+				"repo": "starter-practice",
+				"token": "token fb2339e5f6062ab6a6dbd0714d6c8c499a953523",
+				"username": "solomonxie"
+			},
+			"isPrivate": false,
+			"modified": 1518855134316,
+			"name": "New Environment",
+			"parentId": "wrk_35700ae4a9cd49598240d119b8d51224",
+			"_type": "environment"
+		},
+		{
+			"_id": "jar_612d90f93f244fdf9193aa589e898360",
+			"cookies": [],
+			"created": 1517821089793,
+			"modified": 1517821089793,
+			"name": "Default Jar",
+			"parentId": "wrk_35700ae4a9cd49598240d119b8d51224",
+			"_type": "cookie_jar"
+		},
+		{
+			"_id": "req_3d2e2b6106a2433c9db61ed30113ac24",
+			"authentication": {},
+			"body": {},
+			"created": 1517824642049,
+			"description": "",
+			"headers": [],
+			"metaSortKey": -1517833342212,
+			"method": "GET",
+			"modified": 1517838505552,
+			"name": "Root Endpoints",
+			"parameters": [],
+			"parentId": "wrk_35700ae4a9cd49598240d119b8d51224",
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"settingSendCookies": true,
+			"settingStoreCookies": true,
+			"url": "https://api.github.com/",
+			"_type": "request"
+		},
+		{
+			"_id": "req_eef586ea4ac648d79056a2a6dcaf7022",
+			"authentication": {},
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n  \"message\": \"commit from INSOMNIA\",\n  \"content\": \"bXkgbmV3IGZpbGUgY29udGVudHM=\"\n}"
+			},
+			"created": 1517833342112,
+			"description": "",
+			"headers": [
+				{
+					"disabled": true,
+					"id": "pair_313a4a242ded479f933ca0169bb81f0e",
+					"name": "Authorization",
+					"value": "{{ token  }}"
+				}
+			],
+			"metaSortKey": -1517833342112,
+			"method": "PUT",
+			"modified": 1518855311552,
+			"name": "create file",
+			"parameters": [
+				{
+					"id": "pair_895e396f484d4dbc9accd557f681ce1f",
+					"name": "client_id",
+					"value": "{{ client_id  }}"
+				},
+				{
+					"id": "pair_5b4bf6057de14224aeaefcd5acc4f35e",
+					"name": "client_secret",
+					"value": "{{ client_secret  }}"
+				}
+			],
+			"parentId": "wrk_35700ae4a9cd49598240d119b8d51224",
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"settingSendCookies": true,
+			"settingStoreCookies": true,
+			"url": "https://api.github.com/repos/{{ username  }}/{{ repo  }}/contents/github-api-test/create-file.md",
+			"_type": "request"
+		},
+		{
+			"_id": "req_0284b66897b0438996da32ef4a06c23b",
+			"authentication": {},
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n  \"message\": \"update from INSOMNIA\",\n  \"content\": \"Y3JlYXRlIGZpbGUgZnJvbSBJTlNPTU5JQQoKSXQncyB1cGRhdGVkISEhCgpJdCdzIHVwZGF0ZWQgYWdhaW4hIQ==\",\n  \"sha\": \"57642f5283c98f6ffa75d65e2bf49d05042b4a6d\"\n}\n"
+			},
+			"created": 1517837570747,
+			"description": "",
+			"headers": [
+				{
+					"disabled": true,
+					"id": "pair_ba7d9e47886c475ab6872f993f3db7d2",
+					"name": "Authorization",
+					"value": "{{ token  }}"
+				}
+			],
+			"metaSortKey": -1517639160876.6719,
+			"method": "PUT",
+			"modified": 1518855592865,
+			"name": "update content",
+			"parameters": [
+				{
+					"id": "pair_70a77ec3486441a6bfbd2545caafdc3c",
+					"name": "client_id",
+					"value": "{{ client_id  }}"
+				},
+				{
+					"id": "pair_b2bde6f3684549d1875b59fe2a7bcb70",
+					"name": "client_secret",
+					"value": "{{ client_secret  }}"
+				}
+			],
+			"parentId": "wrk_35700ae4a9cd49598240d119b8d51224",
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"settingSendCookies": true,
+			"settingStoreCookies": true,
+			"url": "https://api.github.com/repos/{{ username  }}/{{ repo  }}/contents/github-api-test/update-file.md",
+			"_type": "request"
+		},
+		{
+			"_id": "req_dd67bc4c4ca9479b91c313f4e959d97b",
+			"authentication": {},
+			"body": {},
+			"created": 1517838419473,
+			"description": "",
+			"headers": [],
+			"metaSortKey": -1517833342115.125,
+			"method": "GET",
+			"modified": 1518855269769,
+			"name": "get file info",
+			"parameters": [
+				{
+					"id": "pair_0429d8058d534a17bea0a650287c84bd",
+					"name": "client_id",
+					"value": "{{ client_id  }}"
+				},
+				{
+					"id": "pair_08ac1459480f42c296b60baab465b59f",
+					"name": "client_secret",
+					"value": "{{ client_secret  }}"
+				}
+			],
+			"parentId": "wrk_35700ae4a9cd49598240d119b8d51224",
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"settingSendCookies": true,
+			"settingStoreCookies": true,
+			"url": "https://api.github.com/repos/{{ username  }}/{{ repo  }}/contents/README.md",
+			"_type": "request"
+		},
+		{
+			"_id": "req_eab460c7ba6b4bc7b0c9c952adb15f60",
+			"authentication": {},
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n  \"message\": \"delete a file\",\n  \"sha\": \"46d2b1f2ef54669a974165d0b37979e9adba1ab2\"\n}"
+			},
+			"created": 1517841069962,
+			"description": "",
+			"headers": [
+				{
+					"disabled": true,
+					"id": "pair_825dc9eadfd44d4baf5bf9e74bf9e20b",
+					"name": "Authorization",
+					"value": "{{ token  }}"
+				}
+			],
+			"metaSortKey": -1517826133879.75,
+			"method": "DELETE",
+			"modified": 1518855320908,
+			"name": "delete file",
+			"parameters": [
+				{
+					"id": "pair_05a7723b5f424776a93ca6a70057bd9a",
+					"name": "",
+					"value": ""
+				}
+			],
+			"parentId": "wrk_35700ae4a9cd49598240d119b8d51224",
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"settingSendCookies": true,
+			"settingStoreCookies": true,
+			"url": "https://api.github.com/repos/{{ username  }}/{{ repo  }}/contents/github-api-test/file-for-deleting3.md",
+			"_type": "request"
+		},
+		{
+			"_id": "req_ac984909b6a8428a8da6bc31fe4b5085",
+			"authentication": {},
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n  \"message\": \"delete from INSOMNIA\",\n  \"content\":\"SSdtIGEgZmlsZSBmb3IgZGVsZXRpbmcgZnJvbSBHaXRodWIgQVBJLn5+fn4=\"\n}"
+			},
+			"created": 1517841134630,
+			"description": "",
+			"headers": [
+				{
+					"disabled": true,
+					"id": "pair_aa29a69674dc49e1a90e70bd9f98165b",
+					"name": "Authorization",
+					"value": "{{ token  }}"
+				}
+			],
+			"metaSortKey": -1517831167096.25,
+			"method": "PUT",
+			"modified": 1518855317921,
+			"name": "create file2",
+			"parameters": [
+				{
+					"id": "pair_57d09ae5aade4f9cb65bef238e26f4c8",
+					"name": "client_id",
+					"value": "{{ client_id  }}"
+				},
+				{
+					"id": "pair_579a4b83bf4f4a41b8338033d85fdb87",
+					"name": "client_secret",
+					"value": "{{ client_secret  }}"
+				}
+			],
+			"parentId": "wrk_35700ae4a9cd49598240d119b8d51224",
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"settingSendCookies": true,
+			"settingStoreCookies": true,
+			"url": "https://api.github.com/repos/{{ username  }}/{{ repo  }}/contents/github-api-test/file-for-deleting4.md",
+			"_type": "request"
+		},
+		{
+			"_id": "req_16c7f26554cb4e588354c8541a72cbac",
+			"authentication": {},
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n  \"body\": \"Create a comment from INSOMNIA\"\n}"
+			},
+			"created": 1517842125928,
+			"description": "",
+			"headers": [
+				{
+					"disabled": true,
+					"id": "pair_025f93dabf784c81bb81f4c99e7dc1e0",
+					"name": "Authorization",
+					"value": "{{ token  }}"
+				}
+			],
+			"metaSortKey": -1517690153513.875,
+			"method": "POST",
+			"modified": 1518855562420,
+			"name": "create comment",
+			"parameters": [
+				{
+					"id": "pair_3ab2f2038ade41fb946c763b34cbb944",
+					"name": "client_id",
+					"value": "{{ client_id  }}"
+				},
+				{
+					"id": "pair_940ab69d2cb04025a24fd37bc7f535e9",
+					"name": "client_secret",
+					"value": "{{ client_secret  }}"
+				}
+			],
+			"parentId": "wrk_35700ae4a9cd49598240d119b8d51224",
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"settingSendCookies": true,
+			"settingStoreCookies": true,
+			"url": "https://api.github.com/repos/{{ username  }}/{{ repo  }}/issues/1/comments",
+			"_type": "request"
+		},
+		{
+			"_id": "req_3136a9d2292641ea9f8fc69bac162d7d",
+			"authentication": {},
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n  \"title\": \"Creating issue from API\",\n  \"body\": \"Posting a issue from Insomnia\"\n}"
+			},
+			"created": 1517842226825,
+			"description": "",
+			"headers": [
+				{
+					"disabled": true,
+					"id": "pair_de4ed12838f1414bbe9dee231e99a4c9",
+					"name": "Authorization",
+					"value": "{{ token  }}"
+				}
+			],
+			"metaSortKey": -1517758143696.8125,
+			"method": "POST",
+			"modified": 1518855458563,
+			"name": "create issue",
+			"parameters": [
+				{
+					"id": "pair_da7f7640f8c34000b62c0008ce08e937",
+					"name": "client_id",
+					"value": "{{ client_id  }}"
+				},
+				{
+					"id": "pair_ffa94c05169d4345b3218dce8b6953c9",
+					"name": "client_secret",
+					"value": "{{ client_secret  }}"
+				}
+			],
+			"parentId": "wrk_35700ae4a9cd49598240d119b8d51224",
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"settingSendCookies": true,
+			"settingStoreCookies": true,
+			"url": "https://api.github.com/repos/{{ username  }}/{{ repo  }}/issues",
+			"_type": "request"
+		},
+		{
+			"_id": "req_57e9f57767eb451ba3e16a35ee2cbcfd",
+			"authentication": {},
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n  \"title\": \"Creating issue from API(updated title)\",\n  \"body\": \"Posting a issue from Insomnia \\n\\n Updated from insomnia.\",\n  \"state\": \"open\"\n}"
+			},
+			"created": 1517842862696,
+			"description": "",
+			"headers": [
+				{
+					"disabled": true,
+					"id": "pair_063636eaef32401fad8491b87b007b33",
+					"name": "Authorization",
+					"value": "{{ token  }}"
+				}
+			],
+			"metaSortKey": -1517724148605.3438,
+			"method": "PATCH",
+			"modified": 1518855475730,
+			"name": "edit issue",
+			"parameters": [
+				{
+					"id": "pair_2dda892c6d6c4b66a9272d4558a31864",
+					"name": "client_id",
+					"value": "{{ client_id  }}"
+				},
+				{
+					"id": "pair_21157acca1d049e5bedad9c1b235af52",
+					"name": "client_secret",
+					"value": "{{ client_secret  }}"
+				}
+			],
+			"parentId": "wrk_35700ae4a9cd49598240d119b8d51224",
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"settingSendCookies": true,
+			"settingStoreCookies": true,
+			"url": "https://api.github.com/repos/{{ username  }}/{{ repo  }}/issues/1",
+			"_type": "request"
+		},
+		{
+			"_id": "req_3cda18310d1e4d319a5abe203c555114",
+			"authentication": {},
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n  \"locked\": true,\n  \"active_lock_reason\": \"too heated\"\n}"
+			},
+			"created": 1517843383521,
+			"description": "",
+			"headers": [
+				{
+					"disabled": true,
+					"id": "pair_be72a6542330494fb1ff3e7a457bbc4b",
+					"name": "Authorization",
+					"value": "{{ token  }}"
+				}
+			],
+			"metaSortKey": -1517707151059.6094,
+			"method": "PUT",
+			"modified": 1518855493005,
+			"name": "lock issue",
+			"parameters": [
+				{
+					"id": "pair_fcb5d94244da4ad7b0d27edd1c26d655",
+					"name": "client_id",
+					"value": "{{ client_id  }}"
+				},
+				{
+					"id": "pair_e7c7508e7e994f97bb0f5e932e60d25c",
+					"name": "client_secret",
+					"value": "{{ client_secret  }}"
+				}
+			],
+			"parentId": "wrk_35700ae4a9cd49598240d119b8d51224",
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"settingSendCookies": true,
+			"settingStoreCookies": true,
+			"url": "https://api.github.com/repos/{{ username  }}/{{ repo  }}/issues/1/lock",
+			"_type": "request"
+		},
+		{
+			"_id": "req_3a79df0b2ed449599920f207dbee0d05",
+			"authentication": {},
+			"body": {},
+			"created": 1517843882837,
+			"description": "",
+			"headers": [
+				{
+					"disabled": true,
+					"id": "pair_73685e39118444648d903243d47555ff",
+					"name": "Authorization",
+					"value": "{{ token  }}"
+				}
+			],
+			"metaSortKey": -1517698652286.7422,
+			"method": "DELETE",
+			"modified": 1518855509276,
+			"name": "unlock issue",
+			"parameters": [
+				{
+					"id": "pair_22a1d83a11794677af904177205f9caf",
+					"name": "client_id",
+					"value": "{{ client_id  }}"
+				},
+				{
+					"id": "pair_2321d97bca7c47459bb2b5eb0099202b",
+					"name": "client_secret",
+					"value": "{{ client_secret  }}"
+				}
+			],
+			"parentId": "wrk_35700ae4a9cd49598240d119b8d51224",
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"settingSendCookies": true,
+			"settingStoreCookies": true,
+			"url": "https://api.github.com/repos/{{ username  }}/{{ repo  }}/issues/1/lock",
+			"_type": "request"
+		},
+		{
+			"_id": "req_7a1e4e93edd647d2a9d7045da2459543",
+			"authentication": {},
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n  \"body\": \"Create a comment from INSOMNIA \\n\\n ----updated\"\n}"
+			},
+			"created": 1517844310844,
+			"description": "",
+			"headers": [
+				{
+					"disabled": true,
+					"id": "pair_86efcdfd94084a5580b0a7a2627fb168",
+					"name": "Authorization",
+					"value": "{{ token  }}"
+				}
+			],
+			"metaSortKey": -1517622163330.9375,
+			"method": "PATCH",
+			"modified": 1518855607189,
+			"name": "Edit comment",
+			"parameters": [
+				{
+					"id": "pair_8614c7eb5ced4fb987244918d1764ea7",
+					"name": "client_id",
+					"value": "{{ client_id  }}"
+				},
+				{
+					"id": "pair_d2402a4e28b3481ba6fd8bfe1064c282",
+					"name": "client_secret",
+					"value": "{{ client_secret  }}"
+				}
+			],
+			"parentId": "wrk_35700ae4a9cd49598240d119b8d51224",
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"settingSendCookies": true,
+			"settingStoreCookies": true,
+			"url": "https://api.github.com/repos/{{ username  }}/{{ repo  }}/issues/comments/363116557",
+			"_type": "request"
+		},
+		{
+			"_id": "req_251f9f84d8dc46939be00188c16344fe",
+			"authentication": {},
+			"body": {},
+			"created": 1517844470648,
+			"description": "",
+			"headers": [
+				{
+					"disabled": true,
+					"id": "pair_dfcc22d890d6497db2a5655c2c1ef888",
+					"name": "Authorization",
+					"value": "{{ token  }}"
+				}
+			],
+			"metaSortKey": -1517588168239.4688,
+			"method": "DELETE",
+			"modified": 1518855621808,
+			"name": "delete comment",
+			"parameters": [
+				{
+					"id": "pair_7b2f2c72713f4a0bbee4691fb30768cf",
+					"name": "client_id",
+					"value": "{{ client_id  }}"
+				},
+				{
+					"id": "pair_efc237522d2e4bd1ba7ad8c0a5207a86",
+					"name": "client_secret",
+					"value": "{{ client_secret  }}"
+				}
+			],
+			"parentId": "wrk_35700ae4a9cd49598240d119b8d51224",
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"settingSendCookies": true,
+			"settingStoreCookies": true,
+			"url": "https://api.github.com/repos/{{ username  }}/{{ repo  }}/issues/comments/363118249",
+			"_type": "request"
+		},
+		{
+			"_id": "req_daf29758d3bc4e459bb7bf6d47c7312d",
+			"authentication": {},
+			"body": {
+				"mimeType": "",
+				"text": "{\n  \"body\": \"Create a comment from INSOMNIA\"\n}"
+			},
+			"created": 1517845259863,
+			"description": "",
+			"headers": [
+				{
+					"disabled": true,
+					"id": "pair_b52194750a8e49f7b5f833e34d366202",
+					"name": "Authorization",
+					"value": "{{ token  }}"
+				}
+			],
+			"metaSortKey": -1517656158422.4062,
+			"method": "POST",
+			"modified": 1518855576680,
+			"name": "create img comment",
+			"parameters": [
+				{
+					"id": "pair_5e8e0ad1026044ec83bdb7bb8c854f53",
+					"name": "client_id",
+					"value": "{{ client_id  }}"
+				},
+				{
+					"id": "pair_694a5678b54640c6a47221e1e148f947",
+					"name": "client_secret",
+					"value": "{{ client_secret  }}"
+				}
+			],
+			"parentId": "wrk_35700ae4a9cd49598240d119b8d51224",
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"settingSendCookies": true,
+			"settingStoreCookies": true,
+			"url": "https://api.github.com/repos/{{ username  }}/{{ repo  }}/issues/1/comments",
+			"_type": "request"
+		},
+		{
+			"_id": "req_746ed01e2dd1443f922fb4eae52ecb03",
+			"authentication": {},
+			"body": {},
+			"created": 1517903359648,
+			"description": "",
+			"headers": [],
+			"metaSortKey": -1517833342162,
+			"method": "GET",
+			"modified": 1518855188925,
+			"name": "get user info",
+			"parameters": [
+				{
+					"id": "pair_fd6b0c146b5f4b2b96d62934eb8f2c1a",
+					"name": "client_id",
+					"value": "{{ client_id  }}"
+				},
+				{
+					"id": "pair_aaf32bbf62f545968567b4cf378208e9",
+					"name": "client_secret",
+					"value": "{{ client_secret  }}"
+				},
+				{
+					"id": "pair_eeb3219072fb41da93c8e0c42b1efb3d",
+					"name": "",
+					"value": ""
+				}
+			],
+			"parentId": "wrk_35700ae4a9cd49598240d119b8d51224",
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"settingSendCookies": true,
+			"settingStoreCookies": true,
+			"url": "https://api.github.com/users/{{ username  }}",
+			"_type": "request"
+		},
+		{
+			"_id": "req_7505bff2995643ab99fe628b0cbf91f1",
+			"authentication": {},
+			"body": {},
+			"created": 1517903490386,
+			"description": "",
+			"headers": [],
+			"metaSortKey": -1517833342137,
+			"method": "GET",
+			"modified": 1518855224818,
+			"name": "get user repos",
+			"parameters": [
+				{
+					"id": "pair_6737691672ef49e0a167a1678118bdfc",
+					"name": "client_id",
+					"value": "{{ client_id  }}"
+				},
+				{
+					"id": "pair_d05ecd35712140ac9c4c49bfc7459cf1",
+					"name": "client_secret",
+					"value": "{{ client_secret  }}"
+				}
+			],
+			"parentId": "wrk_35700ae4a9cd49598240d119b8d51224",
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"settingSendCookies": true,
+			"settingStoreCookies": true,
+			"url": "https://api.github.com/users/{{ username  }}/repos",
+			"_type": "request"
+		},
+		{
+			"_id": "req_77ef79268a72425f9ba4a184fa4bd150",
+			"authentication": {},
+			"body": {},
+			"created": 1517903528098,
+			"description": "",
+			"headers": [],
+			"metaSortKey": -1517833342124.5,
+			"method": "GET",
+			"modified": 1518855239872,
+			"name": "get repo info",
+			"parameters": [
+				{
+					"id": "pair_9b8b5c590ba749bc8b923e035fccec0f",
+					"name": "client_id",
+					"value": "{{ client_id  }}"
+				},
+				{
+					"id": "pair_eb5b4f0d0852461c96f714050e1b8e00",
+					"name": "client_secret",
+					"value": "{{ client_secret  }}"
+				}
+			],
+			"parentId": "wrk_35700ae4a9cd49598240d119b8d51224",
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"settingSendCookies": true,
+			"settingStoreCookies": true,
+			"url": "https://api.github.com/repos/{{ username  }}/{{ repo  }}",
+			"_type": "request"
+		},
+		{
+			"_id": "req_66302fe7dd544fa4b01123d1959fc51b",
+			"authentication": {},
+			"body": {},
+			"created": 1517903529423,
+			"description": "",
+			"headers": [],
+			"metaSortKey": -1517833342118.25,
+			"method": "GET",
+			"modified": 1518855257578,
+			"name": "get contents",
+			"parameters": [
+				{
+					"id": "pair_27cf732c27b848699a420752bf8826c8",
+					"name": "client_id",
+					"value": "{{ client_id  }}"
+				},
+				{
+					"id": "pair_49fefed3ef2a4e4b9f199b4cdb5c73ed",
+					"name": "client_secret",
+					"value": "{{ client_secret  }}"
+				}
+			],
+			"parentId": "wrk_35700ae4a9cd49598240d119b8d51224",
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"settingSendCookies": true,
+			"settingStoreCookies": true,
+			"url": "https://api.github.com/repos/{{ username  }}/{{ repo  }}/contents/",
+			"_type": "request"
+		},
+		{
+			"_id": "req_d0f7229688384127b6f586985aee1b54",
+			"authentication": {},
+			"body": {},
+			"created": 1517903529743,
+			"description": "",
+			"headers": [],
+			"metaSortKey": -1517792138788.2812,
+			"method": "GET",
+			"modified": 1518855345773,
+			"name": "get raw file",
+			"parameters": [
+				{
+					"id": "pair_1c2859ef1a574b31a383b94da02181d2",
+					"name": "client_id",
+					"value": "{{ client_id  }}"
+				},
+				{
+					"id": "pair_dd4bfb94087a4023a019b3f3ea01f639",
+					"name": "client_secret",
+					"value": "{{ client_secret  }}"
+				}
+			],
+			"parentId": "wrk_35700ae4a9cd49598240d119b8d51224",
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"settingSendCookies": true,
+			"settingStoreCookies": true,
+			"url": "https://raw.githubusercontent.com/{{ username  }}/{{ repo  }}/master/src/a.JPG",
+			"_type": "request"
+		},
+		{
+			"_id": "req_f4a73b36e5c848d2a4f100efb46be779",
+			"authentication": {},
+			"body": {},
+			"created": 1517903529939,
+			"description": "",
+			"headers": [],
+			"metaSortKey": -1517775141242.5469,
+			"method": "GET",
+			"modified": 1518855381701,
+			"name": "get commits",
+			"parameters": [
+				{
+					"id": "pair_da3ec6532b77438b951adc640bde10f3",
+					"name": "client_id",
+					"value": "{{ client_id  }}"
+				},
+				{
+					"id": "pair_9000ffe43ceb43b0a0e51ff048b38a43",
+					"name": "client_secret",
+					"value": "{{ client_secret  }}"
+				}
+			],
+			"parentId": "wrk_35700ae4a9cd49598240d119b8d51224",
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"settingSendCookies": true,
+			"settingStoreCookies": true,
+			"url": "https://api.github.com/repos/{{ username  }}/{{ repo  }}/commits",
+			"_type": "request"
+		},
+		{
+			"_id": "req_ccf1fb4da3b74294b9253fd3df075a9e",
+			"authentication": {},
+			"body": {},
+			"created": 1517903530135,
+			"description": "",
+			"headers": [],
+			"metaSortKey": -1517766642469.6797,
+			"method": "GET",
+			"modified": 1518855396899,
+			"name": "get a commit",
+			"parameters": [
+				{
+					"id": "pair_5a4808e602f946b396e6cc29a5b48096",
+					"name": "client_id",
+					"value": "{{ client_id  }}"
+				},
+				{
+					"id": "pair_53cdd05cce1742109f7e55874c1e76f8",
+					"name": "client_secret",
+					"value": "{{ client_secret  }}"
+				}
+			],
+			"parentId": "wrk_35700ae4a9cd49598240d119b8d51224",
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"settingSendCookies": true,
+			"settingStoreCookies": true,
+			"url": "https://api.github.com/repos/{{ username  }}/{{ repo  }}/git/commits/ab1b464fda71532910c21976da82e78b5388becc",
+			"_type": "request"
+		},
+		{
+			"_id": "req_ad8624a4b0ec4c308c4ca413f85ba2d6",
+			"authentication": {},
+			"body": {},
+			"created": 1517903530290,
+			"description": "",
+			"headers": [],
+			"metaSortKey": -1517762393083.246,
+			"method": "GET",
+			"modified": 1518855414050,
+			"name": "get issues",
+			"parameters": [
+				{
+					"id": "pair_8e264267e04b483699024de5463d281a",
+					"name": "client_id",
+					"value": "{{ client_id  }}"
+				},
+				{
+					"id": "pair_d004cda88ecf4725b597ac62f30a2bec",
+					"name": "client_secret",
+					"value": "{{ client_secret  }}"
+				}
+			],
+			"parentId": "wrk_35700ae4a9cd49598240d119b8d51224",
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"settingSendCookies": true,
+			"settingStoreCookies": true,
+			"url": "https://api.github.com/repos/{{ username  }}/{{ repo  }}/issues",
+			"_type": "request"
+		},
+		{
+			"_id": "req_8be193beb2c04960819182af232ccea4",
+			"authentication": {},
+			"body": {},
+			"created": 1517903530462,
+			"description": "",
+			"headers": [],
+			"metaSortKey": -1517760268390.0293,
+			"method": "GET",
+			"modified": 1518855430577,
+			"name": "get an issue",
+			"parameters": [
+				{
+					"id": "pair_02cee7764e2f4ab390b2b05bcf869aee",
+					"name": "client_id",
+					"value": "{{ client_id  }}"
+				},
+				{
+					"id": "pair_9b11341d6cd84199b2468e086a64fa7e",
+					"name": "client_secret",
+					"value": "{{ client_secret  }}"
+				}
+			],
+			"parentId": "wrk_35700ae4a9cd49598240d119b8d51224",
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"settingSendCookies": true,
+			"settingStoreCookies": true,
+			"url": "https://api.github.com/repos/{{ username  }}/{{ repo  }}/issues/1",
+			"_type": "request"
+		},
+		{
+			"_id": "req_53c9a796c3c3467ca7ee03a5e51b2ca5",
+			"authentication": {},
+			"body": {},
+			"created": 1517903930560,
+			"description": "",
+			"headers": [],
+			"metaSortKey": -1517694402900.3086,
+			"method": "GET",
+			"modified": 1518855529458,
+			"name": "get comments",
+			"parameters": [
+				{
+					"id": "pair_89148b8a27d14cada0c838b744c66fe8",
+					"name": "client_id",
+					"value": "{{ client_id  }}"
+				},
+				{
+					"id": "pair_53759baa94ee47d0860e21c6efe44315",
+					"name": "client_secret",
+					"value": "{{ client_secret  }}"
+				}
+			],
+			"parentId": "wrk_35700ae4a9cd49598240d119b8d51224",
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"settingSendCookies": true,
+			"settingStoreCookies": true,
+			"url": "https://api.github.com/repos/{{ username  }}/{{ repo  }}/issues/1/comments",
+			"_type": "request"
+		},
+		{
+			"_id": "req_fce60eaf66f349479e2525469e0716f5",
+			"authentication": {},
+			"body": {},
+			"created": 1517903931072,
+			"description": "",
+			"headers": [],
+			"metaSortKey": -1517692278207.0918,
+			"method": "GET",
+			"modified": 1518855545189,
+			"name": "get a comment",
+			"parameters": [
+				{
+					"id": "pair_d703183543e64b88907bd1d54ac08e6f",
+					"name": "client_id",
+					"value": "{{ client_id  }}"
+				},
+				{
+					"id": "pair_6dd2b757913f4e1c9b9464d6d04e6d9a",
+					"name": "client_secret",
+					"value": "{{ client_secret  }}"
+				}
+			],
+			"parentId": "wrk_35700ae4a9cd49598240d119b8d51224",
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"settingSendCookies": true,
+			"settingStoreCookies": true,
+			"url": "https://api.github.com/repos/{{ username  }}/{{ repo  }}/issues/comments/363113208",
+			"_type": "request"
+		}
+	]
+}
