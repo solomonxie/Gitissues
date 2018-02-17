@@ -28,7 +28,6 @@ def fetch_issues(config):
     IF there's no change from internet, then abord fetching and writing to local files
     """
 
-
     # @@ loading settings from customized configs (json)
     user         = config['fetch']['user']
     repo         = config['fetch']['repo']
@@ -41,11 +40,15 @@ def fetch_issues(config):
     repo_dir     = '%s/%s/%s'%(root,user,repo)
 
 
-    # @ prepare local git repo for the first time
+    # @@ prepare local git repo for the first time
     if os.path.exists(root) is False:
         print('local repo does not exist, setting up now...')
         os.system('git clone %s %s'%(remote_url, root))
 
+    # @ keep local repo updated with remote before further change to avoid conflict
+    os.system('git -C %s pull'%root)
+
+    # @@ setup default configuration
     os.system('git -C %s config credential.helper cache'%root)
     os.system('git -C %s config user.email %s'%(root,email))
     os.system('git -C %s config user.name %s'%(root,remote_user))
