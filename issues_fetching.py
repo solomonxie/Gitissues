@@ -68,7 +68,7 @@ def fetch_issues(config):
     if os.path.exists(repo_dir+'/issues.json') is not True:
 
         # @@ for 1st run, updates all data, and deletes none 
-        updates = r.json()
+        updates = [n['number'] for n in r.json()]
         deletes = []
 
     else:
@@ -76,8 +76,8 @@ def fetch_issues(config):
         print('Matching updated items and deleted items...')
 
         # @@ match updated issues and deleted items
-        new = r.json()
         with open(repo_dir+'/issues.json', 'r') as f:
+            new = r.json()
             old = json.loads(f.read())
 
         # !@ filter out same issues from deletes that also exist in updates
