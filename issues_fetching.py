@@ -44,11 +44,11 @@ def fetch_issues(config):
     # @ prepare local git repo for the first time
     if os.path.exists(root) is False:
         print('local repo does not exist, setting up now...')
-
         os.system('git clone %s %s'%(remote_url, root))
-        os.system('git -C %s config credential.helper cache'%root)
-        os.system('git -C %s config user.email %s'%(root,email))
-        os.system('git -C %s config user.name %s'%(root,remote_user))
+
+    os.system('git -C %s config credential.helper cache'%root)
+    os.system('git -C %s config user.email %s'%(root,email))
+    os.system('git -C %s config user.name %s'%(root,remote_user))
 
 
     # @@ retrieving data from internet, @ with response validation
@@ -67,45 +67,29 @@ def fetch_issues(config):
 
     if os.path.exists(repo_dir+'/issues.json') is not True:
 
-        # @@ updates all data if it's the first run
+        # @@ for 1st run, updates all data, and deletes none 
         updates = r.json()
+        deletes = []
 
     else:
 
         print('Matching updated items and deleted items...')
 
         # @@ match updated issues and deleted items
+        new = r.json()
         with open(repo_dir+'/issues.json', 'r') as f:
             old = json.loads(f.read())
-        new = r.json()
-
-        deletes = [o for o in old if o not in new]
-        updates = [n for n in new if n not in old]
 
         # !@ filter out same issues from deletes that also exist in updates
-        # not compeleted...
+        updates = [n['number'] for n in new if n not in old]
+        deletes = [o['number'] for o in old if o not in new and o['number'] not in updates]
 
         print('%d updates to be fetched...'%len(updates))
         print('%d deletes to be executed...'%len(deletes))
 
-        # @@ CLEAR items that removed in the remote 
-        try:
-            for d in deletes:
-                os.system('rm %s/issue-%d.json'%(repo_dir,d['number']))
-                os.system('rm %s/markdown/%d.md'%(repo_dir,d['number']))
-
-                print('Deleted issue-%d[%s].'%(d['number'],d['title']))
-        except Exception as e:
-
-            print(e.message)
-
-
     # create local folder for fetching the first time or after deletion
     if os.path.exists(repo_dir) is False:
         os.makedirs(repo_dir)
-
-
-    #import pdb; pdb.set_trace()      ## debugging mode
 
     # @@ iterate each issue for further fetching
     for issue in r.json():
@@ -118,7 +102,11 @@ def fetch_issues(config):
         #time.sleep(1)     # sleep 1 sec
 
         issue_path = '%s/comments-for-issue-%d.json'%(repo_dir,index)
-        if issue in updates or os.path.exists(issue_path) is not True:
+        if index in deletes and os.path.exists(issue_path) is True:
+            os.system('rm %s/issue-%d.json'%(repo_dir,d['number']))
+            print('Deleted issue-%d[%s].'%(d['number'],d['title']))
+
+        elif index in updates or os.path.exists(issue_path) is False: 
 
             # @@ fetch comments, @ with response validation 
             _r = requests.get(comments_url+auth,timeout=10)
