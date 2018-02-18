@@ -27,7 +27,7 @@ def remote_sync(config):
 
     # run standard git workflow to push updates
     os.system('git -C %s add .'%(root))
-    os.system('git -C %s commit -m "Update on `uname -n`"'%(root))
+    os.system('git -C %s commit -m "Update from `uname -n`"'%(root))
     #os.system('git -C %s pull --rebase origin master'%(root))       # rebase
     os.system('git -C %s push origin master'%(root))
 
