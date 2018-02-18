@@ -26,9 +26,9 @@ def main():
 
 
     # @@ run workflow step-by-step
-    fetch_issues(config)
-    mapping_repo(config)
-    remote_sync(config)
+    if fetch_issues(config) is True:
+        mapping_repo(config)
+        remote_sync(config)
 
 
 

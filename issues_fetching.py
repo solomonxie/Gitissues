@@ -71,12 +71,13 @@ def fetch_issues(config):
     if os.path.exists(repo_dir+'/issues.json') is not True:
 
         # @@ for 1st run, updates all data, and deletes none 
+        print('First run of fetching issues...')
         updates = [n['number'] for n in r.json()]
         deletes = []
 
     else:
 
-        print('Matching updated items and deleted items...')
+        print('Filtering updated and deleted items...')
 
         # @@ match updated issues and deleted items
         with open(repo_dir+'/issues.json', 'r') as f:
@@ -106,8 +107,8 @@ def fetch_issues(config):
 
         issue_path = '%s/comments-for-issue-%d.json'%(repo_dir,index)
         if index in deletes and os.path.exists(issue_path) is True:
-            os.system('rm %s/issue-%d.json'%(repo_dir,d['number']))
-            print('Deleted issue-%d[%s].'%(d['number'],d['title']))
+            os.system('rm %s'%issue_path)
+            print('Deleted issue-%d[%s].'%(index,title))
 
         elif index in updates or os.path.exists(issue_path) is False: 
 
@@ -123,11 +124,15 @@ def fetch_issues(config):
 
             print('Fetched for issue-%d[%s] with %d comments'%(index,title,counts))
 
-    # @@ save original issues data fetched from github api
-    with open(repo_dir+'/issues.json', 'w') as f:
-        f.write(r.content)
+    if len(updates) is 0:
+        print('0 new issues updated.')
+        return False
+    else:
+        # @@ save original issues data fetched from github api
+        with open(repo_dir+'/issues.json', 'w') as f:
+            f.write(r.content)
 
-    print('Updated %d issues for repository [%s].'%(len(updates),repo))
+        print('Updated %d issues for repository [%s].'%(len(updates),repo))
 
 
 
