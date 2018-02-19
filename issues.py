@@ -52,7 +52,7 @@ class Issues:
         if os.path.exists(self.config.root) is False:
             log.debug('local repo does not exist, setting up now...')
             with os.popen('git clone %s %s 2>&1' % (self.config.remote_url, self.config.root)) as p:
-                log.info('\n' + p.read())
+                log.info(p.read())
 
         # @ keep local repo updated with remote before further change to avoid conflict
         log.info('Check git remote status before further updates: ')

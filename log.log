@@ -145,3 +145,37 @@ Already up-to-date.
 2018-02-19 23:07:55,233 - gitissues.issues - INFO - 0 deletes to be executed...
 2018-02-19 23:07:55,244 - gitissues - INFO - Finished fetching issues from Github.
 
+2018-02-19 23:23:24,992 - gitissues - INFO - Start fetching issues from Github...
+2018-02-19 23:23:24,992 - gitissues.issues - INFO - Check git remote status before further updates: 
+2018-02-19 23:23:26,083 - gitissues.issues - INFO - 
+Already up-to-date.
+
+2018-02-19 23:23:26,136 - gitissues.issues - INFO - Now retriving [https://api.github.com/repos/solomonxie/solomonxie.github.io/issues?client_id=0c08b801005ee3005ded&client_secret=da1a866f28556cc27e6ee12ca7c07c35bb548e5b]...
+2018-02-19 23:23:27,965 - gitissues.issues - DEBUG - Remaining 4991 requests limit for this hour.
+2018-02-19 23:23:27,966 - gitissues.issues - INFO - Filtering updated and deleted items...
+2018-02-19 23:23:27,977 - gitissues.issues - INFO - 0 updates to be fetched...
+2018-02-19 23:23:27,978 - gitissues.issues - INFO - 0 deletes to be executed...
+2018-02-19 23:23:27,988 - gitissues - INFO - Finished fetching issues from Github.
+
+2018-02-19 23:28:38,022 - gitissues - INFO - Start fetching issues from Github...
+2018-02-19 23:28:38,022 - gitissues.issues - INFO - Check git remote status before further updates: 
+2018-02-19 23:28:39,422 - gitissues.issues - INFO - 
+Already up-to-date.
+
+2018-02-19 23:28:39,465 - gitissues.issues - INFO - Now retriving [https://api.github.com/repos/solomonxie/solomonxie.github.io/issues?client_id=0c08b801005ee3005ded&client_secret=da1a866f28556cc27e6ee12ca7c07c35bb548e5b]...
+2018-02-19 23:28:41,428 - gitissues.issues - DEBUG - Remaining 4990 requests limit for this hour.
+2018-02-19 23:28:41,429 - gitissues.issues - INFO - Filtering updated and deleted items...
+2018-02-19 23:28:41,444 - gitissues.issues - INFO - 1 updates to be fetched...
+2018-02-19 23:28:41,444 - gitissues.issues - INFO - 0 deletes to be executed...
+2018-02-19 23:28:43,016 - gitissues.issue - INFO - Fetched for issue-24[Python学习笔记] with 27 comments
+2018-02-19 23:28:43,098 - gitissues.repo_mapping - INFO - Generated 30 issues from [solomonxie.github.io] to markdown file.
+2018-02-19 23:28:43,459 - gitissues.remote_syncing - INFO - 
+[master c49a81b] Update from Solomon-mba.local
+ 3 files changed, 22 insertions(+), 12 deletions(-)
+
+2018-02-19 23:28:48,900 - gitissues.remote_syncing - INFO - 
+To https://github.com/solomonxie/user_content_issues_blog.git
+   94a83eb..c49a81b  master -> master
+
+2018-02-19 23:28:48,901 - gitissues - INFO - Finished fetching issues from Github.
+

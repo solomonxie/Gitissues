@@ -45,14 +45,19 @@ def define_logger(name, path):
     logger = logging.getLogger(name)
     logger.setLevel(logging.DEBUG)
 
-    # create the logging file handler
-    fh = logging.FileHandler(path)
-
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+
+    # create a file handler for logging
+    fh = logging.FileHandler(path)
     fh.setFormatter(formatter)
 
-    # add handler to logger object
+    # create a stream(stdout) handler for logging
+    sh  = logging.StreamHandler(stream=None)
+    sh.setFormatter(formatter)
+
+    # add handlers to logger object
     logger.addHandler(fh)
+    logger.addHandler(sh)
 
     return logger
 
