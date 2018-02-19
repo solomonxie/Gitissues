@@ -21,4 +21,4 @@ class Config:
         self.root         = "/Volumes/SD/Workspace/autobackup/user_content_issues_blog"
         self.repo_dir     = "%s/%s/%s" % (self.root, self.user, self.repo)
         self.issues_path  = self.repo_dir + '/issues.json'
-        self.log          = os.path.dirname(os.path.realpath(sys.argv[0])) + '/log.log'
+        self.log          = "/Volumes/SD/Workspace/autobackup/user_content_issues_blog/gitissues.log"
