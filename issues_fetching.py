@@ -11,128 +11,180 @@ import time
 from datetime import date
 
 
+
 def main():
-    
+
+    #import pdb; pdb.set_trace()
+
     # @@ load local config file
-    cfg = os.path.dirname(os.path.realpath(sys.argv[0])) + '/config.json'
-    with open(cfg, 'r') as f:
-        config = json.loads(f.read())
+    path = os.path.dirname(os.path.realpath(sys.argv[0])) + '/config.json'
+    config = Config(path)
+
+    issues = Issues(config)
+
+    if os.path.exists(config.repo_dir+'/issues.json') is False:
+        os.system('rm -rf %s' % config.repo_dir)
+        issues.first_run()
+    else:
+        issues.update()
 
 
-    fetch_issues(config)
-
-
-def fetch_issues(config):
+class Issue:
     """
-    FETCH one repo's issues, @2 archive to a local folder
-    IF there's no change from internet, then abord fetching and writing to local files
+    Define an issue object with properties and basic functions
     """
 
-    # @@ loading settings from customized configs (json)
-    user         = config['fetch']['user']
-    repo         = config['fetch']['repo']
-    issues_url   = config['fetch']['issues_url']
-    auth         = config['fetch']['auth2_ks']
-    remote_url   = config['remote']['https']
-    remote_user  = config['remote']['user']
-    email        = config['remote']['email']
-    root         = config['local']['root_dir']
-    repo_dir     = '%s/%s/%s'%(root,user,repo)
+    def __init__(self, config, iss):
+
+        self.config = config
+        self.title = iss['title']
+        self.index = iss['number']
+        self.comments_url = iss['comments_url']
+        self.counts = iss['comments']
+        self.path = '%s/comments-for-issue-%d.json' % (config.repo_dir, self.index)
 
 
-    # @@ prepare local git repo for the first time
-    if os.path.exists(root) is False:
-        print('local repo does not exist, setting up now...')
-        os.system('git clone %s %s'%(remote_url, root))
+    def update(self):
+        """
 
-    # @ keep local repo updated with remote before further change to avoid conflict
-    os.system('git -C %s pull'%root)
+        """
+        # @@ fetch comments, @ with response validation 
+        r = requests.get(self.comments_url + self.config.auth, timeout=10)
+        if r.status_code is not 200:
+            print('Failed on fetching issue, due to enexpected response: [%s]' % self.comments_url)
+            return False              # if failed one comment, then restart whole process on this issue
 
-    # @@ setup default configuration
-    os.system('git -C %s config credential.helper cache'%root)
-    os.system('git -C %s config user.email %s'%(root,email))
-    os.system('git -C %s config user.name %s'%(root,remote_user))
+        # @@ log comments as original json file, for future restoration or further use
+        with open(self.path, 'w') as f:
+            f.write(r.content)
+
+        print('Fetched for issue-%d[%s] with %d comments' % (self.index,self.title,self.counts))
 
 
-    # @@ retrieving data from internet, @ with response validation
-    print('retriving [%s] now...'%(issues_url+auth))
-    r = requests.get(issues_url+auth,timeout=10)
+    def delete(self):
+        """
 
-    if r.status_code is not 200:
-        print('Failed on fetching [%s] due to unexpected response'%issues_url)
-        return False
+        """
+        if os.path.exists(self.path):
+            os.system('rm %s'%self.path)
+            print('Deleted issue-%d[%s].'%(self.index, self.title))
 
-    print('Remaining %s requests limit for this hour.'%r.headers['X-RateLimit-Remaining'])
+
+
+class Config:
+    """
+    Loading settings from customized configs (json)
+    """
+    def __init__(self, path):
+        # @@ loading settings from customized configs (json)
+        with open(path, 'r') as f:
+            cfg = json.loads(f.read())
+
+        self.user         = cfg['fetch']['user']
+        self.repo         = cfg['fetch']['repo']
+        self.issues_url   = cfg['fetch']['issues_url']
+        self.auth         = cfg['fetch']['auth2_ks']
+        self.remote_url   = cfg['remote']['https']
+        self.remote_user  = cfg['remote']['user']
+        self.email        = cfg['remote']['email']
+        self.root         = cfg['local']['root_dir']
+        self.repo_dir     = '%s/%s/%s' % (self.root, self.user, self.repo)
+
+
+
+class Issues:
+    """
+
+    """
+    def __init__(self, config):
+        self.config = config
+        self.updates = []
+        self.deletes = []
+        self.issues = []
+        self.updatodate = True
+
+
+    def retrive_data(self):
+        """
+        Retrieving data from internet, @ with response validation
+        """
+        print('Now retriving [%s]...' \
+                % (self.config.issues_url + self.config.auth))
+
+        r = requests.get(self.config.issues_url + self.config.auth, timeout=10)
+
+        if r.status_code is not 200:
+            print('Failed on fetching [%s] due to unexpected response' \
+                    % self.config.issues_url)
+            return False
+
+        print('Remaining %s requests limit for this hour.' \
+                % r.headers['X-RateLimit-Remaining'])
+
+        return r
     
 
-    #import pdb;pdb.set_trace()
+    def git_update(self):
+        # @@ prepare local git repo for the first time
+        if os.path.exists(self.config.root) is False:
+            print('local repo does not exist, setting up now...')
+            os.system('git clone %s %s'%(self.config.remote_url, self.config.root))
+
+        # @ keep local repo updated with remote before further change to avoid conflict
+        print('Git pull and Git config,  before further updates: ')
+        os.system('git -C %s pull'%self.config.root)
+
+        # @@ setup default configuration
+        os.system('git -C %s config credential.helper cache'%self.config.root)
+        os.system('git -C %s config user.email %s'%(self.config.root, self.config.email))
+        os.system('git -C %s config user.name %s'%(self.config.root, self.config.remote_user))
 
 
-    if os.path.exists(repo_dir+'/issues.json') is not True:
+    def first_run(self):
+        """
 
-        # @@ for 1st run, updates all data, and deletes none 
-        print('First run of fetching issues...')
-        updates = [n['number'] for n in r.json()]
-        deletes = []
+        """
+        self.git_update()
+        r = self.retrive_data()
 
-    else:
+        issues = r.json()
+        for iss in issues:
+            issue = Issue(config, iss)
+            issue.update()
+
+        return len(issues)
+
+
+    def update(self):
+        """
+
+        """
+        self.git_update()
+        r = self.retrive_data()
 
         print('Filtering updated and deleted items...')
-
         # @@ match updated issues and deleted items
-        with open(repo_dir+'/issues.json', 'r') as f:
+        with open(self.config.repo_dir+'/issues.json', 'r') as f:
             new = r.json()
             old = json.loads(f.read())
 
         # !@ filter out same issues from deletes that also exist in updates
-        updates = [n['number'] for n in new if n not in old]
-        deletes = [o['number'] for o in old if o not in new and o['number'] not in updates]
+        self.updates = [n['number'] for n in new if n not in old]
+        self.deletes = [o['number'] for o in old if o not in new and o['number'] not in self.updates]
 
-        print('%d updates to be fetched...'%len(updates))
-        print('%d deletes to be executed...'%len(deletes))
+        print('%d updates to be fetched...\n%d deletes to be executed...' \
+                % (len(self.updates), len(self.deletes)))
 
-    # create local folder for fetching the first time or after deletion
-    if os.path.exists(repo_dir) is False:
-        os.makedirs(repo_dir)
+        # iterate each issue for operation
+        for iss in r.json():
+            issue = Issue(self.config, iss)
 
-    # @@ iterate each issue for further fetching
-    for issue in r.json():
-        title = issue['title']
-        index = issue['number']
-        comments_url = issue['comments_url']
-        counts = issue['comments']
+            if issue.index in self.deletes:
+                issue.delete()
+            elif issue.index in self.updates: 
+                issue.update()
 
-        # @@ pause for awhile before fetch to reduce risk of being banned from server
-        #time.sleep(1)     # sleep 1 sec
-
-        issue_path = '%s/comments-for-issue-%d.json'%(repo_dir,index)
-        if index in deletes and os.path.exists(issue_path) is True:
-            os.system('rm %s'%issue_path)
-            print('Deleted issue-%d[%s].'%(index,title))
-
-        elif index in updates or os.path.exists(issue_path) is False: 
-
-            # @@ fetch comments, @ with response validation 
-            _r = requests.get(comments_url+auth,timeout=10)
-            if _r.status_code is not 200:
-                print('Failed on fetching [%s] due to enexpected response'%comments_url)
-                return False              # if failed one comment, then restart whole process on this issue
-
-            # @@ log comments as original json file, for future restoration or further use
-            with open(issue_path, 'w') as f:
-                f.write(_r.content)
-
-            print('Fetched for issue-%d[%s] with %d comments'%(index,title,counts))
-
-    if len(updates) is 0:
-        print('0 new issues updated.')
-        return False
-    else:
-        # @@ save original issues data fetched from github api
-        with open(repo_dir+'/issues.json', 'w') as f:
-            f.write(r.content)
-
-        print('Updated %d issues for repository [%s].'%(len(updates),repo))
+        return len(self.updates)
 
 
 
