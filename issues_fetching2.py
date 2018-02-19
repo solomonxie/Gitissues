@@ -14,10 +14,19 @@ from datetime import date
 
 def main():
 
+    #import pdb; pdb.set_trace()
+
     # @@ load local config file
-    cfg = os.path.dirname(os.path.realpath(sys.argv[0])) + '/config.json'
-    with open(cfg, 'r') as f:
-        config = json.loads(f.read())
+    path = os.path.dirname(os.path.realpath(sys.argv[0])) + '/config.json'
+    config = Config(path)
+
+    issues = Issues(config)
+
+    if os.path.exists(config.repo_dir+'/issues.json') is False:
+        os.system('rm -rf %s' % config.repo_dir)
+        issues.first_run()
+    else:
+        issues.update()
 
 
 class Issue:
@@ -40,7 +49,7 @@ class Issue:
 
         """
         # @@ fetch comments, @ with response validation 
-        r = requests.get(self.comments_url + config.auth, timeout=10)
+        r = requests.get(self.comments_url + self.config.auth, timeout=10)
         if r.status_code is not 200:
             print('Failed on fetching issue, due to enexpected response: [%s]' % self.comments_url)
             return False              # if failed one comment, then restart whole process on this issue
@@ -49,7 +58,7 @@ class Issue:
         with open(self.path, 'w') as f:
             f.write(r.content)
 
-        print('Fetched for issue-%d[%s] with %d comments' % (index,title,counts))
+        print('Fetched for issue-%d[%s] with %d comments' % (self.index,self.title,self.counts))
 
 
     def delete(self):
@@ -83,8 +92,6 @@ class Config:
 
 
 
-
-
 class Issues:
     """
 
@@ -96,20 +103,19 @@ class Issues:
         self.issues = []
         self.updatodate = True
 
-        if os.path.exists(config.repo_dir+'/issues.json') is False:
-            os.system('rm -rf %s' % config.repo_dir)
-            self.first_run()
 
     def retrive_data(self):
         """
         Retrieving data from internet, @ with response validation
         """
-        print('retriving [%s] now...' \
+        print('Now retriving [%s]...' \
                 % (self.config.issues_url + self.config.auth))
+
         r = requests.get(self.config.issues_url + self.config.auth, timeout=10)
 
         if r.status_code is not 200:
-            print('Failed on fetching [%s] due to unexpected response' % self.config.issues_url)
+            print('Failed on fetching [%s] due to unexpected response' \
+                    % self.config.issues_url)
             return False
 
         print('Remaining %s requests limit for this hour.' \
@@ -120,11 +126,12 @@ class Issues:
 
     def git_update(self):
         # @@ prepare local git repo for the first time
-        if os.path.exists(root) is False:
+        if os.path.exists(self.config.root) is False:
             print('local repo does not exist, setting up now...')
             os.system('git clone %s %s'%(self.config.remote_url, self.config.root))
 
         # @ keep local repo updated with remote before further change to avoid conflict
+        print('Git pull and Git config,  before further updates: ')
         os.system('git -C %s pull'%self.config.root)
 
         # @@ setup default configuration
@@ -138,14 +145,14 @@ class Issues:
 
         """
         self.git_update()
-
         r = self.retrive_data()
 
-        for iss in r.json():
-            issue = Issue(iss)
+        issues = r.json()
+        for iss in issues:
+            issue = Issue(config, iss)
             issue.update()
 
-
+        return len(issues)
 
 
     def update(self):
@@ -153,11 +160,9 @@ class Issues:
 
         """
         self.git_update()
-
         r = self.retrive_data()
 
         print('Filtering updated and deleted items...')
-
         # @@ match updated issues and deleted items
         with open(self.config.repo_dir+'/issues.json', 'r') as f:
             new = r.json()
@@ -168,15 +173,15 @@ class Issues:
         self.deletes = [o['number'] for o in old if o not in new and o['number'] not in self.updates]
 
         print('%d updates to be fetched...\n%d deletes to be executed...' \
-                % (len(self.updates), len(self.deletes))
+                % (len(self.updates), len(self.deletes)))
 
         # iterate each issue for operation
         for iss in r.json():
-            issue = Issue(iss)
+            issue = Issue(self.config, iss)
 
-            if index in deletes:
+            if issue.index in self.deletes:
                 issue.delete()
-            elif index in updates: 
+            elif issue.index in self.updates: 
                 issue.update()
 
         return len(self.updates)
