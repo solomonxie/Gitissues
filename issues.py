@@ -13,14 +13,14 @@ log = logging.getLogger('gitissues.issues')
 
 class Issues:
     """
-
+    Handling updating/deleting/creating issues-list
+    The core part of this project.
     """
     def __init__(self, config):
         self.config = config
         self.updates = []
         self.deletes = []
         self.issues = []
-        self.updatodate = True
 
 
     def retrive_data(self):
@@ -44,14 +44,20 @@ class Issues:
     
 
     def git_update(self):
+        """
+        Need to prepare local user content repository always updated with remote before make any change
+        Just for avoiding conflict
+        """
         # @@ prepare local git repo for the first time
         if os.path.exists(self.config.root) is False:
             log.debug('local repo does not exist, setting up now...')
-            os.system('git clone %s %s'%(self.config.remote_url, self.config.root))
+            with os.popen('git clone %s %s 2>&1' % (self.config.remote_url, self.config.root)) as p:
+                log.info('\n' + p.read())
 
         # @ keep local repo updated with remote before further change to avoid conflict
         log.info('Check git remote status before further updates: ')
-        os.system('git -C %s pull' % (self.config.root))
+        with os.popen('git -C %s pull 2>&1' % (self.config.root)) as p:
+            log.info('\n' + p.read())
 
         # @@ setup default configuration
         os.system('git -C %s config credential.helper cache'%self.config.root)
@@ -61,7 +67,7 @@ class Issues:
 
     def first_run(self):
         """
-
+        Download everything if it's the first run.
         """
         self.git_update()
         r = self.retrive_data()
@@ -76,7 +82,8 @@ class Issues:
 
     def update(self):
         """
-
+        Update local stored issues data
+        Introduced filtering algorithm to avoid updating a non-changed content
         """
         self.git_update()
         r = self.retrive_data()
@@ -97,7 +104,6 @@ class Issues:
         # iterate each issue for operation
         for iss in r.json():
             issue = Issue(self.config, iss)
-
             if issue.index in self.deletes:
                 issue.delete()
             elif issue.index in self.updates: 

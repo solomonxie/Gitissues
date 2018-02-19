@@ -15,20 +15,20 @@ from remote_syncing import remote_sync
 
 def main():
     """
-    CONNECT 3 scripts in a row as a workflow: Fetching -> mapping -> uploading
+    Main entry of this project.
+    Basically just to connect 3 parts in a row as a workflow: Fetching -> mapping -> uploading
     """
 
     #import pdb;pdb.set_trace()
 
-    log = define_logging('gitissues', 'log.log')
-
     # @@ load local config file
     cfg = Config()
 
+    # define global logger throughout all sub module files
+    log = define_logger('gitissues', cfg.log)
     log.info('Start fetching issues from Github...')
 
     issues = Issues(cfg)
-
     if os.path.exists(cfg.issues_path) is False:
         os.system('rm -rf %s' % cfg.repo_dir)
         issues.first_run()
@@ -41,7 +41,7 @@ def main():
     log.info('Finished fetching issues from Github.\n')
 
 
-def define_logging(name, path):
+def define_logger(name, path):
     logger = logging.getLogger(name)
     logger.setLevel(logging.DEBUG)
 

@@ -10,7 +10,7 @@ log = logging.getLogger('gitissues.issue')
 
 class Issue:
     """
-    Define an issue object with properties and basic functions
+    A class for a single issue, included every property and function for an issue.
     """
 
     def __init__(self, config, iss):
@@ -25,7 +25,7 @@ class Issue:
 
     def update(self):
         """
-
+        Fetch an specific issue with detailed information
         """
         # @@ fetch comments, @ with response validation 
         r = requests.get(self.comments_url + self.config.auth, timeout=10)
@@ -42,7 +42,7 @@ class Issue:
 
     def delete(self):
         """
-
+        Delete an issue that no longer exists at remote
         """
         if os.path.exists(self.path):
             os.system('rm %s'%self.path)
