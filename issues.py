@@ -74,7 +74,7 @@ class Issues:
 
         issues = r.json()
         for iss in issues:
-            issue = Issue(config, iss)
+            issue = Issue(self.config, iss)
             issue.update()
 
         return len(issues)

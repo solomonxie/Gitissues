@@ -179,3 +179,55 @@ To https://github.com/solomonxie/user_content_issues_blog.git
 
 2018-02-19 23:28:48,901 - gitissues - INFO - Finished fetching issues from Github.
 
+2018-02-19 23:33:22,187 - gitissues - INFO - Start fetching issues from Github...
+2018-02-19 23:33:22,196 - gitissues.issues - DEBUG - local repo does not exist, setting up now...
+2018-02-19 23:33:26,830 - gitissues.issues - INFO - Cloning into '/Volumes/SD/Workspace/autobackup/user_content_issues_blog'...
+
+2018-02-19 23:33:26,831 - gitissues.issues - INFO - Check git remote status before further updates: 
+2018-02-19 23:33:28,246 - gitissues.issues - INFO - 
+Already up-to-date.
+
+2018-02-19 23:33:28,290 - gitissues.issues - INFO - Now retriving [https://api.github.com/repos/solomonxie/solomonxie.github.io/issues?client_id=0c08b801005ee3005ded&client_secret=da1a866f28556cc27e6ee12ca7c07c35bb548e5b]...
+2018-02-19 23:33:30,285 - gitissues.issues - DEBUG - Remaining 4988 requests limit for this hour.
+2018-02-19 23:34:45,815 - gitissues - INFO - Start fetching issues from Github...
+2018-02-19 23:34:45,821 - gitissues.issues - DEBUG - local repo does not exist, setting up now...
+2018-02-19 23:34:50,691 - gitissues.issues - INFO - Cloning into '/Volumes/SD/Workspace/autobackup/user_content_issues_blog'...
+
+2018-02-19 23:34:50,691 - gitissues.issues - INFO - Check git remote status before further updates: 
+2018-02-19 23:34:51,937 - gitissues.issues - INFO - 
+Already up-to-date.
+
+2018-02-19 23:34:51,979 - gitissues.issues - INFO - Now retriving [https://api.github.com/repos/solomonxie/solomonxie.github.io/issues?client_id=0c08b801005ee3005ded&client_secret=da1a866f28556cc27e6ee12ca7c07c35bb548e5b]...
+2018-02-19 23:34:53,943 - gitissues.issues - DEBUG - Remaining 4987 requests limit for this hour.
+2018-02-19 23:34:55,140 - gitissues.issue - INFO - Fetched for issue-42[API 数据操作实践] with 6 comments
+2018-02-19 23:34:56,494 - gitissues.issue - INFO - Fetched for issue-40[Linear Algebra from the ground up] with 2 comments
+2018-02-19 23:34:58,352 - gitissues.issue - INFO - Fetched for issue-39[Tweets] with 8 comments
+2018-02-19 23:34:59,649 - gitissues.issue - INFO - Fetched for issue-38[Machine Learning note and diary] with 7 comments
+2018-02-19 23:35:00,956 - gitissues.issue - INFO - Fetched for issue-37[Javascript 编码细节技巧] with 1 comments
+2018-02-19 23:35:02,418 - gitissues.issue - INFO - Fetched for issue-36[CSS 外观经验] with 2 comments
+2018-02-19 23:35:04,681 - gitissues.issue - INFO - Fetched for issue-35[Network Engineering and Troubleshooting] with 9 comments
+2018-02-19 23:35:05,879 - gitissues.issue - INFO - Fetched for issue-34[Wordpress 实操经验] with 1 comments
+2018-02-19 23:35:06,994 - gitissues.issue - INFO - Fetched for issue-33[OS 操作杂疑症状] with 4 comments
+2018-02-19 23:35:08,212 - gitissues.issue - INFO - Fetched for issue-31[AWS为首的云服务器实战钻研] with 11 comments
+2018-02-19 23:35:09,380 - gitissues.issue - INFO - Fetched for issue-30[Sublime Text 为首的各种IDE使用技巧] with 7 comments
+2018-02-19 23:35:11,558 - gitissues.issue - INFO - Fetched for issue-29[Git 及所有相关学习] with 20 comments
+2018-02-19 23:35:12,868 - gitissues.issue - INFO - Fetched for issue-27[Linux 命令行终端操作积累] with 26 comments
+2018-02-19 23:35:14,302 - gitissues.issue - INFO - Fetched for issue-26[Raspberry Pi 疑难杂症] with 0 comments
+2018-02-19 23:35:15,656 - gitissues.issue - INFO - Fetched for issue-25[Vim成长之路] with 21 comments
+2018-02-19 23:35:17,464 - gitissues.issue - INFO - Fetched for issue-24[Python学习笔记] with 27 comments
+2018-02-19 23:35:18,860 - gitissues.issue - INFO - Fetched for issue-23[Chrome浏览器疑难杂症] with 1 comments
+2018-02-19 23:35:20,220 - gitissues.issue - INFO - Fetched for issue-22[Mac系统操作疑难杂症] with 1 comments
+2018-02-19 23:35:21,412 - gitissues.issue - INFO - Fetched for issue-21[Windows上利用Python自动切换代理IP的终极方案！] with 0 comments
+2018-02-19 23:35:22,522 - gitissues.issue - INFO - Fetched for issue-20[Python里中文编码的理解：unicode、utf-8、gbk] with 0 comments
+2018-02-19 23:35:24,081 - gitissues.issue - INFO - Fetched for issue-19[Python 安装Mysql模块及安装中错误的解决] with 0 comments
+2018-02-19 23:35:25,443 - gitissues.issue - INFO - Fetched for issue-18[Python操作MySQL的中文乱码解决之路] with 0 comments
+2018-02-19 23:35:26,781 - gitissues.issue - INFO - Fetched for issue-17[58招聘数据爬取准备: 源码分析] with 0 comments
+2018-02-19 23:35:28,184 - gitissues.issue - INFO - Fetched for issue-15[智联招聘数据爬取准备(3)-企业主页源码解析] with 0 comments
+2018-02-19 23:35:29,254 - gitissues.issue - INFO - Fetched for issue-14[智联招聘爬虫练习 - 任务列表] with 0 comments
+2018-02-19 23:35:30,702 - gitissues.issue - INFO - Fetched for issue-13[BeautifulSoup ：一些常用功能的使用和测试] with 0 comments
+2018-02-19 23:35:31,881 - gitissues.issue - INFO - Fetched for issue-12[智联招聘数据爬取准备(1)-智联招聘搜索列表源码解析] with 0 comments
+2018-02-19 23:35:33,059 - gitissues.issue - INFO - Fetched for issue-11[智联招聘数据爬取准备(2)-招聘信息页面源码解析] with 0 comments
+2018-02-19 23:35:35,082 - gitissues.issue - INFO - Fetched for issue-10[Python中文字符的理解：str()、repr()、print] with 0 comments
+2018-02-19 23:35:36,411 - gitissues.issue - INFO - Fetched for issue-9[对Python 2.x的通宵抱怨] with 1 comments
+2018-02-19 23:35:36,412 - gitissues - INFO - Finished fetching issues from Github.
+
