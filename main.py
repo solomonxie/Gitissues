@@ -3,11 +3,12 @@
 
 import os
 import sys
-import time
-import json
 import logging
 
-from issues_fetching import fetch_issues
+from issue import Issue
+from issues import Issues
+from config import Config
+
 from repo_mapping import mapping_repo
 from remote_syncing import remote_sync
 
@@ -20,15 +21,19 @@ def main():
     #import pdb;pdb.set_trace()
 
     # @@ load local config file
-    cfg = os.path.dirname(os.path.realpath(sys.argv[0])) + '/config.json'
-    with open(cfg, 'r') as f:
-        config = json.loads(f.read())
+    path = os.path.dirname(os.path.realpath(sys.argv[0])) + '/config.json'
+    config = Config(path)
 
+    issues = Issues(config)
 
-    # @@ run workflow step-by-step
-    if fetch_issues(config) is True:
-        mapping_repo(config)
-        remote_sync(config)
+    if os.path.exists(config.issues_path) is False:
+        os.system('rm -rf %s' % config.repo_dir)
+        issues.first_run()
+    else:
+        tasks = issues.update()
+        if tasks > 0:
+            mapping_repo(config)
+            remote_sync(config)
 
 
 
