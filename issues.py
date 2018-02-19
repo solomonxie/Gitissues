@@ -57,7 +57,7 @@ class Issues:
         # @ keep local repo updated with remote before further change to avoid conflict
         log.info('Check git remote status before further updates: ')
         with os.popen('git -C %s pull 2>&1' % (self.config.root)) as p:
-            log.info('\n' + p.read())
+            log.info(p.read())
 
         # @@ setup default configuration
         os.system('git -C %s config credential.helper cache'%self.config.root)
