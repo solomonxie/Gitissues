@@ -5,6 +5,8 @@ import os
 import json
 import logging
 
+log = logging.getLogger('gitissues.repo_mapping')
+
 # @@ zip the folder for backup
 #import shutil       # for zipping files
 #shutil.make_archive(
@@ -56,5 +58,5 @@ def mapping_repo(config):
         with open('%s/markdown/%d.md'%(config.repo_dir,index), 'w+') as f:
             f.write( '\n\n\n'.join(fcontents).encode('utf-8') )
 
-    print 'Generated %d issues from [%s] to markdown file.'%(len(issues),config.repo)
+    log.info('Generated %d issues from [%s] to markdown file.'%(len(issues),config.repo))
 

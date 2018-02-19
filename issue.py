@@ -5,6 +5,8 @@ import os           # for folder detecting
 import requests     # for retrieving web resources
 import logging
 
+log = logging.getLogger('gitissues.issue')
+
 
 class Issue:
     """
@@ -28,14 +30,14 @@ class Issue:
         # @@ fetch comments, @ with response validation 
         r = requests.get(self.comments_url + self.config.auth, timeout=10)
         if r.status_code is not 200:
-            print('Failed on fetching issue, due to enexpected response: [%s]' % self.comments_url)
+            log.warn('Failed on fetching issue, due to enexpected response: [%s]' % self.comments_url)
             return False              # if failed one comment, then restart whole process on this issue
 
         # @@ log comments as original json file, for future restoration or further use
         with open(self.path, 'w') as f:
             f.write(r.content)
 
-        print('Fetched for issue-%d[%s] with %d comments' % (self.index,self.title,self.counts))
+        log.info('Fetched for issue-%d[%s] with %d comments' % (self.index,self.title,self.counts))
 
 
     def delete(self):
@@ -44,5 +46,5 @@ class Issue:
         """
         if os.path.exists(self.path):
             os.system('rm %s'%self.path)
-            print('Deleted issue-%d[%s].'%(self.index, self.title))
+            log.info('Deleted issue-%d[%s].'%(self.index, self.title))
 

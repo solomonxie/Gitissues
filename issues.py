@@ -8,6 +8,8 @@ import logging
 
 from issue import Issue
 
+log = logging.getLogger('gitissues.issues')
+
 
 class Issues:
     """
@@ -25,17 +27,17 @@ class Issues:
         """
         Retrieving data from internet, @ with response validation
         """
-        print('Now retriving [%s]...' \
+        log.info('Now retriving [%s]...' \
                 % (self.config.issues_url + self.config.auth))
 
         r = requests.get(self.config.issues_url + self.config.auth, timeout=10)
 
         if r.status_code is not 200:
-            print('Failed on fetching [%s] due to unexpected response' \
+            log.warn('Failed on fetching [%s] due to unexpected response' \
                     % self.config.issues_url)
             return False
 
-        print('Remaining %s requests limit for this hour.' \
+        log.debug('Remaining %s requests limit for this hour.' \
                 % r.headers['X-RateLimit-Remaining'])
 
         return r
@@ -44,12 +46,12 @@ class Issues:
     def git_update(self):
         # @@ prepare local git repo for the first time
         if os.path.exists(self.config.root) is False:
-            print('local repo does not exist, setting up now...')
+            log.debug('local repo does not exist, setting up now...')
             os.system('git clone %s %s'%(self.config.remote_url, self.config.root))
 
         # @ keep local repo updated with remote before further change to avoid conflict
-        print('Git pull and Git config,  before further updates: ')
-        os.system('git -C %s pull'%self.config.root)
+        log.info('Check git remote status before further updates: ')
+        os.system('git -C %s pull' % (self.config.root))
 
         # @@ setup default configuration
         os.system('git -C %s config credential.helper cache'%self.config.root)
@@ -79,7 +81,7 @@ class Issues:
         self.git_update()
         r = self.retrive_data()
 
-        print('Filtering updated and deleted items...')
+        log.info('Filtering updated and deleted items...')
         # @@ match updated issues and deleted items
         with open(self.config.issues_path, 'r') as f:
             new = r.json()
@@ -89,8 +91,9 @@ class Issues:
         self.updates = [n['number'] for n in new if n not in old]
         self.deletes = [o['number'] for o in old if o not in new and o['number'] not in self.updates]
 
-        print('%d updates to be fetched...\n%d deletes to be executed...' \
-                % (len(self.updates), len(self.deletes)))
+        log.info('%d updates to be fetched...' % len(self.updates))
+        log.info('%d deletes to be executed...' % len(self.deletes))
+        
         # iterate each issue for operation
         for iss in r.json():
             issue = Issue(self.config, iss)
