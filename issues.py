@@ -59,10 +59,10 @@ class Issues:
         with os.popen('git -C %s pull 2>&1' % (self.config.root)) as p:
             log.info(p.read())
 
-        # @@ setup default configuration
-        os.system('git -C %s config credential.helper cache'%self.config.root)
-        os.system('git -C %s config user.email %s'%(self.config.root, self.config.email))
-        os.system('git -C %s config user.name %s'%(self.config.root, self.config.remote_user))
+        # @Deprecated, use ssh connection instead@        setup default configuration
+        #os.system('git -C %s config credential.helper cache'%self.config.root)
+        #os.system('git -C %s config user.email %s'%(self.config.root, self.config.email))
+        #os.system('git -C %s config user.name %s'%(self.config.root, self.config.remote_user))
 
 
     def first_run(self):
