@@ -32,14 +32,14 @@ def main():
     issues = Issues(cfg)
     if os.path.exists(cfg.issues_path) is False:
         os.system('rm -rf %s' % cfg.repo_dir)
-        issues.first_run()
+        tasks = issues.first_run()
     else:
         tasks = issues.update()
-        if tasks > 0:
-            mapping_repo(cfg)
-            remote_sync(cfg)
 
-    log.info('Finished fetching issues from Github.\n')
+    if tasks > 0:
+        mapping_repo(cfg)
+        remote_sync(cfg)
+        log.info('Finished fetching issues from Github.\n')
 
 
 def define_logger(name, path):
