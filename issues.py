@@ -8,6 +8,7 @@ import logging
 
 from issue import Issue
 
+
 log = logging.getLogger('gitissues.issues')
 
 
