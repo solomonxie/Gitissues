@@ -30,7 +30,12 @@ class Issues:
         log.info('Now retriving [%s]...' \
                 % (self.config.issues_url + self.config.auth))
 
-        r = requests.get(self.config.issues_url + self.config.auth, timeout=10)
+        try:
+            r = requests.get(self.config.issues_url + self.config.auth, timeout=5)
+        except Exception as e:
+            log.error('An error occured when requesting from Github:\n%s' % str(e))
+            log.info('Mission aborted.')
+            return None
 
         if r.status_code is not 200:
             log.warn('Failed on fetching [%s] due to unexpected response' \
@@ -70,7 +75,10 @@ class Issues:
         Download everything if it's the first run.
         """
         self.git_update()
+
         r = self.retrive_data()
+        if r is None:
+            return 0
 
         issues = r.json()
         for iss in issues:
@@ -86,7 +94,10 @@ class Issues:
         Introduced filtering algorithm to avoid updating a non-changed content
         """
         self.git_update()
+
         r = self.retrive_data()
+        if r is None:
+            return 0
 
         log.info('Filtering updated and deleted items...')
         # @@ match updated issues and deleted items

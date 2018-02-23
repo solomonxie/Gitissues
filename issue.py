@@ -28,9 +28,16 @@ class Issue:
         Fetch an specific issue with detailed information
         """
         # @@ fetch comments, @ with response validation 
-        r = requests.get(self.comments_url + self.config.auth, timeout=10)
+        try:
+            r = requests.get(self.config.comments_url + self.config.auth, timeout=5)
+        except Exception as e:
+            log.error('An error occured when requesting from Github:\n%s' % str(e))
+            log.info('Mission aborted.')
+            return None
+
         if r.status_code is not 200:
-            log.warn('Failed on fetching issue, due to enexpected response: [%s]' % self.comments_url)
+            log.warn('Failed on fetching issue, due to enexpected response: [%s]' \
+                    % self.comments_url)
             return False              # if failed one comment, then restart whole process on this issue
 
         # @@ log comments as original json file, for future restoration or further use

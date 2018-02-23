@@ -4,6 +4,7 @@
 import os
 import sys
 import logging
+from datetime import date
 
 from issue import Issue
 from issues import Issues
@@ -47,17 +48,26 @@ def define_logger(name, path):
 
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
+    # make log file path
+    if os.path.exists(path) is False:
+        os.makedirs(path)
+    mainfile  = '%s/gitissues.log' % path
+    dailyfile = '%s/gitissues%s.log' % (path, date.today())
+
     # create a file handler for logging
-    fh = logging.FileHandler(path)
-    fh.setFormatter(formatter)
+    main = logging.FileHandler(mainfile, mode='w')
+    main.setFormatter(formatter)
+    daily = logging.FileHandler(dailyfile)
+    daily.setFormatter(formatter)
 
     # create a stream(stdout) handler for logging
-    sh  = logging.StreamHandler(stream=None)
-    sh.setFormatter(formatter)
+    screen  = logging.StreamHandler(stream=None)
+    screen.setFormatter(formatter)
 
     # add handlers to logger object
-    logger.addHandler(fh)
-    logger.addHandler(sh)
+    logger.addHandler(main)
+    logger.addHandler(daily)
+    logger.addHandler(screen)
 
     return logger
 
