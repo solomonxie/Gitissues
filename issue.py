@@ -29,7 +29,7 @@ class Issue:
         """
         # @@ fetch comments, @ with response validation 
         try:
-            r = requests.get(self.config.comments_url + self.config.auth, timeout=5)
+            r = requests.get(self.comments_url + self.config.auth, timeout=5)
         except Exception as e:
             log.error('An error occured when requesting from Github:\n%s' % str(e))
             log.info('Mission aborted.')
