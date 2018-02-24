@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import os           # for folder detecting
+
 import json
 import requests     # for retrieving web resources
 import logging

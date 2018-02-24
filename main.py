@@ -39,7 +39,8 @@ def main():
     if tasks > 0:
         mapping_repo(cfg)
         remote_sync(cfg)
-        log.info('Finished fetching issues from Github.\n')
+
+    log.info('Finished for this round check.\n')
 
 
 def define_logger(name, path):
