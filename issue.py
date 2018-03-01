@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 import os           # for folder detecting
@@ -23,11 +22,11 @@ class Issue:
         self.path = '%s/comments-for-issue-%d.json' % (config.repo_dir, self.index)
 
 
-    def update(self):
+    def retrive(self):
         """
-        Fetch an specific issue with detailed information
+        Retrive an specific issue with detailed information
         """
-        # @@ fetch comments, @ with response validation 
+        # @@ retrive comments, @ with response validation 
         try:
             r = requests.get(self.comments_url + self.config.auth, timeout=5)
         except Exception as e:

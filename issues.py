@@ -1,11 +1,9 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os           # for folder detecting
-
+import os
 import json
-import requests     # for retrieving web resources
 import logging
+import requests
 
 from issue import Issue
 
@@ -19,10 +17,11 @@ class Issues:
     The core part of this project.
     """
     def __init__(self, config):
-        self.config = config
+        self.cfg = config
+        self.issues = []
         self.updates = []
         self.deletes = []
-        self.issues = []
+        self.modifications = []
 
 
     def retrive_data(self):
@@ -30,10 +29,10 @@ class Issues:
         Retrieving data from internet, @ with response validation
         """
         log.info('Now retriving [%s]...' \
-                % (self.config.issues_url + self.config.auth))
+                % (self.cfg.issues_url + self.cfg.auth))
 
         try:
-            r = requests.get(self.config.issues_url + self.config.auth, timeout=5)
+            r = requests.get(self.cfg.issues_url + self.cfg.auth, timeout=5)
         except Exception as e:
             log.error('An error occured when requesting from Github:\n%s' % str(e))
             log.info('Mission aborted.')
@@ -41,7 +40,7 @@ class Issues:
 
         if r.status_code is not 200:
             log.warn('Failed on fetching [%s] due to unexpected response' \
-                    % self.config.issues_url)
+                    % self.cfg.issues_url)
             return False
 
         log.debug('Remaining %s requests limit for this hour.' \
@@ -56,20 +55,20 @@ class Issues:
         Just for avoiding conflict
         """
         # @@ prepare local git repo for the first time
-        if os.path.exists(self.config.root) is False:
+        if os.path.exists(self.cfg.root) is False:
             log.debug('local repo does not exist, setting up now...')
-            with os.popen('git clone %s %s 2>&1' % (self.config.remote_url, self.config.root)) as p:
+            with os.popen('git clone %s %s 2>&1' % (self.cfg.remote_url, self.cfg.root)) as p:
                 log.info(p.read())
 
         # @ keep local repo updated with remote before further change to avoid conflict
         log.info('Check git remote status before further updates: ')
-        with os.popen('git -C %s pull 2>&1' % (self.config.root)) as p:
+        with os.popen('git -C %s pull origin master 2>&1' % (self.cfg.root)) as p:
             log.info(p.read())
 
         # @Deprecated, use ssh connection instead@        setup default configuration
-        #os.system('git -C %s config credential.helper cache'%self.config.root)
-        #os.system('git -C %s config user.email %s'%(self.config.root, self.config.email))
-        #os.system('git -C %s config user.name %s'%(self.config.root, self.config.remote_user))
+        #os.system('git -C %s config credential.helper cache'%self.cfg.root)
+        #os.system('git -C %s config user.email %s'%(self.cfg.root, self.cfg.email))
+        #os.system('git -C %s config user.name %s'%(self.cfg.root, self.cfg.remote_user))
 
 
     def first_run(self):
@@ -84,8 +83,9 @@ class Issues:
 
         issues = r.json()
         for iss in issues:
-            issue = Issue(self.config, iss)
-            issue.update()
+            issue = Issue(self.cfg, iss)
+            issue.retrive()
+            self.modifications.append(issue.title)
 
         return len(issues)
 
@@ -103,7 +103,7 @@ class Issues:
 
         log.info('Filtering updated and deleted items...')
         # @@ match updated issues and deleted items
-        with open(self.config.issues_path, 'r') as f:
+        with open(self.cfg.issues_path, 'r') as f:
             new = r.json()
             old = json.loads(f.read())
 
@@ -116,15 +116,17 @@ class Issues:
         
         # iterate each issue for operation
         for iss in r.json():
-            issue = Issue(self.config, iss)
+            issue = Issue(self.cfg, iss)
             if issue.index in self.deletes:
                 issue.delete()
+                self.modifications.append(issue.title)
             elif issue.index in self.updates: 
-                issue.update()
+                issue.retrive()
+                self.modifications.append(issue.title)
 
         # update local issues data file
-        with open(self.config.issues_path, 'w') as f:
+        with open(self.cfg.issues_path, 'w') as f:
             f.write(r.content)
 
-        return len(self.updates)
+        return len(self.modifications)
 
