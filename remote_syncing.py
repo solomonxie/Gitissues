@@ -22,6 +22,8 @@ def remote_sync(config, modifications=[]):
     os.system('git -C %s add .' % cwd)
     with os.popen('git -C %s commit -m "%s" 2>&1' % (cwd, msg)) as p:
         log.info('\n' + p.read())
+    with os.popen('git -C %s --no-pager diff 2>&1' % cwd) as p:
+        log.info('\n' + p.read())
     with os.popen('git -C %s push origin master 2>&1' % cwd) as p:
         log.info('\n' + p.read())
 
