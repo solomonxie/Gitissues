@@ -58,12 +58,12 @@ class Issues:
         if os.path.exists(self.cfg.root) is False:
             log.debug('local repo does not exist, setting up now...')
             with os.popen('git clone %s %s 2>&1' % (self.cfg.remote_url, self.cfg.root)) as p:
-                log.info(p.read())
+                log.info('GIT CLONE:\n'+p.read())
 
         # @ keep local repo updated with remote before further change to avoid conflict
         log.info('Check git remote status before further updates: ')
         with os.popen('git -C %s pull origin master 2>&1' % (self.cfg.root)) as p:
-            log.info(p.read())
+            log.info('GIT PULL:\n'+p.read())
 
         # @Deprecated, use ssh connection instead@        setup default configuration
         #os.system('git -C %s config credential.helper cache'%self.cfg.root)

@@ -29,7 +29,7 @@ def main():
 
     issues = Issues(cfg)
     if os.path.exists(cfg.issues_path) is False:
-        os.system('rm -rf %s' % cfg.repo_dir)
+        os.system('mv %s /tmp' % cfg.repo_dir)      # clear workplace by removing
         issues.first_run()
     else:
         issues.update()

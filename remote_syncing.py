@@ -19,13 +19,14 @@ def remote_sync(config, modifications=[]):
     msg = 'Modified ' + ', '.join(modifications).encode('utf-8')          #msg = '`uname -n`'
     
     # run standard git workflow to push updates
-    os.system('git -C %s add .' % cwd)
+    with os.popen('git -C %s add . 2>&1' % cwd) as p:
+        log.info('GIT ADDED.')
     with os.popen('git -C %s commit -m "%s" 2>&1' % (cwd, msg)) as p:
-        log.info('\n' + p.read())
-    with os.popen('git -C %s --no-pager diff 2>&1' % cwd) as p:
-        log.info('\n' + p.read())
+        log.info('GIT COMMIT:\n' + p.read())
+    with os.popen('git --no-pager -C %s diff HEAD^ HEAD 2>&1' % cwd) as p:
+        log.info('GIT DIFF:\n' + p.read())
     with os.popen('git -C %s push origin master 2>&1' % cwd) as p:
-        log.info('\n' + p.read())
+        log.info('GIT PUSH:\n' + p.read())
 
 
 if __name__ == "__main__":
