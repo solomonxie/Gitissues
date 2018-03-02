@@ -43,10 +43,6 @@ class Issues:
                     % self.cfg.issues_url)
             return False
 
-        # create local issues data file
-        with open(self.cfg.issues_path, 'w') as f:
-            f.write(r.content)
-
         log.debug('Retrived issues successfully. Remaining %s requests limit for this hour.' \
                 % r.headers['X-RateLimit-Remaining'])
 
@@ -87,6 +83,10 @@ class Issues:
         r = self.retrive_data()
         if r is None:
             return 0
+
+        # create local issues data file
+        with open(self.cfg.issues_path, 'w') as f:
+            f.write(r.content)
 
         issues = r.json()
         for iss in issues:
@@ -132,6 +132,11 @@ class Issues:
             elif issue.index in self.updates: 
                 issue.retrive()
                 self.modifications.append(issue.title)
+
+        # create local issues data file 
+        # Should be placed here after filtering updates
+        with open(self.cfg.issues_path, 'w') as f:
+            f.write(r.content)
 
         return len(self.modifications)
 

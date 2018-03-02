@@ -23,8 +23,8 @@ def remote_sync(config, modifications=[]):
         log.info('GIT ADDED.')
     with os.popen('git -C %s commit -m "%s" 2>&1' % (cwd, msg)) as p:
         log.info('GIT COMMIT:\n' + p.read())
-    with os.popen('git --no-pager -C %s diff HEAD^ HEAD 2>&1' % cwd) as p:
-        log.info('GIT DIFF:\n' + p.read())
+    #with os.popen('git --no-pager -C %s diff HEAD^ HEAD 2>&1' % cwd) as p:
+    #    log.info('GIT DIFF:\n' + p.read())
     with os.popen('git -C %s push origin master 2>&1' % cwd) as p:
         log.info('GIT PUSH:\n' + p.read())
 
