@@ -35,7 +35,6 @@ def main():
         issues.update()
 
     if len(issues.modifications) > 0:
-        mapping_repo(cfg)
         remote_sync(cfg, issues.modifications)
 
     log.info('Finished for this round check.\n')

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import os           # for folder detecting
+import json
 import requests     # for retrieving web resources
 import logging
 
@@ -14,12 +15,14 @@ class Issue:
 
     def __init__(self, config, iss):
 
-        self.config = config
+        self.cfg = config
         self.title = iss['title']
         self.index = iss['number']
+        self.info = iss['body']
         self.comments_url = iss['comments_url']
         self.counts = iss['comments']
-        self.path = '%s/comments-for-issue-%d.json' % (config.repo_dir, self.index)
+        self.path = '%s/issue-%d-comments.json' % (self.cfg.repo_dir, self.index)
+        self.markdown = '%s/markdown/issue-%d.md' % (self.cfg.repo_dir, self.index)
 
 
     def retrive(self):
@@ -28,7 +31,7 @@ class Issue:
         """
         # @@ retrive comments, @ with response validation 
         try:
-            r = requests.get(self.comments_url + self.config.auth, timeout=5)
+            r = requests.get(self.comments_url + self.cfg.auth, timeout=5)
         except Exception as e:
             log.error('An error occured when requesting from Github:\n%s' % str(e))
             log.info('Mission aborted.')
@@ -43,6 +46,9 @@ class Issue:
         with open(self.path, 'w') as f:
             f.write(r.content)
 
+        # @ create markdown file for retrived issue
+        self.create_markdown()
+
         log.info('Fetched for issue-%d[%s] with %d comments' % (self.index,self.title,self.counts))
 
 
@@ -51,6 +57,29 @@ class Issue:
         Delete an issue that no longer exists at remote
         """
         if os.path.exists(self.path):
-            os.system('rm %s'%self.path)
-            log.info('Deleted issue-%d[%s].'%(self.index, self.title))
+            os.system('rm %s %s' % (self.path, self.markdown))
+            log.info('Deleted issue-%d[%s] and its markdown file.'%(self.index, self.title))
+
+
+    def create_markdown(self):
+        """
+        Create an markdown file for this issue and its all comments
+        """
+        # @@ load comments
+        with open(self.path, 'r') as f:
+            comments = json.loads(f.read())
+
+        # @@ prepare contents for output markdown file
+        header = '# ' + self.title + '\n' + self.info + '\n\n\n'
+        bodies = [cm['body'] for cm in comments]
+        content = header + '\n\n\n'.join(bodies)
+
+        if os.path.exists(os.path.dirname(self.markdown)) is False:
+            os.makedirs(os.path.dirname(self.markdown))
+
+        # @@ output comments into one issue file, named strictly be <ISSUE-INDEX.md>
+        with open(self.markdown, 'w') as f:
+            f.write(content.encode('utf-8'))
+
+        log.info('Generated markdown file for %s at %s.'%(self.title, self.markdown))
 

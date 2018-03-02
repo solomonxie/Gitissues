@@ -43,7 +43,11 @@ class Issues:
                     % self.cfg.issues_url)
             return False
 
-        log.debug('Remaining %s requests limit for this hour.' \
+        # create local issues data file
+        with open(self.cfg.issues_path, 'w') as f:
+            f.write(r.content)
+
+        log.debug('Retrived issues successfully. Remaining %s requests limit for this hour.' \
                 % r.headers['X-RateLimit-Remaining'])
 
         return r
@@ -76,6 +80,9 @@ class Issues:
         Download everything if it's the first run.
         """
         self.git_update()
+
+        if os.path.exists(self.cfg.repo_dir) is False:
+            os.makedirs(self.cfg.repo_dir)
 
         r = self.retrive_data()
         if r is None:
@@ -117,16 +124,14 @@ class Issues:
         # iterate each issue for operation
         for iss in r.json():
             issue = Issue(self.cfg, iss)
+
+            #issue.retrive(); continue  #testing: retrive every single issue
             if issue.index in self.deletes:
                 issue.delete()
                 self.modifications.append(issue.title)
             elif issue.index in self.updates: 
                 issue.retrive()
                 self.modifications.append(issue.title)
-
-        # update local issues data file
-        with open(self.cfg.issues_path, 'w') as f:
-            f.write(r.content)
 
         return len(self.modifications)
 
