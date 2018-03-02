@@ -25,6 +25,22 @@ class Issue:
         self.markdown = '%s/markdown/issue-%d.md' % (self.cfg.repo_dir, self.index)
 
 
+    def git_commit(files=[], msg=''):
+        """
+        Commit changes to local repo
+        """
+        if len(files) <= 0 or msg == '': return
+
+        for f in files:
+            with os.popen('git -C %s add %s 2>&1' % (self.cfg.root, self.path)) as p:
+                log.info('GIT ADDED.')
+
+        with os.popen('git -C %s commit -m "%s" 2>&1' % (self.cfg.root, msg)) as p:
+            log.info('GIT COMMIT:\n' + p.read())
+
+        log.info('Committed change to local git repo.')
+
+
     def retrive(self):
         """
         Retrive an specific issue with detailed information
@@ -56,9 +72,11 @@ class Issue:
         """
         Delete an issue that no longer exists at remote
         """
-        if os.path.exists(self.path):
-            os.system('rm %s %s' % (self.path, self.markdown))
-            log.info('Deleted issue-%d[%s] and its markdown file.'%(self.index, self.title))
+        if os.path.exists(self.path) is False:
+            log.warn('Can not delete, no such a file %s' % self.path)
+
+        os.system('rm %s %s' % (self.path, self.markdown))
+        log.info('Deleted issue-%d[%s] and its markdown file.'%(self.index, self.title))
 
 
     def create_markdown(self):
