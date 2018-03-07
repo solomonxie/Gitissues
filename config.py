@@ -13,17 +13,22 @@ class Config:
         self.user         = "solomonxie"
         self.repo         = "solomonxie.github.io"
         self.issues_url   = "https://api.github.com/repos/solomonxie/solomonxie.github.io/issues"
-        self.auth         = "?client_id=0c08b801005ee3005ded&client_secret=da1a866f28556cc27e6ee12ca7c07c35bb548e5b"
+        #self.auth         = "?client_id=????&client_secret=????"
+        self.auth_file    = "/Volumes/SD/Workspace/etc/github-auth-client.txt"
         self.remote_url   = "git@github.com:solomonxie/user_content_issues_blog.git"
         self.remote_user  = "Solomon Xie"
         self.email        = "solomonxiewise@gmail.com"
         self.root         = "/Volumes/SD/Workspace/autobackup/user_content_issues_blog"
         self.repo_dir     = "%s/%s/%s" % (self.root, self.user, self.repo)
         self.issues_path  = self.repo_dir + '/issues.json'
-        self.log_dir          = "/Volumes/SD/Workspace/autobackup/logs/gitissues"
+        self.log_dir      = "/Volumes/SD/Workspace/autobackup/logs/gitissues"
 
         # init universial logger for modules
         define_logger('gitissues', self.log_dir)
+
+        # read auth string from a local file outside of public repository
+        with open(self.auth_file, 'r') as f:
+            self.auth = f.read().strip()
 
 
 def define_logger(name, path):
