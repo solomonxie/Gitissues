@@ -25,9 +25,12 @@ def main():
 
     # get global logger, which was declared in config file
     log = logging.getLogger('gitissues')
-    log.info('Start fetching issues from Github...')
+    log.info('Start checking with cloud content...')
 
+    # Fetch data from cloud & save changes made
     issues = Issues(cfg)
+    # Sync with cloud before any changes
+    issues.git_update()
     if os.path.exists(cfg.issues_path) is False:
         os.system('mv %s /tmp' % cfg.repo_dir)      # clear workplace by removing
         issues.first_run()

@@ -75,8 +75,6 @@ class Issues:
         """
         Download everything if it's the first run.
         """
-        self.git_update()
-
         if os.path.exists(self.cfg.repo_dir) is False:
             os.makedirs(self.cfg.repo_dir)
 
@@ -102,8 +100,6 @@ class Issues:
         Update local stored issues data
         Introduced filtering algorithm to avoid updating a non-changed content
         """
-        self.git_update()
-
         r = self.retrive_data()
         if r is None:
             return 0
