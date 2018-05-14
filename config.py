@@ -14,17 +14,17 @@ class Config:
     def __init__(self):
         with open('/Volumes/SD/Workspace/etc/gitissues-config.json', 'r') as f:
             cfg = json.loads(f.read())
-        self.user = cfg["fetch"]["user"]
-        self.repo = cfg["fetch"]["repo"]
-        self.issues_url = cfg["fetch"]["issues_url"]
-        self.auth = cfg["fetch"]["auth"]
-        self.remote_url = cfg["remote"]["ssh"]
-        self.remote_user = cfg["remote"]["user"]
-        self.email = cfg["remote"]["email"]
-        self.root = cfg["local"]["root_dir"]
+        self.user = cfg["fetch"]["user"].encode('utf-8')
+        self.repo = cfg["fetch"]["repo"].encode('utf-8')
+        self.issues_url = cfg["fetch"]["issues_url"].encode('utf-8')
+        self.auth = cfg["fetch"]["auth"].encode('utf-8')
+        self.remote_url = cfg["remote"]["ssh"].encode('utf-8')
+        self.remote_user = cfg["remote"]["user"].encode('utf-8')
+        self.email = cfg["remote"]["email"].encode('utf-8')
+        self.root = cfg["local"]["root_dir"].encode('utf-8')
         self.repo_dir     = "%s/%s/%s" % (self.root, self.user, self.repo)
         self.issues_path  = self.repo_dir + '/issues.json'
-        self.log_dir = cfg["local"]["log_dir"]
+        self.log_dir = cfg["local"]["log_dir"].encode('utf-8')
 
         # init universial logger for modules
         define_logger('gitissues', self.log_dir)

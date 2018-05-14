@@ -37,6 +37,7 @@ class Issues:
         except Exception as e:
             log.error('An error occured when requesting from Github:\n%s' % str(e))
             log.info('Mission aborted.')
+            #log.debug('Response headers are as below:\n%s' % str(r.headers))
             return None
 
         if r.status_code is not 200:
@@ -56,7 +57,7 @@ class Issues:
         Just for avoiding conflict
         """
         # @@ prepare local git repo for the first time
-        if os.path.exists(self.cfg.root) is False:
+        if os.path.exists(self.cfg.repo_dir) is False:
             log.debug('local repo does not exist, setting up now...')
             with os.popen('git clone %s %s 2>&1' % (self.cfg.remote_url, self.cfg.root)) as p:
                 log.info('GIT CLONE:\n'+p.read())

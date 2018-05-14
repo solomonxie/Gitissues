@@ -29,17 +29,18 @@ def main():
     issues = Issues(cfg)
     # Sync with cloud before any changes
     issues.git_update()
-    if os.path.exists(cfg.issues_path) is False:
-        os.system('mv %s /tmp' % cfg.repo_dir)      # clear workplace by removing
-        issues.first_run()
-    else:
-        issues.update()
+    #if os.path.exists(cfg.issues_path) is False:
+    #    os.system('mv %s /tmp' % cfg.repo_dir)      # clear workplace by removing
+    #    issues.first_run()
+    #else:
+    #    issues.update()
+    issues.update()
 
     # Push changes to remote repository
     if len(issues.modifications) > 0:
         # Notice: data of modification is from json file which is 'Unicode' 
         # and all others are type of `str`, so needs to unify this one to str
-        msg = 'Modified ' + ', '.join(issues.modifications).encode('utf-8')          #msg = '`uname -n`'
+        msg = 'Modified ' + ', '.join(issues.modifications).encode('utf-8')
         # run standard git workflow to push updates
         with os.popen('git -C %s add . 2>&1' % cfg.root) as p:
             log.info('GIT ADDED.')
