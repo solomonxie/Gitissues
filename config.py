@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
+# ==== This project is required to work in Python2 enviroment, preferred Virtualenv enviroment. ====
 
 import os
 import sys
 import logging
+import json
 from datetime import date
 
 class Config:
@@ -10,25 +12,22 @@ class Config:
     Loading settings from customized configs (json)
     """
     def __init__(self):
-        self.user         = "solomonxie"
-        self.repo         = "solomonxie.github.io"
-        self.issues_url   = "https://api.github.com/repos/solomonxie/solomonxie.github.io/issues"
-        #self.auth         = "?client_id=????&client_secret=????"
-        self.auth_file    = "/Volumes/SD/Workspace/etc/github-auth-client.txt"
-        self.remote_url   = "git@github.com:solomonxie/user_content_issues_blog.git"
-        self.remote_user  = "Solomon Xie"
-        self.email        = "solomonxiewise@gmail.com"
-        self.root         = "/Volumes/SD/Workspace/autobackup/user_content_issues_blog"
+        with open('/Volumes/SD/Workspace/etc/gitissues-config.json', 'r') as f:
+            cfg = json.loads(f.read())
+        self.user = cfg["fetch"]["user"]
+        self.repo = cfg["fetch"]["repo"]
+        self.issues_url = cfg["fetch"]["issues_url"]
+        self.auth = cfg["fetch"]["auth"]
+        self.remote_url = cfg["remote"]["ssh"]
+        self.remote_user = cfg["remote"]["user"]
+        self.email = cfg["remote"]["email"]
+        self.root = cfg["local"]["root_dir"]
         self.repo_dir     = "%s/%s/%s" % (self.root, self.user, self.repo)
         self.issues_path  = self.repo_dir + '/issues.json'
-        self.log_dir      = "/Volumes/SD/Workspace/autobackup/logs/gitissues"
+        self.log_dir = cfg["local"]["log_dir"]
 
         # init universial logger for modules
         define_logger('gitissues', self.log_dir)
-
-        # read auth string from a local file outside of public repository
-        with open(self.auth_file, 'r') as f:
-            self.auth = f.read().strip()
 
 
 def define_logger(name, path):

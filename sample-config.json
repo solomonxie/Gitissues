@@ -1,0 +1,20 @@
+{
+    "fetch": {
+        "user": "YOUR-USER-NAME",
+        "repo": "REPO-NAME",
+        "issues_url": "https://api.github.com/repos/<REPO-NAME>/issues",
+        "auth": "?client_id=<CLIENT-ID>&client_secret=<CLIENT-SECRET>"
+    },
+    "local": {
+        "root_dir": "~/THE-PATH-YOU-WANT-TO-SAVE-DOWNLOADED-FILES",
+        "archive_dir": "~/THE-PATH-YOU-WANT-TO-ARCHIVE-FILES",
+        "log_dir": "~/THE-PATH-YOU-WANT-TO-SAVE-LOGGING-INFORMATION"
+    },
+    "remote": {
+        "user": "REMOTE-USER-NAME",
+        "email": "REMOTE-USER-EMAIL",
+        "repo": "REMOTE-REPO-NAME",
+        "ssh": "REMOTE-REPO-SSH-URL",
+        "https": "REMOTE-REPO-HTTPS-URL"
+    }
+}
