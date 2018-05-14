@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# ==== This project is required to work in Python2 enviroment, preferred Virtualenv enviroment. ====
 
 import os           # for folder detecting
 import json
