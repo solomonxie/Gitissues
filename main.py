@@ -10,9 +10,6 @@ from config import Config
 from issue import Issue
 from issues import Issues
 
-from repo_mapping import mapping_repo
-from remote_syncing import remote_sync
-
 
 def main():
     """
