@@ -16,8 +16,6 @@ def main():
     Main entry of this project.
     Basically just to connect 3 parts in a row as a workflow: Fetching -> mapping -> uploading
     """
-    #import pdb;pdb.set_trace()
-
     # @@ load local config file
     cfg = Config()
 
@@ -25,18 +23,13 @@ def main():
     log = logging.getLogger('gitissues')
     log.info('Start checking with cloud content...')
 
+    #import pdb;pdb.set_trace()
+
     # Fetch data from cloud & save changes made
     issues = Issues(cfg)
-    # Sync with cloud before any changes
-    issues.git_update()
-    #if os.path.exists(cfg.issues_path) is False:
-    #    os.system('mv %s /tmp' % cfg.repo_dir)      # clear workplace by removing
-    #    issues.first_run()
-    #else:
-    #    issues.update()
     issues.update()
 
-    # Push changes to remote repository
+    # Compose commit message & push changes to remote repository
     if len(issues.modifications) > 0:
         # Notice: data of modification is from json file which is 'Unicode' 
         # and all others are type of `str`, so needs to unify this one to str

@@ -29,6 +29,8 @@ class Issue:
         """
         Retrive an specific issue with detailed information
         """
+        #import pdb;pdb.set_trace()
+
         # @@ retrive comments, @ with response validation 
         try:
             r = requests.get(self.url + self.cfg.auth, timeout=5)
@@ -42,35 +44,18 @@ class Issue:
                     % self.url)
             return False              # if failed one comment, then restart whole process on this issue
 
-        # @@ log comments as original json file, for future restoration or further use
-        #with open(self.path, 'w') as f:
-        #    f.write(r.content)
-
         # @ create markdown file for retrived issue
-        self.create_markdown()
+        self.create_markdown(r.content)
 
-        log.info('Fetched for issue-%d[%s] with %d comments' % (self.index,self.title,self.counts))
-
-
-    def delete(self):
-        """
-        Delete an issue that no longer exists at remote
-        """
-        if os.path.exists(self.path) is False:
-            log.warn('Can not delete, no such a file %s' % self.path)
-
-        #os.system('rm %s %s' % (self.path, self.markdown))
-        #log.info('Deleted issue-%d[%s] and its markdown file.'%(self.index, self.title))
-        log.warn('Failed to delete. Function "delete" has not yet completed.')
+        log.info('Finished fetching for issue-%d[%s] with %d comments' % (self.index,self.title,self.counts))
 
 
-    def create_markdown(self):
+    def create_markdown(self, data):
         """
         Create an markdown file for this issue and its all comments
         """
-        # @@ load comments
-        with open(self.path, 'r') as f:
-            comments = json.loads(f.read())
+        # @@ load comments from json data retrived awhile ago
+        comments = json.loads(data)
 
         # @@ prepare contents for output markdown file
         header = '# ' + self.title + '\n' + self.info + '\n\n\n'
@@ -84,5 +69,17 @@ class Issue:
         with open(self.markdown, 'w') as f:
             f.write(content.encode('utf-8'))
 
-        log.info('Generated markdown file for %s at %s.'%(self.title, self.markdown))
+        log.info('Generated markdown file for [%s] at "%s".'%(self.title, self.markdown))
+
+
+    def delete(self):
+        """
+        Delete an issue that no longer exists at remote
+        """
+        if os.path.exists(self.path) is False:
+            log.warn('Can not delete, no such a file %s' % self.path)
+
+        #os.system('rm %s %s' % (self.path, self.markdown))
+        #log.info('Deleted issue-%d[%s] and its markdown file.'%(self.index, self.title))
+        log.warn('Failed to delete. Function "delete" has not yet completed.')
 

@@ -24,6 +24,55 @@ class Issues:
         self.deletes = []
         self.modifications = []    # for git commit message ONLY
 
+        # Sync with cloud before any changes, git pull at very beginning
+        self.git_update()
+
+
+    def update(self):
+        """
+        Update local stored issues data
+        Introduced filtering algorithm to avoid updating a non-changed content
+        """
+        if os.path.exists(self.cfg.issues_path) is False:
+            os.system('mv %s /tmp' % cfg.repo_dir)      # clear workplace by removing
+            issues.first_run()
+            return
+
+        r = self.retrive_data()
+        if r is None:
+            return 0
+
+        log.info('Filtering updated and deleted items...')
+        # @@ match updated issues and deleted items
+        with open(self.cfg.issues_path, 'r') as f:
+            new = r.json()
+            old = json.loads(f.read())
+
+        # @@ filter out same issues from deletes that also exist in updates
+        self.updates = [n['number'] for n in new if n not in old]
+        self.deletes = [o['number'] for o in old if o not in new and o['number'] not in self.updates]
+
+        log.info('%d updates to be fetched...' % len(self.updates))
+        log.info('%d deletes to be executed...' % len(self.deletes))
+        
+        # iterate each issue for operation
+        for iss in r.json():
+            issue = Issue(self.cfg, iss)
+
+            #issue.retrive(); continue  #testing: retrive every single issue
+            if issue.index in self.deletes:
+                issue.delete()
+                self.modifications.append(issue.title)
+            elif issue.index in self.updates: 
+                issue.retrive()
+                self.modifications.append(issue.title)
+
+        # create local issues data file 
+        # This step SHOULD BE placed here after filtering updates
+        with open(self.cfg.issues_path, 'w') as f:
+            f.write(r.content)
+
+        return len(self.modifications)
 
     def retrive_data(self):
         """
@@ -95,46 +144,4 @@ class Issues:
             self.modifications.append(issue.title)
 
         return len(issues)
-
-
-    def update(self):
-        """
-        Update local stored issues data
-        Introduced filtering algorithm to avoid updating a non-changed content
-        """
-        r = self.retrive_data()
-        if r is None:
-            return 0
-
-        log.info('Filtering updated and deleted items...')
-        # @@ match updated issues and deleted items
-        with open(self.cfg.issues_path, 'r') as f:
-            new = r.json()
-            old = json.loads(f.read())
-
-        # @@ filter out same issues from deletes that also exist in updates
-        self.updates = [n['number'] for n in new if n not in old]
-        self.deletes = [o['number'] for o in old if o not in new and o['number'] not in self.updates]
-
-        log.info('%d updates to be fetched...' % len(self.updates))
-        log.info('%d deletes to be executed...' % len(self.deletes))
-        
-        # iterate each issue for operation
-        for iss in r.json():
-            issue = Issue(self.cfg, iss)
-
-            #issue.retrive(); continue  #testing: retrive every single issue
-            if issue.index in self.deletes:
-                issue.delete()
-                self.modifications.append(issue.title)
-            elif issue.index in self.updates: 
-                issue.retrive()
-                self.modifications.append(issue.title)
-
-        # create local issues data file 
-        # This step SHOULD BE placed here after filtering updates
-        with open(self.cfg.issues_path, 'w') as f:
-            f.write(r.content)
-
-        return len(self.modifications)
 
