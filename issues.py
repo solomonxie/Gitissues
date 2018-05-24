@@ -34,8 +34,8 @@ class Issues:
         Introduced filtering algorithm to avoid updating a non-changed content
         """
         if os.path.exists(self.cfg.issues_path) is False:
-            os.system('mv %s /tmp' % cfg.repo_dir)      # clear workplace by removing
-            issues.first_run()
+            os.system('mv %s /tmp' % self.cfg.repo_dir)      # clear workplace by removing
+            self.first_run()
             return
 
         r = self.retrive_data()
