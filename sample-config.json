@@ -1,20 +1,23 @@
 {
     "fetch": {
-        "user": "YOUR-USER-NAME",
-        "repo": "REPO-NAME",
-        "issues_url": "https://api.github.com/repos/<REPO-NAME>/issues",
-        "auth": "?client_id=<CLIENT-ID>&client_secret=<CLIENT-SECRET>"
+        "user": "Jason",
+        "repo": "Jason.github.io",
+        "issues_url": "https://api.github.com/repos/Jason/Jason.github.io/issues",
+        "auth": "?client_id=jlajdlsjflajflkj&client_secret=ajdlfajkfajdk",
+        "token": "token jsdlfjajfwje90f0fjiajlsfj"
     },
     "local": {
-        "root_dir": "~/THE-PATH-YOU-WANT-TO-SAVE-DOWNLOADED-FILES",
-        "archive_dir": "~/THE-PATH-YOU-WANT-TO-ARCHIVE-FILES",
-        "log_dir": "~/THE-PATH-YOU-WANT-TO-SAVE-LOGGING-INFORMATION"
+        "root_dir": "/home/pi/Workspace/autobackup/user_content_issues_blog",
+        "archive_dir": "/home/pi/Downloads",
+        "log_dir": "/home/pi/Workspace/autobackup/logs/gitissues",
+        "repo_dir": "/home/pi/Workspace/autobackup/user_content_issues_blog/Jason/Jason.github.io",
+        "issues_path": "/home/pi/Workspace/autobackup/user_content_issues_blog/Jason/Jason.github.io/issues_list.json"
     },
     "remote": {
-        "user": "REMOTE-USER-NAME",
-        "email": "REMOTE-USER-EMAIL",
-        "repo": "REMOTE-REPO-NAME",
-        "ssh": "REMOTE-REPO-SSH-URL",
-        "https": "REMOTE-REPO-HTTPS-URL"
+        "user": "Solomon Xie",
+        "email": "Jasonwise@gmail.com",
+        "repo": "user_content_issues_blog",
+        "ssh": "git@github.com:Jason/user_content_issues_blog.git",
+        "https": "https://github.com/Jason/user_content_issues_blog.git"
     }
 }
