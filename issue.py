@@ -60,8 +60,8 @@ class Issue:
             return False              # if failed one comment, then restart whole process on this issue
 
         # @@ log comments as original json file, for future restoration or further use
-        with open(self.path, 'w') as f:
-            f.write(r.content)
+        #with open(self.path, 'w') as f:
+        #    f.write(r.content)
 
         # @ create markdown file for retrived issue
         self.create_markdown()
@@ -76,8 +76,9 @@ class Issue:
         if os.path.exists(self.path) is False:
             log.warn('Can not delete, no such a file %s' % self.path)
 
-        os.system('rm %s %s' % (self.path, self.markdown))
-        log.info('Deleted issue-%d[%s] and its markdown file.'%(self.index, self.title))
+        #os.system('rm %s %s' % (self.path, self.markdown))
+        #log.info('Deleted issue-%d[%s] and its markdown file.'%(self.index, self.title))
+        log.warn('Failed to delete. Function "delete" has not yet completed.')
 
 
     def create_markdown(self):
