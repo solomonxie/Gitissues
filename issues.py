@@ -22,7 +22,7 @@ class Issues:
         self.issues = []
         self.updates = []
         self.deletes = []
-        self.modifications = []
+        self.modifications = []    # for git commit message ONLY
 
 
     def retrive_data(self):
@@ -132,7 +132,7 @@ class Issues:
                 self.modifications.append(issue.title)
 
         # create local issues data file 
-        # Should be placed here after filtering updates
+        # This step SHOULD BE placed here after filtering updates
         with open(self.cfg.issues_path, 'w') as f:
             f.write(r.content)
 

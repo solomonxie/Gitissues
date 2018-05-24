@@ -20,27 +20,10 @@ class Issue:
         self.title = iss['title']
         self.index = iss['number']
         self.info = iss['body']
-        self.comments_url = iss['comments_url']
+        self.url = iss['comments_url']
         self.counts = iss['comments']
-        self.path = '%s/issue-%d-comments.json' % (self.cfg.repo_dir, self.index)
+        self.path = '/tmp/issue-%d-comments.json' % (self.index)
         self.markdown = '%s/markdown/issue-%d.md' % (self.cfg.repo_dir, self.index)
-
-
-    def git_commit(files=[], msg=''):
-        """
-        Commit changes to local repo
-        """
-        if len(files) <= 0 or msg == '': return
-
-        for f in files:
-            with os.popen('git -C %s add %s 2>&1' % (self.cfg.root, self.path)) as p:
-                log.info('GIT ADDED.')
-
-        with os.popen('git -C %s commit -m "%s" 2>&1' % (self.cfg.root, msg)) as p:
-            log.info('GIT COMMIT:\n' + p.read())
-
-        log.info('Committed change to local git repo.')
-
 
     def retrive(self):
         """
@@ -48,7 +31,7 @@ class Issue:
         """
         # @@ retrive comments, @ with response validation 
         try:
-            r = requests.get(self.comments_url + self.cfg.auth, timeout=5)
+            r = requests.get(self.url + self.cfg.auth, timeout=5)
         except Exception as e:
             log.error('An error occured when requesting from Github:\n%s' % str(e))
             log.info('Mission aborted.')
@@ -56,7 +39,7 @@ class Issue:
 
         if r.status_code is not 200:
             log.warn('Failed on fetching issue, due to enexpected response: [%s]' \
-                    % self.comments_url)
+                    % self.url)
             return False              # if failed one comment, then restart whole process on this issue
 
         # @@ log comments as original json file, for future restoration or further use
