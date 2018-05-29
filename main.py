@@ -16,6 +16,8 @@ def main():
     Main entry of this project.
     Basically just to connect 3 parts in a row as a workflow: Fetching -> mapping -> uploading
     """
+    #import pdb;pdb.set_trace()
+
     # @@ load local config file
     cfg = Config()
 
@@ -33,7 +35,7 @@ def main():
     if len(issues.modifications) > 0:
         # Notice: data of modification is from json file which is 'Unicode' 
         # and all others are type of `str`, so needs to unify this one to str
-        msg = 'Modified ' + ', '.join(issues.modifications).encode('utf-8')
+        msg = 'Modified ' + ', '.join(issues.modifications)
         # run standard git workflow to push updates
         with os.popen('git -C %s add . 2>&1' % cfg.root) as p:
             log.info('GIT ADDED.')

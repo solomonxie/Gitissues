@@ -48,6 +48,10 @@ class Issues:
             new = r.json()
             old = json.loads(f.read())
 
+        if new is None or old is None:
+            log.error('Someting wrong with issues list JSON file. Please check')
+            return
+
         # @@ filter out same issues from deletes that also exist in updates
         self.updates = [n['number'] for n in new if n not in old]
         self.deletes = [o['number'] for o in old if o not in new and o['number'] not in self.updates]
@@ -70,7 +74,7 @@ class Issues:
         # create local issues data file 
         # This step SHOULD BE placed here after filtering updates
         with open(self.cfg.issues_path, 'w') as f:
-            f.write(r.content)
+            f.write(r.text)
 
         return len(self.modifications)
 
@@ -85,16 +89,16 @@ class Issues:
             r = requests.get(self.cfg.issues_url + self.cfg.auth, timeout=5)
         except Exception as e:
             log.error('An error occured when requesting from Github:\n%s' % str(e))
-            log.info('Mission aborted.')
+            log.error('Mission aborted.')
             #log.debug('Response headers are as below:\n%s' % str(r.headers))
             return None
 
         if r.status_code is not 200:
-            log.warn('Failed on fetching [%s] due to unexpected response' \
+            log.error('Failed on fetching [%s] due to unexpected response' \
                     % self.cfg.issues_url)
             return False
 
-        log.debug('Retrived issues successfully. Remaining %s requests limit for this hour.' \
+        log.info('Retrived issues successfully. Remaining %s requests limit for this hour.' \
                 % r.headers['X-RateLimit-Remaining'])
 
         return r
@@ -107,7 +111,7 @@ class Issues:
         """
         # @@ prepare local git repo for the first time
         if os.path.exists(self.cfg.repo_dir) is False:
-            log.debug('local repo does not exist, setting up now...')
+            log.warn('local repo does not exist, setting up now...')
             with os.popen('git clone %s %s 2>&1' % (self.cfg.remote_url, self.cfg.root)) as p:
                 log.info('GIT CLONE:\n'+p.read())
 

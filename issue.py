@@ -67,7 +67,7 @@ class Issue:
 
         # @@ output comments into one issue file, named strictly be <ISSUE-INDEX.md>
         with open(self.markdown, 'w') as f:
-            f.write(content.encode('utf-8'))
+            f.write(content)
 
         log.info('Generated markdown file for [%s] at "%s".'%(self.title, self.markdown))
 
