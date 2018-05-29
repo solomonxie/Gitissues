@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# ==== This project is required to work in Python2 enviroment, preferred Virtualenv enviroment. ====
+# Python3. Preferred in pipenv virtual enviroment.
 
 import os
 import json
