@@ -139,7 +139,7 @@ class Issues:
 
         # create local issues data file
         with open(self.cfg.issues_path, 'w') as f:
-            f.write(r.content)
+            f.write(r.text)
 
         issues = r.json()
         for iss in issues:

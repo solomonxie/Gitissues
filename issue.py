@@ -45,7 +45,7 @@ class Issue:
             return False              # if failed one comment, then restart whole process on this issue
 
         # @ create markdown file for retrived issue
-        self.create_markdown(r.content)
+        self.create_markdown(r.text)
 
         log.info('Finished fetching for issue-%d[%s] with %d comments' % (self.index,self.title,self.counts))
 
