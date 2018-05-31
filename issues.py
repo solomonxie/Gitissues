@@ -6,6 +6,7 @@ import json
 import logging
 import requests
 
+# This project's module
 from issue import Issue
 
 
@@ -30,8 +31,10 @@ class Issues:
 
     def update(self):
         """
-        Update local stored issues data
-        Introduced filtering algorithm to avoid updating a non-changed content
+        Description:
+            Update local stored issues data
+        Algorithm:
+            Introduced filtering algorithm to avoid updating a non-changed content
         """
         if os.path.exists(self.cfg.issues_path) is False:
             os.system('mv %s /tmp' % self.cfg.repo_dir)      # clear workplace by removing
@@ -59,20 +62,23 @@ class Issues:
         log.info('%d updates to be fetched...' % len(self.updates))
         log.info('%d deletes to be executed...' % len(self.deletes))
         
-        # iterate each issue for operation
+        # iterate each issue to update or delete
+        # only retrive issues that needed to be updated,
+        # avoid to request from Github too many times
         for iss in r.json():
             issue = Issue(self.cfg, iss)
 
-            #issue.retrive(); continue  #testing: retrive every single issue
             if issue.index in self.deletes:
                 issue.delete()
                 self.modifications.append(issue.title)
             elif issue.index in self.updates: 
                 issue.retrive()
+                issue.create_markdown()
                 self.modifications.append(issue.title)
 
         # create local issues data file 
-        # This step SHOULD BE placed here after filtering updates
+        # This step SHOULD BE placed after filtering all updates
+        # means no data will be written into file if there's no updates
         with open(self.cfg.issues_path, 'w') as f:
             f.write(r.text)
 

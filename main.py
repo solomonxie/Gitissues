@@ -6,9 +6,11 @@ import sys
 import logging
 from datetime import date
 
+# This project's module
 from config import Config
 from issue import Issue
 from issues import Issues
+from comment import Comment
 
 
 def main():
@@ -25,7 +27,16 @@ def main():
     log = logging.getLogger('gitissues')
     log.info('Start checking with cloud content...')
 
+    #test
+    import json
     #import pdb;pdb.set_trace()
+    with open('./samples/sample-comments.json', 'r') as f:
+        comments = json.loads(f.read())
+        bodies = []
+        for c in comments:
+            comment = Comment(cfg, c)
+            bodies.append(comment.create_markdown())
+    return
 
     # Fetch data from cloud & save changes made
     issues = Issues(cfg)

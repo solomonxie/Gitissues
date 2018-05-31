@@ -1,21 +1,26 @@
 # -*- coding: utf-8 -*-
 # Python3. Preferred in pipenv virtual enviroment.
 
-import os           # for folder detecting
+import os # for folder detecting
 import json
-import requests     # for retrieving web resources
+import requests
 import logging
+
+# This project's module
+from comment import Comment
 
 log = logging.getLogger('gitissues.issue')
 
 
 class Issue:
     """
-    A class for a single issue, included every property and function for an issue.
+    Description: A class for a single issue, included every property and function for an issue.
+    Instance: This class will be instanized when the update() function of Issues class is called.
+    Data: All comments of a issue, are stored in 1 single JSON file, 
+          which means there's no need to further requests for each comment.
     """
 
     def __init__(self, config, iss):
-
         self.cfg = config
         self.title = iss['title']
         self.index = iss['number']
@@ -50,12 +55,16 @@ class Issue:
         log.info('Finished fetching for issue-%d[%s] with %d comments' % (self.index,self.title,self.counts))
 
 
-    def create_markdown(self, data):
+    def create_markdown(self):
         """
-        Create an markdown file for this issue and its all comments
+        Description:
+            Create an markdown file for this issue and its all comments
+        functionallity: 
+            Load a JSON file including all comments of an issue, 
+            then extract title, date, content etc., to create a markdown file
         """
         # @@ load comments from json data retrived awhile ago
-        comments = json.loads(data)
+        comments = json.loads(self.data)
 
         # @@ prepare contents for output markdown file
         header = '# ' + self.title + '\n' + self.info + '\n\n\n'
@@ -76,10 +85,5 @@ class Issue:
         """
         Delete an issue that no longer exists at remote
         """
-        if os.path.exists(self.path) is False:
-            log.warn('Can not delete, no such a file %s' % self.path)
-
-        #os.system('rm %s %s' % (self.path, self.markdown))
-        #log.info('Deleted issue-%d[%s] and its markdown file.'%(self.index, self.title))
         log.warn('Failed to delete. Function "delete" has not yet completed.')
 
