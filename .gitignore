@@ -3,4 +3,4 @@
 *.idea
 *.pyc
 *.swo
-.vscode
+__pycache__

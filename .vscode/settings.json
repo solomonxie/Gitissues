@@ -1,0 +1,12 @@
+{
+    "python.pythonPath": "/Volumes/SD/Workspace/venv3/bin/python",
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "*.swp": true,
+        "**/__pycache__": true
+    }
+}
