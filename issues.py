@@ -1,6 +1,15 @@
 # -*- coding: utf-8 -*-
 # Python3. Preferred in pipenv virtual enviroment.
 
+"""
+File: issues.py
+Author: Solomon Xie
+Email: solomonxiewise@gmail.com
+Github: https://github.com/solomonxie
+Description: 
+"""
+
+
 import os
 import json
 import logging

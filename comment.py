@@ -1,6 +1,14 @@
 # -*- coding: utf-8 -*-
 # Python3. Preferred in pipenv virtual enviroment.
 
+"""
+File: comment.py
+Author: Solomon Xie
+Email: solomonxiewise@gmail.com
+Github: https://github.com/solomonxie
+Description: 
+"""
+
 
 import os           # for folder detecting
 import json

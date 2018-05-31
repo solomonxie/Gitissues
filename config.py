@@ -1,7 +1,13 @@
 # -*- coding: utf-8 -*-
 # Python3. Preferred in pipenv virtual enviroment.
+
 """
-How this module works:
+File: config.py
+Author: Solomon Xie
+Email: solomonxiewise@gmail.com
+Github: https://github.com/solomonxie
+Description: 
+    How this module works:
 """
 
 import os

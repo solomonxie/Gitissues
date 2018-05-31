@@ -11,7 +11,6 @@ from comment import Comment
 
 log = logging.getLogger('gitissues.issue')
 
-
 class Issue:
     """
     Description: A class for a single issue, included every property and function for an issue.
@@ -27,6 +26,7 @@ class Issue:
         self.info = iss['body']
         self.url = iss['comments_url']
         self.counts = iss['comments']
+        self.data = []
         self.path = '/tmp/issue-%d-comments.json' % (self.index)
         self.markdown = '%s/markdown/issue-%d.md' % (self.cfg.repo_dir, self.index)
 
@@ -49,8 +49,11 @@ class Issue:
                     % self.url)
             return False              # if failed one comment, then restart whole process on this issue
 
+        # store JSON string 
+        self.data = r.text
+
         # @ create markdown file for retrived issue
-        self.create_markdown(r.text)
+        self.create_markdown()
 
         log.info('Finished fetching for issue-%d[%s] with %d comments' % (self.index,self.title,self.counts))
 
