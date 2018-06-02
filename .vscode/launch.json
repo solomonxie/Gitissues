@@ -96,7 +96,7 @@
             "name": "Python: All debug Options",
             "type": "python",
             "request": "launch",
-            "pythonPath": "/Volumes/SD/Workspace/venv2/bin/python",
+            "pythonPath": "${config:python.pythonPath}",
             "program": "${file}",
             "module": "module.name",
             "env": {

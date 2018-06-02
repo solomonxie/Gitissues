@@ -6,7 +6,7 @@
         {
             "label": "python",
             "type": "shell",
-            "command": "/Volumes/SD/Workspace/venv2/bin/python",
+            "command": "${config:python.pythonPath}",
             "args": [
                 "${file}"
             ],

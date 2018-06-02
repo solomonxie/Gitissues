@@ -47,6 +47,7 @@ def main():
             bodies.append(comment.create_markdown())
     return
 
+
     # Fetch data from cloud & save changes made
     issues = Issues(cfg)
     issues.update()
