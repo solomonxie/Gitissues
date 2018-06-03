@@ -43,7 +43,7 @@ def main():
         comments = json.loads(f.read())
         bodies = []
         for c in comments:
-            comment = Comment(cfg, c)
+            comment = Comment(cfg, c, 49)
             bodies.append(comment.create_markdown())
     return
 

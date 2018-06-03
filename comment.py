@@ -22,15 +22,17 @@ class Comment:
     A class for storing & operating comments of an issue
     """
 
-    def __init__(self, config, cm):
+    def __init__(self, config, cm, issue_number):
         self.cfg = config
+        self.parent = issue_number
         self.title = str(cm['id'])
         self.id = cm['id']
         self.content = cm['body']
         self.url = cm['url']
         self.link = cm['html_url']
         self.issue_url = cm['issue_url']
-        self.mfile = '%s/markdown/comments/%d/comment-%s.md' % (self.cfg.repo_dir, self.id)
+        self.mfile = '%s/markdown/comments/%d/comment-%d.md' %(
+                self.cfg.repo_dir, self.parent, self.id)
 
     def create_markdown(self):
         """
