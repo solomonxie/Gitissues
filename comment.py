@@ -10,9 +10,9 @@ Description:
 """
 
 
-import os           # for folder detecting
+import os
 import json
-import requests     # for retrieving web resources
+import requests
 import logging
 
 log = logging.getLogger('gitissues.issue')

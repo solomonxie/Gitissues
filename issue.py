@@ -1,12 +1,20 @@
 # -*- coding: utf-8 -*-
 # Python3. Preferred in pipenv virtual enviroment.
 
+"""
+File: issue.py
+Author: Solomon Xie
+Email: solomonxiewise@gmail.com
+Github: https://github.com/solomonxie
+Description: 
+"""
+
 import os # for folder detecting
 import json
 import requests
 import logging
 
-# This project's module
+# This project's modules
 from comment import Comment
 
 log = logging.getLogger('gitissues.issue')

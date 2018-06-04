@@ -15,7 +15,7 @@ import json
 import logging
 import requests
 
-# This project's module
+# This project's modules
 from issue import Issue
 
 
