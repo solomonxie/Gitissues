@@ -21,7 +21,7 @@ class Config:
     Loading settings from customized configs (json)
     """
     def __init__(self):
-        with open('/Volumes/SD/Workspace/etc/tokens/gitissues-config.json', 'r') as f:
+        with open('/Volumes/SD/Workspace/etc/configs/gitissues-config.json', 'r') as f:
             cfg = json.loads(f.read())
         # github api related configs
         self.user = cfg["fetch"]["user"]
