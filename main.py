@@ -37,15 +37,15 @@ def main():
     log.info('Start checking with cloud content...')
 
     #test
-    import json
-    #import pdb;pdb.set_trace()
-    with open('./samples/sample-comments.json', 'r') as f:
-        comments = json.loads(f.read())
-        bodies = []
-        for c in comments:
-            comment = Comment(cfg, c, 49)
-            bodies.append(comment.create_markdown())
-    return
+    #import json
+    ##import pdb;pdb.set_trace()
+    #with open('./samples/sample-comments.json', 'r') as f:
+    #    comments = json.loads(f.read())
+    #    bodies = []
+    #    for c in comments:
+    #        comment = Comment(cfg, c, 49)
+    #        bodies.append(comment.create_markdown())
+    #return
 
 
     # Fetch data from cloud & save changes made
