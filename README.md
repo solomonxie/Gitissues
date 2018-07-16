@@ -4,8 +4,8 @@
 专注于issues博客功能，出发点就不同于桌面已有的和手机上鲜有的应用。
 
 关于此项目的Jupyter Note笔记浏览地址：
-- [Github浏览器](https://github.com/solomonxie/gitissues/blob/master/notes-gitissues.ipynb)
-- [nbviewer浏览器](https://nbviewer.jupyter.org/github/solomonxie/gitissues/blob/master/notes-gitissues.ipynb)
+- [Github浏览器](https://github.com/solomonxie/jupyter-notebooks/blob/master/gitissues.ipynb)
+- [nbviewer浏览器](https://nbviewer.jupyter.org/github/solomonxie/jupyter-notebooks/blob/master/gitissues.ipynb)
 
 
 
