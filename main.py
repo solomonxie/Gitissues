@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Python3. Preferred in pipenv virtual enviroment.
+# Python3. Preferred in virtual enviroment.
 
 """
 File: main.py
