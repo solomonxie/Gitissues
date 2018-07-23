@@ -34,16 +34,35 @@ class Issue:
         self.info = iss['body']
         self.url = iss['comments_url']
         self.counts = iss['comments']
-        self.data = []
         self.path = '/tmp/issue-%d-comments.json' % (self.index)
-        self.markdown = '%s/markdown/issue-%d.md' % (self.cfg.repo_dir, self.index)
+        self.markdown_path = '%s/markdown/issue-%d.md' % (self.cfg.repo_dir, self.index)
+        self.issue_json = None
+        self.issue_text = None
 
-    def retrive(self):
+
+    def get_comments(self):
         """
         Retrive an specific issue with detailed information
         """
-        #import pdb;pdb.set_trace()
+        # retrive all details of an issue and all its comments
+        if self.__get_issue_raw() is None:
+            log.warn('Failed to fetch details of the issue [%s].'% self.title)
+            self = None
+            return
 
+        log.info('Finished fetching for issue-%d[%s] with %d comments' % (self.index,self.title, self.counts))
+
+
+    def delete(self):
+        """
+        Delete an issue that no longer exists at remote
+        """
+        log.warn('Failed to delete. Function "delete" has not yet completed.')
+
+
+    def __get_issue_raw(self):
+        """
+        """
         # @@ retrive comments, @ with response validation 
         try:
             r = requests.get(self.url + self.cfg.auth, timeout=5)
@@ -52,18 +71,16 @@ class Issue:
             log.info('Mission aborted.')
             return None
 
+        # if failed, then restart whole process on this issue
         if r.status_code is not 200:
-            log.warn('Failed on fetching issue, due to enexpected response: [%s]' \
-                    % self.url)
-            return False              # if failed one comment, then restart whole process on this issue
+            log.warn('Failed on fetching issue, due to enexpected response: [%s]'% self.url)
+            return None
+        
+        # Set up issue data
+        self.issue_json = r.json()
+        self.issue_text = r.text
+        return r
 
-        # store JSON string 
-        self.data = r.text
-
-        # @ create markdown file for retrived issue
-        self.create_markdown()
-
-        log.info('Finished fetching for issue-%d[%s] with %d comments' % (self.index,self.title,self.counts))
 
 
     def create_markdown(self):
@@ -75,26 +92,18 @@ class Issue:
             then extract title, date, content etc., to create a markdown file
         """
         # @@ load comments from json data retrived awhile ago
-        comments = json.loads(self.data)
+        comments = json.loads(self.issue_json)
 
         # @@ prepare contents for output markdown file
         header = '# ' + self.title + '\n' + self.info + '\n\n\n'
         bodies = [cm['body'] for cm in comments]
         content = header + '\n\n\n'.join(bodies)
 
-        if os.path.exists(os.path.dirname(self.markdown)) is False:
-            os.makedirs(os.path.dirname(self.markdown))
+        if os.path.exists(os.path.dirname(self.markdown_path)) is False:
+            os.makedirs(os.path.dirname(self.markdown_path))
 
         # @@ output comments into one issue file, named strictly be <ISSUE-INDEX.md>
-        with open(self.markdown, 'w') as f:
+        with open(self.markdown_path, 'w') as f:
             f.write(content)
 
-        log.info('Generated markdown file for [%s] at "%s".'%(self.title, self.markdown))
-
-
-    def delete(self):
-        """
-        Delete an issue that no longer exists at remote
-        """
-        log.warn('Failed to delete. Function "delete" has not yet completed.')
-
+        log.info('Generated markdown file for [%s] at "%s".'%(self.title, self.markdown_path))
