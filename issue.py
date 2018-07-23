@@ -34,7 +34,8 @@ class Issue:
         self.info = iss['body']
         self.url = iss['comments_url']
         self.counts = iss['comments']
-        self.path = '/tmp/issue-%d-comments.json' % (self.index)
+        self.dir = '%s/issue-%d'% (self.cfg.repo_dir, self.index)
+        self.path_json = '%s/issue-%d.json'% (self.dir, self.index)
         self.markdown_path = '%s/markdown/issue-%d.md' % (self.cfg.repo_dir, self.index)
         self.issue_json = None
         self.issue_text = None
