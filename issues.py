@@ -43,6 +43,52 @@ class Issues:
             return
 
 
+    def __get_issues_list(self):
+        """
+        Retrieving data from internet, @ with response validation
+        """
+        log.info(f'Now retriving [{self.cfg.issues_url+self.cfg.auth}]...')
+
+        try:
+            r = requests.get(self.cfg.issues_url + self.cfg.auth, timeout=5)
+        except Exception as e:
+            log.error(f'An error occured when requesting from Github:\n{str(e)}')
+            log.error('Mission aborted.')
+            #log.debug('Response headers are as below:\n%s' % str(r.headers))
+            return None
+
+        if r.status_code is not 200:
+            log.error(f'Failed on fetching {self.cfg.issues_url} due to unexpected response')
+            return None
+
+        # Set up retrived data
+        self.issues_json = r.json()
+        self.issues_text = r.text
+
+        __limit = r.headers['X-RateLimit-Remaining']
+        log.info(f'Remain {__limit} requests limit in this hour.')
+        log.info('Retrived issues successfully.')
+
+        # Save retrived data csv file
+        self.__save_issues_list_csv()
+        log.info('Saved issues_list as [last_issues_list.csv]')
+        return r
+    
+    def __save_issues_list_csv(self):
+        """
+        """
+        content = [] 
+        for iss in self.issues_json:
+            line = f"{iss['number']}, {iss['id']}, {iss['created_at']}, {iss['updated_at']}, {iss['title']}"
+            content.append(line)
+        
+        # Build directory structure
+        if os.path.exists(self.cfg.repo_dir) is False:
+            os.makedirs(self.cfg.repo_dir) 
+        with open(f'{self.cfg.repo_dir}/last_issues_list.csv', 'w') as f:
+            f.write('\n'.join(content))
+
+
     def update(self):
         """
         Description:
@@ -51,12 +97,8 @@ class Issues:
             Introduced filtering algorithm to avoid updating a non-changed content
         :return integer: number of issues changes
         """
-        if self.first_run() is True:
-            return len(self.modifications)
-        
-        self.filter_changes()
-
-        self.__save_last_rettrived()
+        if self.first_run() is False:
+            self.filter_changes()
 
         self.fetch_issues()
 
@@ -67,26 +109,19 @@ class Issues:
         """
         Download everything as local repo's initialization
         """
-        if os.path.exists(self.cfg.issues_path) is True:
-            return False
+        # if os.path.exists(self.cfg.last_issues_path) is True:
+        #     return False
         
         log.info('First run: Start initializing local repo...')
 
         # Remove entire local backup-folder if no last issues data
-        os.system('mv %s /tmp' % self.cfg.repo_dir)      
-        # Build directory structure
-        os.makedirs(self.cfg.repo_dir)
+        # if os.path.exists(self.cfg.repo_dir) is True:
+        #     os.system('mv %s /tmp' % self.cfg.repo_dir)
+
+        # Treat every issue as an update
+        self.updates = [iss['number'] for iss in self.issues_json]
         
-        # create local issues data file
-        with open(self.cfg.issues_path, 'w') as f:
-            f.write(r.text)
-
-        for iss in self.issues_json:
-            issue = Issue(self.cfg, iss)
-            issue.get_comments()
-            self.modifications.append(issue.title)
-
-        return len(issues)
+        return True
 
 
     def filter_changes(self):
@@ -105,80 +140,25 @@ class Issues:
 
         # @@ filter out same issues from deletes that also exist in updates
         self.updates = [n['number'] for n in new if n not in old]
-        self.deletes = [o['number'] for o in old if o not in new and o['number'] not in self.updates]
+        #self.deletes = [o['number'] for o in old if o not in new and o['number'] not in self.updates]
 
 
 
     def fetch_issues(self):
         """
-        1. Download every issue and its comments from the cloud
-        2. Delete issues that was removed on the cloud
-        # iterate each issue to update or delete
-        # only retrive issues that needed to be updated,
-        # avoid to request from Github too many times
+        Download every updated issue and its comments from the cloud
         """
         log.info('%d updates to be fetched...' % len(self.updates))
-        log.info('%d deletes to be executed...' % len(self.deletes))
         for iss in self.issues_json:
             issue = Issue(self.cfg, iss)
-            if issue.index in self.deletes:
-                issue.delete()
-                self.modifications.append(issue.title)
-            elif issue.index in self.updates: 
-                issue.get_comments()
+            if issue.index in self.updates: 
+                issue.fetch_issue_details()
                 issue.create_markdown()
-                self.modifications.append(issue.title)
-
-
-    def __save_last_rettrived(self):
-        """
-        """
-        # Update local issues raw json file 
-        # This step SHOULD BE placed after filtering all updates
-        # means no data will be written into file if there's no updates
-        with open(self.cfg.issues_path) as f:
-            f.write(self.issues_json)
-        
-        # save csv data file
-        with open(self.cfg.repo_dir+'/all-comments.csv') as f:
-            f.write(self.issues_csv)
+            elif issue.index in self.deletes:
+                issue.delete()
+            self.modifications.append(issue.title)
 
     
-    def __get_issues_list(self):
-        """
-        Retrieving data from internet, @ with response validation
-        """
-        log.info('Now retriving [%s]...' \
-                % (self.cfg.issues_url + self.cfg.auth))
-
-        try:
-            r = requests.get(self.cfg.issues_url + self.cfg.auth, timeout=5)
-        except Exception as e:
-            log.error('An error occured when requesting from Github:\n%s' % str(e))
-            log.error('Mission aborted.')
-            #log.debug('Response headers are as below:\n%s' % str(r.headers))
-            return None
-
-        if r.status_code is not 200:
-            log.error('Failed on fetching [%s] due to unexpected response' \
-                    % self.cfg.issues_url)
-            return None
-
-        log.info('Retrived issues successfully. Remaining %s requests limit for this hour.' \
-                % r.headers['X-RateLimit-Remaining'])
-
-        # Set up retrived data
-        self.issues_json = r.json()
-        self.issues_text = r.text
-        self.__set_issues_csv()
-        return r
-    
-
-    def __set_issues_csv(self):
-        """
-        """
-        pass
-
 
 
     def git_pull(self):
@@ -189,12 +169,12 @@ class Issues:
         # @@ prepare local git repo for the first time
         if os.path.exists(self.cfg.repo_dir) is False:
             log.warn('local repo does not exist, setting up now...')
-            with os.popen('git clone %s %s 2>&1' % (self.cfg.remote_url, self.cfg.root)) as p:
+            with os.popen(f'git clone {self.cfg.remote_url} {self.cfg.root} 2>&1') as p:
                 log.info('GIT CLONE:\n'+p.read())
 
         # @ keep local repo updated with remote before further change to avoid conflict
         log.info('Check git remote status before further updates: ')
-        with os.popen('git -C %s pull origin master 2>&1' % (self.cfg.root)) as p:
+        with os.popen(f'git -C {self.cfg.root} pull origin master 2>&1') as p:
             log.info('GIT PULL:\n'+p.read())
 
         # @Deprecated, use ssh connection instead@        setup default configuration
@@ -215,9 +195,9 @@ class Issues:
         # and all others are type of `str`, so needs to unify this one to str
         msg = 'Modified ' + ', '.join(self.modifications)
         # run standard git workflow to push updates
-        with os.popen('git -C %s add . 2>&1' % cfg.root) as p:
+        with os.popen(f'git -C {self.cfg.root} add . 2>&1') as p:
             log.info('GIT ADDED.')
-        with os.popen('git -C %s commit -m "%s" 2>&1' % (cfg.root, msg)) as p:
+        with os.popen(f'git -C {self.cft.root} commit -m "{msg}" 2>&1') as p:
             log.info('GIT COMMIT:\n' + p.read())
-        with os.popen('git -C %s push origin master 2>&1' % cfg.root) as p:
+        with os.popen(f'git -C {self.cfg.root} push origin master 2>&1') as p:
             log.info('GIT PUSH:\n' + p.read())

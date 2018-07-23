@@ -15,7 +15,7 @@ import json
 import requests
 import logging
 
-log = logging.getLogger('gitissues.issue')
+log = logging.getLogger('gitissues.comment')
 
 class Comment:
     """
@@ -33,23 +33,6 @@ class Comment:
         self.issue_url = cm['issue_url']
         self.mfile = '%s/markdown/comments/%d/comment-%d.md' %(
                 self.cfg.repo_dir, self.parent, self.id)
-
-    def create_markdown(self):
-        """
-        Create an markdown file for this comment
-        """
-        if os.path.exists(os.path.dirname(self.mfile)) is False:
-            os.makedirs(os.path.dirname(self.mfile))
-
-        # @@ prepare contents for outputting markdown file
-        output = '# ' + self.title + '\n' + self.content
-
-        # @@ output comments into one issue file, named strictly be <ISSUE-INDEX.md>
-        with open(self.mfile, 'w') as f:
-            f.write(output)
-            log.info('Generated markdown file for comment [%s] at "%s".'%(self.title, self.mfile))
-
-        return output
 
 
     def delete(self):

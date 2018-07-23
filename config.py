@@ -41,7 +41,7 @@ class Config:
         self.root = cfg["local"]["root_dir"]
         self.repo_dir     = cfg["local"]["repo_dir"]
         self.log_dir = cfg["local"]["log_dir"]
-        self.issues_path  = cfg["local"]["issues_path"]
+        self.last_issues_path  = cfg["local"]["last_issues_path"]
         # init universial logger for modules
         self.logger_name = name
         self.__define_logger()

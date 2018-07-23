@@ -36,11 +36,11 @@ def main():
     log.info('Start checking with cloud content...')
 
     # Fetch data from cloud & save changes made
-    issues = Issues(cfg)
-    issues.git_pull()
     import pdb;pdb.set_trace()
+    issues = Issues(cfg)
+    #issues.git_pull()
     issues.update()
-    issues.git_push()
+    #issues.git_push()
 
     log.info('Finished for this round check.\n')
 
