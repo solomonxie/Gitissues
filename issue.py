@@ -59,7 +59,7 @@ class Issue:
         __response = self.__get_issue_raw()
 
         if __response is None:
-            log.warn(f'Failed to fetch details of the issue [{self.title}].')
+            log.warn(f'\nFailed to fetch details of the issue [{self.title}].')
             self = None
             return
         

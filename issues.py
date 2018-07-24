@@ -145,7 +145,7 @@ class Issues:
                 issue.export_issue_to_markdown()
                 issue.save_comments_list_csv()
                 issue.export_comments_to_markdown()
-            self.modifications.append(issue.title)
+                self.modifications.append(issue.title)
 
 
     def __save_issues_list_csv(self):

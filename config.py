@@ -58,7 +58,7 @@ class Config:
         logger = logging.getLogger(self.logger_name)
         logger.setLevel(logging.DEBUG)
 
-        formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+        formatter = logging.Formatter('\n%(asctime)s - %(name)s - %(levelname)s :\n\n\t%(message)s')
 
         # make log file path
         if os.path.exists(self.log_dir) is False:

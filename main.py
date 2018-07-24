@@ -28,7 +28,7 @@ def main():
     Basically just to connect 3 parts in a row as a workflow: Fetching -> mapping -> uploading
     """
 
-    import pdb;pdb.set_trace()
+    # import pdb;pdb.set_trace()
     # @@ load local config file
     cfg = Config('gitissues')
 
