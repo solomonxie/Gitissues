@@ -30,7 +30,7 @@ class Comment:
         self.body = cmt['body']
         self.created_at = cmt['created_at']
         self.updated_at = cmt['updated_at']
-        self.markdown_dir = f'{self.cfg.repo_dir}/markdown/issue-{self.parent}'
+        self.markdown_dir = f'{self.cfg.backup_dir}/markdown/issue-{self.parent}'
 
         self.title = ''
         self.content = ''

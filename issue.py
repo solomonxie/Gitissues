@@ -41,10 +41,10 @@ class Issue:
         self.updates = []
         self.deletes = []
 
-        self.dir = f'{self.cfg.repo_dir}/issue-{self.index}'
+        self.dir = f'{self.cfg.backup_dir}/issue-{self.index}'
         self.path_json = f'{self.dir}/issue-{self.index}.json'
-        self.comments_list_path = f'{self.cfg.repo_dir}/issue-{self.index}-comments.csv'
-        self.markdown_dir = f'{self.cfg.repo_dir}/markdown/issue-{self.index}'
+        self.comments_list_path = f'{self.cfg.backup_dir}/issue-{self.index}-comments.csv'
+        self.markdown_dir = f'{self.cfg.backup_dir}/markdown/issue-{self.index}'
         self.markdown_path = f'{self.markdown_dir}/issue-{self.index}.md'
 
         if os.path.exists(self.markdown_dir) is False:
@@ -63,8 +63,6 @@ class Issue:
             self = None
             return
         
-        self.save_all_comments()
-
         log.info(f'Finished fetching for issue-{self.index}[{self.title}] with {self.count} comments.')
     
 

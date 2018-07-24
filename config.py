@@ -28,19 +28,26 @@ class Config:
         with open(path, 'r') as f:
             cfg = json.loads(f.read())
 
-        # github api related configs
-        self.target_repo = cfg['target_repo']
-        self.auth = cfg['auth']
-        # remote storage configs (a different git repo with the original one)
-        self.remote_url = cfg['remote']
-        # download resources to local drive
-        self.root = cfg['root_dir']
-        self.repo_dir = cfg['repo_dir']
+        # Logging path
         self.log_dir = cfg['log_dir']
-        self.last_issues_path  = self.repo_dir + '/last_issues_list.csv' 
-        # init universial logger for modules
+        # Global logger for all modules
         self.logger_name = name
         self.__define_logger()
+
+        # Target Github repo (where we're gonna be fetching)
+        self.target_user = cfg['target_user']
+        self.target_repo = cfg['target_repo']
+        self.target_url = f'https://api.github.com/repos/{self.target_user}/{self.target_repo}/issues'
+        self.auth = cfg['auth']
+
+        # Remote backup repo (where we're gonna store all fetched contents)
+        self.backup_url = cfg['backup_url']
+
+        # Local repo (Regards to the Remote backup repo)
+        self.backup_local_repo = cfg['backup_local_repo']
+        self.backup_dir = f'{self.backup_local_repo}/{self.target_user}/{self.target_repo}' 
+        self.last_issues_list_path  = f'{self.backup_dir}/last_issues_list.csv' 
+
 
 
     def __define_logger(self):

@@ -30,7 +30,7 @@ class Issues:
     """
     def __init__(self, config):
         self.cfg = config
-        self.api = self.cfg.target_repo + self.cfg.auth
+        self.api = self.cfg.target_url + self.cfg.auth
 
         self.issues = []
         self.updates = []
@@ -39,7 +39,7 @@ class Issues:
         self.issues_text = None
         self.issues_csv = None
 
-        self.last_issues_list_path = f'{self.cfg.repo_dir}/last_issues_list.csv'
+        self.last_issues_list_path = self.cfg.last_issues_list_path
 
         # Retrive issues-list data
         if self.__get_issues_list() is None:
@@ -99,7 +99,7 @@ class Issues:
     def first_run(self):
         """Download everything as local repo's initialization """
 
-        if os.path.exists(self.cfg.repo_dir) is True:
+        if os.path.exists(self.cfg.backup_dir) is True:
             return False
         log.info('First run: Start initializing local repo...')
 
@@ -160,8 +160,8 @@ class Issues:
             content.append(line)
         
         # Build directory structure
-        if os.path.exists(self.cfg.repo_dir) is False:
-            os.makedirs(self.cfg.repo_dir) 
+        if os.path.exists(self.cfg.backup_dir) is False:
+            os.makedirs(self.cfg.backup_dir) 
         with open(self.last_issues_list_path, 'w') as f:
             f.write('\n'.join(content))
 
@@ -176,14 +176,14 @@ class Issues:
         Just for avoiding conflict
         """
         # @@ prepare local git repo for the first time
-        if os.path.exists(self.cfg.repo_dir) is False:
+        if os.path.exists(self.cfg.backup_dir) is False:
             log.warn('local repo does not exist, setting up now...')
-            with os.popen(f'git clone {self.cfg.remote_url} {self.cfg.root} 2>&1') as p:
+            with os.popen(f'git clone {self.cfg.backup_url} {self.cfg.backup_local_repo} 2>&1') as p:
                 log.info('GIT CLONE:\n'+p.read())
 
         # @ keep local repo updated with remote before further change to avoid conflict
         log.info('Check git remote status before further updates: ')
-        with os.popen(f'git -C {self.cfg.root} pull origin master 2>&1') as p:
+        with os.popen(f'git -C {self.cfg.backup_local_repo} pull origin master 2>&1') as p:
             log.info('GIT PULL:\n'+p.read())
 
     
@@ -199,9 +199,9 @@ class Issues:
         # and all others are type of `str`, so needs to unify this one to str
         msg = 'Modified ' + ', '.join(self.modifications)
         # run standard git workflow to push updates
-        with os.popen(f'git -C {self.cfg.root} add . 2>&1') as p:
+        with os.popen(f'git -C {self.cfg.backup_local_repo} add . 2>&1') as p:
             log.info('GIT ADDED.')
-        with os.popen(f'git -C {self.cft.root} commit -m "{msg}" 2>&1') as p:
+        with os.popen(f'git -C {self.cfg.backup_local_repo} commit -m "{msg}" 2>&1') as p:
             log.info('GIT COMMIT:\n' + p.read())
-        with os.popen(f'git -C {self.cfg.root} push origin master 2>&1') as p:
+        with os.popen(f'git -C {self.cfg.backup_local_repo} push origin master 2>&1') as p:
             log.info('GIT PUSH:\n' + p.read())
