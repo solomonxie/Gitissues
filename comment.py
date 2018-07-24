@@ -2,11 +2,12 @@
 # Python3. Preferred in pipenv virtual enviroment.
 
 """
-File: comment.py
 Author: Solomon Xie
 Email: solomonxiewise@gmail.com
 Github: https://github.com/solomonxie
 Description: 
+Class:
+    - Comment
 """
 
 
@@ -22,17 +23,33 @@ class Comment:
     A class for storing & operating comments of an issue
     """
 
-    def __init__(self, config, cm, issue_number):
-        self.cfg = config
-        self.parent = issue_number
-        self.title = str(cm['id'])
-        self.id = cm['id']
-        self.content = cm['body']
-        self.url = cm['url']
-        self.link = cm['html_url']
-        self.issue_url = cm['issue_url']
-        self.mfile = '%s/markdown/comments/%d/comment-%d.md' %(
-                self.cfg.repo_dir, self.parent, self.id)
+    def __init__(self, cmt, issue):
+        self.cfg = issue.cfg
+        self.parent = issue.index
+        self.id = cmt['id']
+        self.body = cmt['body']
+        self.created_at = cmt['created_at']
+        self.updated_at = cmt['updated_at']
+        self.markdown_dir = f'{self.cfg.repo_dir}/markdown/issue-{self.parent}'
+
+        self.title = ''
+        self.content = ''
+        self.jekyll_post_path = ''
+
+
+    
+    def export_comment_to_markdown(self):
+        """
+        Export a comment to formatted Markdown document
+        """
+        if os.path.exists(self.markdown_dir) is False:
+            os.makedirs(self.markdown_dir)
+        
+        content = self.body
+        
+        __path = f'{self.markdown_dir}/comment-{self.id}.md'
+        with open(__path, 'w') as f:
+            f.write(content)
 
 
     def delete(self):

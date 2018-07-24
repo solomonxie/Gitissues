@@ -2,11 +2,11 @@
 # Python3. Preferred in virtual enviroment.
 
 """
-File: main.py
 Author: Solomon Xie
 Email: solomonxiewise@gmail.com
 Github: https://github.com/solomonxie
 Description: 
+    Main entry of the project.
 """
 
 
@@ -35,14 +35,17 @@ def main():
     log = logging.getLogger('gitissues')
     log.info('Start checking with cloud content...')
 
+    # import pdb;pdb.set_trace()
     # Fetch data from cloud & save changes made
-    import pdb;pdb.set_trace()
     issues = Issues(cfg)
+    if issues is None:
+        log.warn('Interupted checking: due to failure of issues fetching.')
+        return
     #issues.git_pull()
     issues.update()
     #issues.git_push()
 
-    log.info('Finished for this round check.\n')
+    log.info('Finished checking for this round.\n')
 
 
 if __name__ == "__main__":

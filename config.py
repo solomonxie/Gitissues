@@ -29,19 +29,15 @@ class Config:
             cfg = json.loads(f.read())
 
         # github api related configs
-        self.user = cfg["fetch"]["user"]
-        self.repo = cfg["fetch"]["repo"]
-        self.issues_url = cfg["fetch"]["issues_url"]
-        self.auth = cfg["fetch"]["auth"]
+        self.target_repo = cfg['target_repo']
+        self.auth = cfg['auth']
         # remote storage configs (a different git repo with the original one)
-        self.remote_url = cfg["remote"]["ssh"]
-        self.remote_user = cfg["remote"]["user"]
-        self.email = cfg["remote"]["email"]
+        self.remote_url = cfg['remote']
         # download resources to local drive
-        self.root = cfg["local"]["root_dir"]
-        self.repo_dir     = cfg["local"]["repo_dir"]
-        self.log_dir = cfg["local"]["log_dir"]
-        self.last_issues_path  = cfg["local"]["last_issues_path"]
+        self.root = cfg['root_dir']
+        self.repo_dir = cfg['repo_dir']
+        self.log_dir = cfg['log_dir']
+        self.last_issues_path  = self.repo_dir + '/last_issues_list.csv' 
         # init universial logger for modules
         self.logger_name = name
         self.__define_logger()
@@ -61,7 +57,8 @@ class Config:
         if os.path.exists(self.log_dir) is False:
             os.makedirs(self.log_dir)
         mainfile  = '%s/last.log' % self.log_dir
-        dailyfile = '%s/%s-%s.log' % (self.log_dir, self.logger_name, date.today())
+        mainfile = f'{self.log_dir}/last.log'
+        dailyfile = f'{self.log_dir}/{self.logger_name}-{date.today()}.log'
 
         # create a file handler for logging
         main = logging.FileHandler(mainfile, mode='w')
