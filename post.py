@@ -12,13 +12,26 @@ Class:
     - Post
 """
 
+import os
+import re
+import yaml
+import logging
+
+log = logging.getLogger('gitissues.post')
+
+
+
 class Post:
     """
     """
 
-    def __init__(self, content):
+    def __init__(self, content=None, title=None):
+        if content is None: 
+            log.error('Post Content should not be empty.')
+            return None
         self.original_url = ''
-        self.title = ''
+        self.original_content = content
+        self.title = title if title != None else self.__get_title()
         self.body = ''
         self.tags = []
         self.categories = []
@@ -28,16 +41,29 @@ class Post:
         self.jekyll_front_matter = self.__get_jekyll_front_matter()
     
 
-    def __get_jekyll_front_matter(sefl):
-        # return f'---\nlayout: post\ntitle: {}\n date: {}\nimage: {} description: {}\n tags: {}\ncategories: {}\n---'
-        return f'''---
+    def __get_jekyll_front_matter(self):
+        """Match something like this
+        <!--JEKYLL-FRONT-MATTER(will-jekyll-theme)
+        ---
         layout: post
-        title: {self.title}
-        date: {self.updated_at}
+        title: 
+        image: 
         description: 
-        tags: \n\t- {"\n\t- ".join(self.tags)}
-        categories: \n\t- {"\n\t- ".join(self.categories)}
-        ---'''
+        categories:
+            - Calculus
+        ---
+        -->
+        """
+        # return f'---\nlayout: post\ntitle: {}\n date: {}\nimage: {} description: {}\n tags: {}\ncategories: {}\n---'
+        regex = r'^\s*<!--.*\n^---$([\w\W]*)^---$\n-->\s*$'
+        _front_matter = ''
+        
+        return _front_matter
+    
+    def __get_title(self):
+        regex = r'^\#\s+.+$' 
+        _title = ''
+        return _title
         
 
 

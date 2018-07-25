@@ -32,7 +32,7 @@ class Issue:
         self.cfg = config
         self.title = iss['title']
         self.index = iss['number']
-        self.info = iss['body']
+        self.desc = iss['body']
         self.url = iss['comments_url']
         self.api = self.url + self.cfg.auth
         self.count = iss['comments']
@@ -113,7 +113,7 @@ class Issue:
     def export_issue_to_markdown(self):
         """
         """
-        content = f'# {self.title}\n{self.info} '
+        content = f'# {self.title}\n{self.desc} '
         with open(self.markdown_path, 'w') as f:
             f.write(content)
 
@@ -142,7 +142,7 @@ class Issue:
         """
         # @@ prepare contents for output markdown file
         bodies = '\n\n\n'.join( [c.content for c in self.comments] ) 
-        content = f'# {self.title} \n {self.info} \n\n\n {bodies}'
+        content = f'# {self.title} \n {self.desc} \n\n\n {bodies}'
 
         if os.path.exists(os.path.dirname(self.markdown_path)) is False:
             os.makedirs(os.path.dirname(self.markdown_path))
