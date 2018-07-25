@@ -55,8 +55,11 @@ class Post:
         -->
         """
         # return f'---\nlayout: post\ntitle: {}\n date: {}\nimage: {} description: {}\n tags: {}\ncategories: {}\n---'
-        regex = r'^\s*<!--.*\n^---$([\w\W]*)^---$\n-->\s*$'
         _front_matter = ''
+        regex = r'^\s*<!--.*\n^---$([\w\W]*)^---$\n-->\s*$'
+        matches = re.findall(regex, self.original_content, re.MULTILINE) 
+
+
         
         return _front_matter
     

@@ -17,6 +17,7 @@ import logging
 
 # This project's modules
 from comment import Comment
+from post import Post
 
 log = logging.getLogger('gitissues.issue')
 

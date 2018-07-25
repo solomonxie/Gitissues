@@ -2,22 +2,23 @@ import re
 import yaml
 
 def __get_jekyll_front_matter():
-    _front_matter = None
-    text_issue = ''
+    text = ''
     with open('samples/sample-issue.md') as f:
-        text_issue = f.read()
+        text = f.read()
 
     regex = r'^\s*<!--.*\n^---$([\w\W]*)^---$\n-->\s*$'
-    matches = re.findall(regex, text_issue, re.MULTILINE) 
-    for m in matches:
-        _front_matter = m.strip()
+    matches = re.findall(regex, text, re.MULTILINE) 
+    result = re.search(regex, text, re.MULTILINE)
+    if result is None:
+        return
+    _front_matter = result.group(1).strip()
 
-    obj_front_matter = yaml.load(_front_matter)
-    print(obj_front_matter)
+    data = yaml.load(_front_matter)
+    print(data)
     # {'layout': 'post', 'title': None, 'image': None, 'description': None, 'categories': ['Calculus', 'Math', 'Khan Academy']} categories: [Calculus, Math, Khan Academy]
 
-    _yml_front_matter = yaml.dump(obj_front_matter)
-    print(_yml_front_matter)
+    text_2 = yaml.dump(data).strip()
+    print(text_2)
 
 # Run
 __get_jekyll_front_matter()
@@ -28,12 +29,12 @@ __get_jekyll_front_matter()
 
 def _get_title():
     _title = None
-    text_title = ''
+    text = ''
     with open('samples/sample-issue.md') as f:
-        text_title = f.read()
+        text = f.read()
 
     regex = r'^\#\s+(.+)$' 
-    matches = re.findall(regex, text_title, re.MULTILINE) 
+    matches = re.findall(regex, text, re.MULTILINE) 
 
     for m in matches:
         _title = m.strip()
