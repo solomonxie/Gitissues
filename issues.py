@@ -178,12 +178,12 @@ class Issues:
         # @@ prepare local git repo for the first time
         if os.path.exists(self.cfg.backup_dir) is False:
             log.warn('local repo does not exist, setting up now...')
-            with os.popen(f'git clone {self.cfg.backup_url} {self.cfg.backup_local_repo} 2>&1') as p:
+            with os.popen(f'git clone {self.cfg.backup_url} {self.cfg.backup_dir} 2>&1') as p:
                 log.info('GIT CLONE:\n'+p.read())
 
         # @ keep local repo updated with remote before further change to avoid conflict
         log.info('Check git remote status before further updates: ')
-        with os.popen(f'git -C {self.cfg.backup_local_repo} pull origin master 2>&1') as p:
+        with os.popen(f'git -C {self.cfg.backup_dir} pull origin master 2>&1') as p:
             log.info('GIT PULL:\n'+p.read())
 
     
@@ -199,9 +199,9 @@ class Issues:
         # and all others are type of `str`, so needs to unify this one to str
         msg = 'Modified ' + ', '.join(self.modifications)
         # run standard git workflow to push updates
-        with os.popen(f'git -C {self.cfg.backup_local_repo} add . 2>&1') as p:
+        with os.popen(f'git -C {self.cfg.backup_dir} add . 2>&1') as p:
             log.info('GIT ADDED.')
-        with os.popen(f'git -C {self.cfg.backup_local_repo} commit -m "{msg}" 2>&1') as p:
+        with os.popen(f'git -C {self.cfg.backup_dir} commit -m "{msg}" 2>&1') as p:
             log.info('GIT COMMIT:\n' + p.read())
-        with os.popen(f'git -C {self.cfg.backup_local_repo} push origin master 2>&1') as p:
+        with os.popen(f'git -C {self.cfg.backup_dir} push origin master 2>&1') as p:
             log.info('GIT PUSH:\n' + p.read())
