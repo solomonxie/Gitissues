@@ -39,7 +39,7 @@ class Issues:
         self.issues_text = None
         self.issues_csv = None
 
-        self.last_issues_list_path = self.cfg.last_issues_list_path
+        self.last_issues_list_path  = './.local/last_issues_list.csv' 
 
         # Retrive issues-list data
         if self.__get_issues_list() is None:

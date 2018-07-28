@@ -7,7 +7,6 @@ def __get_jekyll_front_matter():
         text = f.read()
 
     regex = r'^\s*<!--.*\n^---$([\w\W]*)^---$\n-->\s*$'
-    matches = re.findall(regex, text, re.MULTILINE) 
     result = re.search(regex, text, re.MULTILINE)
     if result is None:
         return

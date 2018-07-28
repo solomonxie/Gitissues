@@ -55,18 +55,17 @@ class Post:
         -->
         """
         # return f'---\nlayout: post\ntitle: {}\n date: {}\nimage: {} description: {}\n tags: {}\ncategories: {}\n---'
-        _front_matter = ''
-        regex = r'^\s*<!--.*\n^---$([\w\W]*)^---$\n-->\s*$'
-        matches = re.findall(regex, self.original_content, re.MULTILINE) 
-
-
-        
-        return _front_matter
+        # _front_matter = ''
+        # regex = r'^\s*<!--.*\n^---$([\w\W]*)^---$\n-->\s*$'
+        # matches = re.findall(regex, self.original_content, re.MULTILINE) 
+        # return _front_matter
+        return ''
     
     def __get_title(self):
-        regex = r'^\#\s+.+$' 
-        _title = ''
-        return _title
+        # regex = r'^\#\s+.+$' 
+        # _title = ''
+        # return _title
+        pass
         
 
 

@@ -42,14 +42,12 @@ class Issue:
         self.updates = []
         self.deletes = []
 
-        self.dir = f'{self.cfg.backup_dir}/issue-{self.index}'
-        self.path_json = f'{self.dir}/issue-{self.index}.json'
-        self.comments_list_path = f'{self.cfg.backup_dir}/issue-{self.index}-comments.csv'
-        self.markdown_dir = f'{self.cfg.backup_dir}/markdown/issue-{self.index}'
-        self.markdown_path = f'{self.markdown_dir}/issue-{self.index}.md'
+        self.dir = f'{self.cfg.backup_dir}/[{self.cfg.target_user}][{self.cfg.target_repo}]-issue-{self.index}'
+        self.path = f'{self.dir}/issue-{self.index}.md'
+        self.path_comments_list = f'./.local/issue-{self.index}.csv'
 
-        if os.path.exists(self.markdown_dir) is False:
-            os.makedirs(self.markdown_dir)
+        if os.path.exists(self.dir) is False:
+            os.makedirs(self.dir)
 
 
     def fetch_issue_details(self):
@@ -105,7 +103,7 @@ class Issue:
         lines = [f'{c.id},{c.created_at},{c.updated_at}' for c in self.comments]
         content = '\n'.join(lines)
 
-        with open(self.comments_list_path, 'w+') as f:
+        with open(self.path_comments_list, 'w+') as f:
             if f.read() != content:
                 f.write(content)
 
@@ -115,7 +113,7 @@ class Issue:
         """
         """
         content = f'# {self.title}\n{self.desc} '
-        with open(self.markdown_path, 'w') as f:
+        with open(self.path, 'w') as f:
             f.write(content)
 
 
@@ -145,11 +143,11 @@ class Issue:
         bodies = '\n\n\n'.join( [c.content for c in self.comments] ) 
         content = f'# {self.title} \n {self.desc} \n\n\n {bodies}'
 
-        if os.path.exists(os.path.dirname(self.markdown_path)) is False:
-            os.makedirs(os.path.dirname(self.markdown_path))
+        if os.path.exists(os.path.dirname(self.path)) is False:
+            os.makedirs(os.path.dirname(self.path))
 
         # @@ output comments into one issue file, named strictly be <ISSUE-INDEX.md>
-        with open(self.markdown_path, 'w') as f:
+        with open(self.path, 'w') as f:
             f.write(content)
 
-        log.info('Generated markdown file for [%s] at "%s".'%(self.title, self.markdown_path))
+        log.info('Generated markdown file for [%s] at "%s".'%(self.title, self.path))

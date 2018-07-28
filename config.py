@@ -21,15 +21,17 @@ class Config:
     Loading settings from customized configs (json)
     """
     def __init__(self, name):
-        # load secret config data (actual content is not in this repo)
+        # Create local folders for storing data
+        if os.path.exists('./.local/log') is not True:
+            os.makedirs('./.local/log')
+
+        # Load local secret config data (actual content is not in this repo)
         path = '.local/gitissues-config.json'
-        if os.path.islink(path) is True:
-            path = os.readlink(path)
         with open(path, 'r') as f:
             cfg = json.loads(f.read())
 
         # Logging path
-        self.log_dir = cfg['log_dir']
+        self.log_dir = './.local/log'
         # Global logger for all modules
         self.logger_name = name
         self.__define_logger()
@@ -42,11 +44,9 @@ class Config:
 
         # Remote backup repo (where we're gonna store all fetched contents)
         self.backup_url = cfg['backup_url']
-
         # Local repo (Regards to the Remote backup repo)
-        self.backup_local_repo = cfg['backup_local_repo']
-        self.backup_dir = f'{self.backup_local_repo}/{self.target_user}/{self.target_repo}' 
-        self.last_issues_list_path  = f'{self.backup_dir}/last_issues_list.csv' 
+        self.backup_dir = cfg['backup_local_repo']
+
 
 
 

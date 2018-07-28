@@ -12,7 +12,6 @@ Class:
 
 
 import os
-import json
 import requests
 import logging
 
@@ -30,7 +29,7 @@ class Comment:
         self.body = cmt['body']
         self.created_at = cmt['created_at']
         self.updated_at = cmt['updated_at']
-        self.markdown_dir = f'{self.cfg.backup_dir}/markdown/issue-{self.parent}'
+        self.path = f'{issue.dir}/comment-{self.id}.md'
 
         self.title = ''
         self.content = ''
@@ -42,13 +41,9 @@ class Comment:
         """
         Export a comment to formatted Markdown document
         """
-        if os.path.exists(self.markdown_dir) is False:
-            os.makedirs(self.markdown_dir)
-        
         content = self.body
         
-        __path = f'{self.markdown_dir}/comment-{self.id}.md'
-        with open(__path, 'w') as f:
+        with open(self.path, 'w') as f:
             f.write(content)
 
 
@@ -57,4 +52,3 @@ class Comment:
         Delete a comment that no longer exists at remote
         """
         log.warn('Failed to delete. Function "delete" has not yet completed.')
-
