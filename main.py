@@ -41,14 +41,12 @@ def main():
     if issues is None:
         log.warn('Interupted checking: due to failure of issues fetching.')
         return
-    #issues.git_pull()
+    issues.git_pull()
     issues.update()
-    #issues.git_push()
+    issues.git_push()
 
     log.info('Finished checking for this round.\n')
 
 
 if __name__ == "__main__":
-
     main()
-
