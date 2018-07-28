@@ -22,7 +22,7 @@ class Config:
     """
     def __init__(self, name):
         # load secret config data (actual content is not in this repo)
-        path = './gitissues-config.json'
+        path = '.local/gitissues-config.json'
         if os.path.islink(path) is True:
             path = os.readlink(path)
         with open(path, 'r') as f:
