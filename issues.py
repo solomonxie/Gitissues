@@ -18,6 +18,7 @@ import requests
 
 # This project's modules
 from issue import Issue
+from config import Config
 
 
 log = logging.getLogger('gitissues.issues')
@@ -28,86 +29,58 @@ class Issues:
     Handling issues-list
     The core part of this project.
     """
-    def __init__(self, config):
-        self.cfg = config
-        self.api = self.cfg.target_url + self.cfg.auth
+    def __init__(self, cfg_path):
+        # @@ load local config file
+        self.cfg = Config(cfg_path)
+        self.api = self.cfg.issues_api
+        self.raw_path = self.cfg.issues_raw_path
+        self.last_issues_list_path = self.cfg.last_issues_list_path
 
         self.issues = []
         self.updates = []
         self.modifications = []    # for git commit message ONLY
         self.issues_json = None
-        self.issues_text = None
+        self.issues_raw = None
         self.issues_csv = None
 
-        self.last_issues_list_path  = './.local/last_issues_list.csv' 
+
+
+    def fetch(self):
+        # Update local backup repo before fetching
+        #self.git_pull()
 
         # Retrive issues-list data
-        if self.__get_issues_list() is None:
-            log.warn('Retriving issues list failed.')
-            self = None
-            return
-
-
-    def __get_issues_list(self):
-        """
-        Retrieving data from internet, @ with response validation
-        """
         log.info(f'Now retriving [{self.api}]...')
-
-        try:
-            r = requests.get(self.api, timeout=5)
-
-        except Exception as e:
-            log.error(f'An error occured when requesting from Github:\n{str(e)}')
-            log.error('Mission aborted.')
-            return None
-
-        if r.status_code is not 200:
-            log.error(f'Failed on fetching {self.api} due to unexpected response')
-            __limit = r.headers['X-RateLimit-Remaining']
-            log.debug(f'Remain {__limit} requests limit in this hour.')
-            return None
-
-
-        # Set up retrived data
-        self.issues_json = r.json()
-        self.issues_text = r.text
-
+        r = self.cfg.request_url(self.api)
+        if r is None:
+            log.warn('Retriving issues list failed.')
+            return False
         log.info('Retrived issues successfully.')
 
-        return r
-    
+        # Set up retrived data
+        self.issues_raw = r.text
+        self.issues_json = r.json()
 
-    def update(self):
-        """Description: Update local stored issues data
-        :return integer: number of issues changes
-        """
-        # Initializing
-        if self.first_run() is False:
-            # only do filtering when it's upadting
+        self.__fetch_data()
+
+        log.info('Finished checking for this round.\n')
+
+        # Update remote backup repo when fetching finished
+        #self.git_push()
+
+
+    def __fetch_data(self):
+        if os.path.exists(self.cfg.backup_dir) is False or \
+            os.path.exists(self.last_issues_list_path) is False:
+            self.updates = [iss['number'] for iss in self.issues_json]
+        else:
             self.filter_changes()
-
+        
         # Request API only for updated issues
         self.fetch_issues()
-
         # Save data for future comparison
-        self.__save_issues_list_csv()
-
-        return len(self.modifications)
-
-
-    def first_run(self):
-        """Download everything as local repo's initialization """
-
-        if os.path.exists(self.cfg.backup_dir) is True & \
-            os.path.exists(self.last_issues_list_path) is True:
-            return False
-        log.info('First run: Start initializing local repo...')
-
-        # Treat every issue as an update
-        self.updates = [iss['number'] for iss in self.issues_json]
-        
-        return True
+        self.__save_data_raw()
+        self.__save_data_csv()
 
 
     def filter_changes(self):
@@ -140,16 +113,14 @@ class Issues:
         """
         log.info('%d updates to be fetched...' % len(self.updates))
         for iss in self.issues_json:
-            issue = Issue(self.cfg, iss)
+            issue = Issue(iss, self.cfg)
             if issue.index in self.updates: 
-                issue.fetch_issue_details()
-                issue.export_issue_to_markdown()
-                issue.save_comments_list_csv()
-                issue.export_comments_to_markdown()
+                issue.fetch_details()
+                issue.export_to_markdown()
                 self.modifications.append(issue.title)
 
 
-    def __save_issues_list_csv(self):
+    def __save_data_csv(self):
         """
         Save retrived data (only when there's updates)
         Should be run at the end of program,
@@ -166,7 +137,13 @@ class Issues:
         with open(self.last_issues_list_path, 'w') as f:
             f.write('\n'.join(content))
 
-        log.info('Saved issues_list as [last_issues_list.csv]')
+        log.info(f'Saved list data to {self.last_issues_list_path}')
+    
+
+    def __save_data_raw(self):
+        with open(self.raw_path, 'w') as f:
+            f.write(self.issues_raw)
+        log.info(f'Saved raw data to {self.raw_path}')
 
 
 
@@ -206,3 +183,8 @@ class Issues:
             log.info('GIT COMMIT:\n' + p.read())
         with os.popen(f'git -C {self.cfg.backup_dir} push origin master 2>&1') as p:
             log.info('GIT PUSH:\n' + p.read())
+    
+
+if __name__ == '__main__':
+    issues = Issues('./.local/gitissues-config.json')
+    issues.fetch() 

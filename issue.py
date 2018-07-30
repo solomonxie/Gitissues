@@ -29,7 +29,7 @@ class Issue:
           which means there's no need to further requests for each comment.
     """
 
-    def __init__(self, config, iss):
+    def __init__(self, iss, config):
         self.cfg = config
         self.title = iss['title']
         self.index = iss['number']
@@ -38,62 +38,48 @@ class Issue:
         self.api = self.url + self.cfg.auth
         self.count = iss['comments']
 
+        self.raw = None
         self.comments = []
         self.updates = []
         self.deletes = []
 
-        self.dir_md = '{}/markdown/[{}][{}]-issue-{}'.format( \
+        self.dir = '{}/docs-[{}][{}]/issue-{}'.format( \
             self.cfg.backup_dir, self.cfg.target_user, \
             self.cfg.target_repo, self.index)
-        self.path = f'{self.dir_md}/issue-{self.index}.md'
-        self.path_comments_list = f'./.local/issue-{self.index}.csv'
+        self.path_markdown = f'{self.dir}/issue-{self.index}.md'
+        self.path_html = f'{self.dir}/issue-{self.index}.html'
+        self.path_raw = f'{self.cfg.backup_dir}/.local/issue-{self.index}.json'
+        self.path_csv = f'{self.cfg.backup_dir}/.local/issue-{self.index}.csv'
 
-        if os.path.exists(self.dir_md) is False:
-            os.makedirs(self.dir_md)
+        if os.path.exists(self.dir) is False:
+            os.makedirs(self.dir)
 
 
-    def fetch_issue_details(self):
+    def fetch_details(self):
         """
         Retrive an specific issue with detailed information
         """
         # retrive all details of an issue and all its comments
-        __response = self.__get_issue_raw()
+        # @@ retrive comments, @ with response validation 
+        r = self.cfg.request_url(self.api)
+        self.raw = r.json()
+        log.info(f'Retrived issue-{self.index}[{self.title}][{self.count} comments]  successful.')
 
-        if __response is None:
-            log.warn(f'\nFailed to fetch details of the issue [{self.title}].')
-            self = None
-            return
+        # Instantiate each comment
+        for c in self.raw:
+            self.comments.append( Comment(c, self) )
+        
+        self.__save_data_raw()
+        self.__save_comments_list_csv()
         
         log.info(f'Finished fetching for issue-{self.index}[{self.title}] with {self.count} comments.')
     
 
-    def __get_issue_raw(self):
-        """
-        Request API for raw data of an issue
-        """
-        # @@ retrive comments, @ with response validation 
-        try:
-            r = requests.get(self.api, timeout=5)
+    def __save_data_raw(self):
+        with open(self.path_raw, 'w') as f:
+            f.write(self.raw)
 
-        except Exception as e:
-            log.error('An error occured when requesting from Github:\n%s' % str(e))
-            log.info('Mission aborted.')
-            return None
-
-        # if failed, then restart whole process on this issue
-        if r.status_code is not 200:
-            log.warn('Failed on fetching issue, due to enexpected response: [%s]'% self.url)
-            return None
-        
-        log.info(f'Retrived issue-{self.index}[{self.title}][{self.count} comments]  successful.')
-        
-        # Instantiate each comment
-        for c in r.json():
-            self.comments.append( Comment(c, self) )
-        return r
-
-
-    def save_comments_list_csv(self):
+    def __save_comments_list_csv(self):
         """
         Save an issue's comments-list with csv file
         including comments id and dates
@@ -102,29 +88,24 @@ class Issue:
             log.warn(f'No comments of issue-[{self.index}] was found.')
             return
 
-        lines = [f'{c.id},{c.created_at},{c.updated_at},{c.review_dates}' for c in self.comments]
+        lines = [f'{c.id},{c.created_at},{c.updated_at}' for c in self.comments]
         content = '\n'.join(lines)
 
-        with open(self.path_comments_list, 'w+') as f:
+        with open(self.path_csv, 'w+') as f:
             if f.read() != content:
                 f.write(content)
 
 
     
-    def export_issue_to_markdown(self):
-        """
-        """
+    def export_to_markdown(self):
+        # Export the issues main content
         content = f'# {self.title}\n{self.desc} '
-        with open(self.path, 'w') as f:
+        with open(self.path_markdown, 'w') as f:
             f.write(content)
-
-
-
-
-    def export_comments_to_markdown(self):
+        
+        # Export all comments
         for cmt in self.comments:
-            cmt.export_comment_to_markdown()
-
+            cmt.export_to_markdown()
 
 
     def __filter_changes(self):
@@ -145,11 +126,24 @@ class Issue:
         bodies = '\n\n\n'.join( [c.content for c in self.comments] ) 
         content = f'# {self.title} \n {self.desc} \n\n\n {bodies}'
 
-        if os.path.exists(os.path.dirname(self.path)) is False:
-            os.makedirs(os.path.dirname(self.path))
+        if os.path.exists(os.path.dirname(self.dir)) is False:
+            os.makedirs(os.path.dirname(self.dir))
 
         # @@ output comments into one issue file, named strictly be <ISSUE-INDEX.md>
-        with open(self.path, 'w') as f:
+        with open(self.path_markdown, 'w') as f:
             f.write(content)
 
-        log.info('Generated markdown file for [%s] at "%s".'%(self.title, self.path))
+        log.info('Generated markdown file for [%s] at "%s".'%(self.title, self.path_markdown))
+
+
+
+    def export_review_dates(self):
+        """
+        A a list of future dates of each comment for 
+        study reviewing according to the Forgetting Curve theory
+        """
+        # Read dates from local comment-*.csv files
+
+        # Generate recommaned review dates according to created_at
+
+        pass

@@ -29,22 +29,31 @@ class Comment:
         self.body = cmt['body']
         self.created_at = cmt['created_at']
         self.updated_at = cmt['updated_at']
-        self.path = f'{issue.dir_md}/comment-{self.id}.md'
+        self.path_md = f'{issue.dir}/comment-{self.id}.md'
+        self.path_html = f'{issue.dir}/comment-{self.id}.html'
 
         self.title = ''
         self.content = ''
         self.jekyll_post_path = ''
 
-        self.review_dates = '&'.join( self.__generate_review_dates() )
-
     
-    def export_comment_to_markdown(self):
+    def export_to_markdown(self):
         """
         Export a comment to formatted Markdown document
         """
         content = self.body
         
-        with open(self.path, 'w') as f:
+        with open(self.path_md, 'w') as f:
+            f.write(content)
+    
+
+    def export_to_html(self):
+        """
+        Export a comment to formatted Markdown document
+        """
+        content = self.body
+        
+        with open(self.path_html, 'w') as f:
             f.write(content)
 
 
@@ -54,10 +63,3 @@ class Comment:
         """
         log.warn('Failed to delete. Function "delete" has not yet completed.')
     
-
-    def __generate_review_dates(self):
-        """
-        A a list of future dates for reviewing
-        according to the Forgetting Curve theory
-        """
-        return []
