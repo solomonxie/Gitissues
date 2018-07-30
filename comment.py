@@ -29,7 +29,7 @@ class Comment:
         self.body = cmt['body']
         self.created_at = cmt['created_at']
         self.updated_at = cmt['updated_at']
-        self.path = f'{issue.dir}/comment-{self.id}.md'
+        self.path = f'{issue.dir_md}/comment-{self.id}.md'
 
         self.title = ''
         self.content = ''

@@ -42,12 +42,12 @@ class Issue:
         self.updates = []
         self.deletes = []
 
-        self.dir = f'{self.cfg.backup_dir}/[{self.cfg.target_user}][{self.cfg.target_repo}]-issue-{self.index}'
-        self.path = f'{self.dir}/issue-{self.index}.md'
+        self.dir_md = f'{self.cfg.backup_dir}/markdown/[{self.cfg.target_user}][{self.cfg.target_repo}]-issue-{self.index}'
+        self.path = f'{self.dir_md}/issue-{self.index}.md'
         self.path_comments_list = f'./.local/issue-{self.index}.csv'
 
-        if os.path.exists(self.dir) is False:
-            os.makedirs(self.dir)
+        if os.path.exists(self.dir_md) is False:
+            os.makedirs(self.dir_md)
 
 
     def fetch_issue_details(self):
