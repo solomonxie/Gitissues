@@ -26,7 +26,7 @@ class Config:
             os.makedirs('./.local/log')
 
         # Load local secret config data (actual content is not in this repo)
-        path = '.local/gitissues-config.json'
+        path = './.local/gitissues-config.json'
         with open(path, 'r') as f:
             cfg = json.loads(f.read())
 
