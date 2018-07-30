@@ -35,6 +35,7 @@ class Comment:
         self.content = ''
         self.jekyll_post_path = ''
 
+        self.review_dates = '&'.join( self.__generate_review_dates() )
 
     
     def export_comment_to_markdown(self):
@@ -52,3 +53,11 @@ class Comment:
         Delete a comment that no longer exists at remote
         """
         log.warn('Failed to delete. Function "delete" has not yet completed.')
+    
+
+    def __generate_review_dates(self):
+        """
+        A a list of future dates for reviewing
+        according to the Forgetting Curve theory
+        """
+        return []

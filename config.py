@@ -63,13 +63,13 @@ class Config:
         # make log file path
         if os.path.exists(self.log_dir) is False:
             os.makedirs(self.log_dir)
-        lastfile = f'{self.log_dir}/last.log'
-        dailyfile = f'{self.log_dir}/{self.logger_name}-{date.today()}.log'
+        last_log = f'{self.log_dir}/last.log'
+        daily_log = f'{self.log_dir}/{self.logger_name}-{date.today()}.log'
 
         # create a file handler for logging
-        main = logging.FileHandler(lastfile, mode='w')
+        main = logging.FileHandler(last_log, mode='w')
         main.setFormatter(formatter)
-        daily = logging.FileHandler(dailyfile)
+        daily = logging.FileHandler(daily_log)
         daily.setFormatter(formatter)
 
         # create a stream(stdout) handler for logging

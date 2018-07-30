@@ -99,7 +99,8 @@ class Issues:
     def first_run(self):
         """Download everything as local repo's initialization """
 
-        if os.path.exists(self.cfg.backup_dir) is True:
+        if os.path.exists(self.cfg.backup_dir) is True & \
+            os.path.exists(self.last_issues_list_path) is True:
             return False
         log.info('First run: Start initializing local repo...')
 

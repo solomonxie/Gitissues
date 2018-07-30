@@ -42,7 +42,9 @@ class Issue:
         self.updates = []
         self.deletes = []
 
-        self.dir_md = f'{self.cfg.backup_dir}/markdown/[{self.cfg.target_user}][{self.cfg.target_repo}]-issue-{self.index}'
+        self.dir_md = '{}/markdown/[{}][{}]-issue-{}'.format( \
+            self.cfg.backup_dir, self.cfg.target_user, \
+            self.cfg.target_repo, self.index)
         self.path = f'{self.dir_md}/issue-{self.index}.md'
         self.path_comments_list = f'./.local/issue-{self.index}.csv'
 
@@ -100,7 +102,7 @@ class Issue:
             log.warn(f'No comments of issue-[{self.index}] was found.')
             return
 
-        lines = [f'{c.id},{c.created_at},{c.updated_at}' for c in self.comments]
+        lines = [f'{c.id},{c.created_at},{c.updated_at},{c.review_dates}' for c in self.comments]
         content = '\n'.join(lines)
 
         with open(self.path_comments_list, 'w+') as f:
