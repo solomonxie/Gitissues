@@ -36,6 +36,10 @@ class Comment:
         self.content = ''
         self.jekyll_post_path = ''
 
+
+    def export(self):
+        self.export_to_html()
+        self.export_to_html()
     
     def export_to_markdown(self):
         """
@@ -51,10 +55,11 @@ class Comment:
         """
         Export a comment to formatted Markdown document
         """
-        content = self.body
-        
-        with open(self.path_html, 'w') as f:
-            f.write(content)
+        _command = 'pandoc --template=Github.html5 "{}" -o "{}"'.format(\
+                    self.path_md, self.path_html)
+        log.debug(_command)
+        with os.popen(_command) as p:
+            log.debug(p.read())
 
 
     def delete(self):

@@ -39,10 +39,19 @@ class Issues:
         self.issues = []
         self.updates = []
         self.modifications = []    # for git commit message ONLY
-        self.issues_json = None
-        self.issues_raw = None
+        self.json = None
+        self.raw = None
         self.issues_csv = None
 
+
+    def __is_first_run(self):
+        # return True
+        if os.path.exists(self.cfg.backup_dir) is False or \
+            os.path.exists(self.last_issues_list_path) is False:
+            self.updates = [iss['number'] for iss in self.json]
+            return True
+        else:
+            return False
 
 
     def fetch(self):
@@ -58,10 +67,20 @@ class Issues:
         log.info('Retrived issues successfully.')
 
         # Set up retrived data
-        self.issues_raw = r.text
-        self.issues_json = r.json()
+        self.raw = r.text
+        self.json = r.json()
 
-        self.__fetch_data()
+        if self.__is_first_run() is True:
+            # First run: treat every issue as update
+            self.updates = [iss['number'] for iss in self.json]
+        else:
+            self.__filter_changes()
+
+        # Request API only for updated issues
+        self.__fetch_issues()
+        # Save data for future comparison
+        self.__save_data_raw()
+        self.__save_data_csv()
 
         log.info('Finished checking for this round.\n')
 
@@ -69,21 +88,7 @@ class Issues:
         #self.git_push()
 
 
-    def __fetch_data(self):
-        if os.path.exists(self.cfg.backup_dir) is False or \
-            os.path.exists(self.last_issues_list_path) is False:
-            self.updates = [iss['number'] for iss in self.issues_json]
-        else:
-            self.filter_changes()
-        
-        # Request API only for updated issues
-        self.fetch_issues()
-        # Save data for future comparison
-        self.__save_data_raw()
-        self.__save_data_csv()
-
-
-    def filter_changes(self):
+    def __filter_changes(self):
         """Filter out unchanged issues, only fetch changed issues
         Algorithm:
             Introduced filtering algorithm to avoid updating a non-changed content
@@ -98,7 +103,7 @@ class Issues:
         with open(self.last_issues_list_path, 'r') as f:
             csv_reader = [ n.split(',') for n in f.read().split('\n') ]
             old = [ [int(row[0]),row[3]] for row in csv_reader ]
-            new = [ [n['number'],n["updated_at"]] for n in self.issues_json ]
+            new = [ [n['number'],n["updated_at"]] for n in self.json ]
         
         self.updates = [ n[0] for n in new if n not in old ]
 
@@ -107,17 +112,18 @@ class Issues:
 
 
 
-    def fetch_issues(self):
+    def __fetch_issues(self):
         """
         Download every updated issue and its comments from the cloud
         """
         log.info('%d updates to be fetched...' % len(self.updates))
-        for iss in self.issues_json:
+        for iss in self.json:
             issue = Issue(iss, self.cfg)
             if issue.index in self.updates: 
                 issue.fetch_details()
                 issue.export_to_markdown()
                 self.modifications.append(issue.title)
+            # break
 
 
     def __save_data_csv(self):
@@ -127,7 +133,7 @@ class Issues:
         we only want to save new data when all has been updated.
         """
         content = [] 
-        for iss in self.issues_json:
+        for iss in self.json:
             line = f"{iss['number']},{iss['id']},{iss['created_at']},{iss['updated_at']},{iss['title']}"
             content.append(line)
         
@@ -142,9 +148,8 @@ class Issues:
 
     def __save_data_raw(self):
         with open(self.raw_path, 'w') as f:
-            f.write(self.issues_raw)
+            f.write(self.raw)
         log.info(f'Saved raw data to {self.raw_path}')
-
 
 
     def git_pull(self):

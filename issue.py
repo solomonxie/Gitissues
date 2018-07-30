@@ -38,18 +38,17 @@ class Issue:
         self.api = self.url + self.cfg.auth
         self.count = iss['comments']
 
+        self.json = None
         self.raw = None
         self.comments = []
         self.updates = []
         self.deletes = []
 
-        self.dir = '{}/docs-[{}][{}]/issue-{}'.format( \
-            self.cfg.backup_dir, self.cfg.target_user, \
-            self.cfg.target_repo, self.index)
+        self.dir = self.cfg.issue_dir.format(self.index)
         self.path_markdown = f'{self.dir}/issue-{self.index}.md'
         self.path_html = f'{self.dir}/issue-{self.index}.html'
-        self.path_raw = f'{self.cfg.backup_dir}/.local/issue-{self.index}.json'
-        self.path_csv = f'{self.cfg.backup_dir}/.local/issue-{self.index}.csv'
+        self.path_raw = self.cfg.issue_raw.format(self.index)
+        self.path_csv = self.cfg.issue_csv.format(self.index)
 
         if os.path.exists(self.dir) is False:
             os.makedirs(self.dir)
@@ -62,11 +61,12 @@ class Issue:
         # retrive all details of an issue and all its comments
         # @@ retrive comments, @ with response validation 
         r = self.cfg.request_url(self.api)
-        self.raw = r.json()
+        self.raw = r.text
+        self.json = r.json()
         log.info(f'Retrived issue-{self.index}[{self.title}][{self.count} comments]  successful.')
 
         # Instantiate each comment
-        for c in self.raw:
+        for c in self.json:
             self.comments.append( Comment(c, self) )
         
         self.__save_data_raw()
@@ -105,7 +105,7 @@ class Issue:
         
         # Export all comments
         for cmt in self.comments:
-            cmt.export_to_markdown()
+            cmt.export()
 
 
     def __filter_changes(self):

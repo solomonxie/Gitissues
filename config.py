@@ -28,6 +28,8 @@ class Config:
         # Load local secret config data (actual content is not in this repo)
         with open(cfg_path, 'r') as f:
             cfg = json.loads(f.read())
+        
+        self.cwd = os.getcwd()
 
         # Target Github repo (where we're gonna be fetching)
         self.target_user = cfg['target_user']
@@ -48,18 +50,24 @@ class Config:
         self.log = self.__define_logger('gitissues')
 
 
+        _target = f'[{self.target_user}][{self.target_repo}]'
         # Issues path
         self.issues_api = self.target_url + self.auth
-        self.issues_raw_path = f'{self.backup_dir}/.local/last_issues_list.json'
-        self.last_issues_list_path  = '{}/.local/last_issues_list.csv'.format(\
-                                       self.backup_dir)
-
-
+        self.issues_raw_path = f'{self.backup_dir}/.local/{_target}/last_issues_list.json'
+        self.last_issues_list_path  = f'{self.backup_dir}/.local/{_target}/last_issues_list.csv'
 
         # Issue path
+        self.issue_dir = f'{self.backup_dir}/docs-{_target}/issue-' +'{}'
+        self.issue_raw = f'{self.backup_dir}/.local/{_target}/issue-' +'{}.json'
+        self.issue_csv = f'{self.backup_dir}/.local/{_target}/issue-' +'{}.csv'
 
 
         # Comment path
+    
+
+    def __init_paths(self):
+        """ Initialize all paths """
+        pass
 
     def request_url(self, url):
         try:
