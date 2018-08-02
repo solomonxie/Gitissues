@@ -45,7 +45,7 @@ class Issues:
 
 
     def __is_first_run(self):
-        # return True
+        return True
         if os.path.exists(self.cfg.backup_dir) is False or \
             os.path.exists(self.last_issues_list_path) is False:
             self.updates = [iss['number'] for iss in self.json]
@@ -122,8 +122,8 @@ class Issues:
             if issue.index in self.updates: 
                 issue.fetch_details()
                 issue.export_to_markdown()
+                issue.export_review_dates()
                 self.modifications.append(issue.title)
-            # break
 
 
     def __save_data_csv(self):

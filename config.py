@@ -60,6 +60,7 @@ class Config:
         self.issue_dir = f'{self.backup_dir}/docs-{_target}/issue-' +'{}'
         self.issue_raw = f'{self.backup_dir}/.local/{_target}/issue-' +'{}.json'
         self.issue_csv = f'{self.backup_dir}/.local/{_target}/issue-' +'{}.csv'
+        self.issue_review_dates = f'{self.backup_dir}/.local/{_target}/issue-' +'{}-review.csv'
 
 
         # Comment path

@@ -11,6 +11,7 @@ Class:
 """
 
 import os # for folder detecting
+import re
 import json
 import requests
 import logging
@@ -28,6 +29,36 @@ class Issue:
     Data: All comments of a issue, are stored in 1 single JSON file, 
           which means there's no need to further requests for each comment.
     """
+
+    def __init__2(self, url):
+        """
+        Accpet issue's url, as
+        independently retrive all self-contained information
+        according to the url, without getting information
+        from the superior instance issues-list.
+        """
+        self.url = url
+        self.api = self.__get_api()
+        self.api_issue = ''
+        self.api_comments = ''
+        self.__get_api()
+        pass
+    
+    def __get_api(self):
+        """
+        Convert normal url to api url.
+        URL: https://github.com/{{ username }}/{{ repo }}/issues/{{ issue-index }}
+        API: https://api.github.com/repos/{{ username  }}/{{ repo  }}/issues/{{ issue-index }}
+        API-comments: https://api.github.com/repos/{{ username  }}/{{ repo  }}/issues/{{ issue-index }}/comment
+        """
+        regex = r'http[s]?://(www\.)?github.com/([^/]+)/([^/]+)/issues/(\d+)'
+        result = re.findall(regex, self.url)
+        if not result:
+            return ''
+        res = result[0]
+        
+        self.api_issue = f'https://api.github.com/repos/{res[1]}/{res[2]}/issues/{res[3]}'
+        self.api_comments = f'https://api.github.com/repos/{res[1]}/{res[2]}/issues/{res[3]}/comments'
 
     def __init__(self, iss, config):
         self.cfg = config
@@ -49,6 +80,7 @@ class Issue:
         self.path_html = f'{self.dir}/issue-{self.index}.html'
         self.path_raw = self.cfg.issue_raw.format(self.index)
         self.path_csv = self.cfg.issue_csv.format(self.index)
+        self.path_review = self.cfg.issue_review_dates.format(self.index)
 
         if os.path.exists(self.dir) is False:
             os.makedirs(self.dir)
@@ -142,8 +174,12 @@ class Issue:
         A a list of future dates of each comment for 
         study reviewing according to the Forgetting Curve theory
         """
-        # Read dates from local comment-*.csv files
-
         # Generate recommaned review dates according to created_at
+        csv = []
+        for cmt in self.comments:
+            csv.append('{},{},{}'.format( \
+                ','.join(cmt.review_dates), 
+                cmt.title, cmt.path_html))
 
-        pass
+        with open(self.path_review, 'w') as f:
+            f.write('\n'.join(csv))
