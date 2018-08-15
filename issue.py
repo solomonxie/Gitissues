@@ -73,7 +73,8 @@ class Issue:
 
         self.raw = r.text
         self.json = r.json()
-        log.info(f'Retrived issue-{self.index}[{self.title}][{self.count} comments]  successful.')
+        log.info('Retrived issue-{}[{}][{} comments] successful.'.format(
+                    self.index, self.title, self.count))
 
         # Instantiate each comment
         for c in self.json:
@@ -82,7 +83,7 @@ class Issue:
         self.__save_data_raw()
         self.__save_comments_list_csv()
         
-        log.info(f'Finished fetching for issue-{self.index}[{self.title}] with {self.count} comments.')
+        log.info('Finished fetching for issue-%s'%self.index)
     
 
     def __save_data_raw(self):
@@ -95,10 +96,11 @@ class Issue:
         including comments id and dates
         """
         if len(self.comments) == 0:
-            log.warn(f'No comments of issue-[{self.index}] was found.')
-            return
+            log.warn('No comments of issue-[%s] was found.'%self.index)
+            return False
 
-        lines = [f'{c.id},{c.created_at},{c.updated_at}' for c in self.comments]
+        lines = ['{},{},{}'.format(c.id,c.created_at,c.updated_at) \
+                    for c in self.comments]
         content = '\n'.join(lines)
 
         with open(self.path_csv, 'w+') as f:
@@ -109,7 +111,7 @@ class Issue:
     
     def export_to_markdown(self):
         # Export the issues main content
-        content = f'# {self.title}\n{self.desc} '
+        content = '# %s\n%s'%(self.title, self.desc)
         with open(self.path_markdown, 'w') as f:
             f.write(content)
         
@@ -134,7 +136,11 @@ class Issue:
         """
         # @@ prepare contents for output markdown file
         bodies = '\n\n\n'.join( [c.content for c in self.comments] ) 
-        content = f'# {self.title} \n {self.desc} \n\n\n {bodies}'
+        content = '# {} \n {} \n\n\n {}'.format(
+            self.title,
+            self.desc,
+            bodies
+        )
 
         if os.path.exists(os.path.dirname(self.dir)) is False:
             os.makedirs(os.path.dirname(self.dir))

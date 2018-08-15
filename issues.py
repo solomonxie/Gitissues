@@ -108,7 +108,7 @@ class Issues:
         self.updates = [ n[0] for n in new if n not in old ]
 
 
-        log.info(f'Filtered out {len(self.updates)} issues to be updated.')
+        log.info('Filtered out %s issues to be updated.'%len(self.updates))
 
 
 
@@ -149,13 +149,13 @@ class Issues:
         with open(self.last_issues_list_path, 'w') as f:
             f.write('\n'.join(content))
 
-        log.info(f'Saved list data to {self.last_issues_list_path}')
+        log.info('Saved list data to %s'%self.last_issues_list_path)
     
 
     def __save_data_raw(self):
         with open(self.raw_path, 'w') as f:
             f.write(self.raw)
-        log.info(f'Saved raw data to {self.raw_path}')
+        log.info('Saved raw data to %s'%self.raw_path)
 
 
     def git_pull(self):
