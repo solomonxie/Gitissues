@@ -18,7 +18,6 @@ from datetime import date
 
 import requests
 
-log = None
 
 class Config:
     """
@@ -34,7 +33,8 @@ class Config:
         # Target Github repo (where we're gonna be fetching)
         self.target_user = cfg['target_user']
         self.target_repo = cfg['target_repo']
-        self.target_url = f'https://api.github.com/repos/{self.target_user}/{self.target_repo}/issues'
+        self.target_url = 'https://api.github.com/repos/{}/{}/issues'.format( \
+                            self.target_user, self.target_repo)
         self.auth = cfg['auth']
 
         # Remote backup repo (where we're gonna store all fetched contents)
@@ -43,49 +43,60 @@ class Config:
         self.backup_dir = cfg['backup_local_repo']
 
         # Logging path
-        self.log_dir = f'{self.backup_dir}/.local/log'
+        self.log_dir = '{}/.local/log'.format(self.backup_dir)
         if os.path.exists(self.log_dir) is not True:
             os.makedirs(self.log_dir)
         # Global logger for all modules
         self.log = self.__define_logger('gitissues')
 
 
-        _target = f'[{self.target_user}][{self.target_repo}]'
+        _target = '[{}][{}]'.format(self.target_user, self.target_repo)
+        self.target = _target
+
         # Issues path
         self.issues_api = self.target_url + self.auth
-        self.issues_raw_path = f'{self.backup_dir}/.local/{_target}/last_issues_list.json'
-        self.last_issues_list_path  = f'{self.backup_dir}/.local/{_target}/last_issues_list.csv'
-
-        # Issue path
-        self.issue_dir = f'{self.backup_dir}/docs-{_target}/issue-' +'{}'
-        self.issue_raw = f'{self.backup_dir}/.local/{_target}/issue-' +'{}.json'
-        self.issue_csv = f'{self.backup_dir}/.local/{_target}/issue-' +'{}.csv'
-        self.issue_review_dates = f'{self.backup_dir}/.local/{_target}/issue-' +'{}-review.csv'
-
-
-        # Comment path
+        self.issues_raw_path = '{}/.local/{}/last_issues_list.json'.format(self.backup_dir, _target)
+        self.last_issues_list_path  = '{}/.local/{}/last_issues_list.csv'.format(self.backup_dir, _target)
     
 
-    def __init_paths(self):
-        """ Initialize all paths """
-        pass
+    def get_path_issue_dir(self, index):
+        return '{}/docs-{}/issue-{}'.format(self.backup_dir, self.target, index)
+    
+    def get_path_issue_raw(self, index):
+        return '{}/.local/{}/issue-{}.json'.format(self.backup_dir, self.target, index)
+    
+    def get_path_issue_csv(self, index):
+        return '{}/.local/{}/issue-{}.csv'.format(self.backup_dir, self.target, index)
+        
+    def get_path_issue_markdown(self, index):
+        return '{}/issue-{}.md'.format(self.get_path_issue_dir(index), index)
+
+    def get_path_issue_html(self, index):
+        return '{}/issue-{}.html'.format(self.get_path_issue_dir(index), index)
+    
+    def get_path_issue_review_dates_csv(self, index):
+        return '{}/.local/{}/issue-{}-review.csv'.format(self.backup_dir, self.target, index)
 
     def request_url(self, url):
         try:
             r = requests.get(url, timeout=5)
 
         except Exception as e:
-            log.error(f'An error occured when requesting:\n{str(e)}')
-            log.error('Mission aborted.')
+            self.log.error(e)
+            self.log.error('Mission aborted.\nAn error occured when requesting:\n%s\n'%url)
             return None
 
         if r.status_code is not 200:
-            log.error(f'Failed on fetching {url} due to unexpected response')
-            __limit = r.headers['X-RateLimit-Remaining']
-            log.debug(f'Remain {__limit} requests limit in this hour.')
+            self.log.error('Failed on fetching %s due to unexpected response'%url)
             return None
         
+        __limit = r.headers['X-RateLimit-Remaining']
+        self.log.info('Remain %s requests limit in this hour.'%__limit)
         return r
+
+    def __init_paths(self):
+        """ Initialize all paths """
+        pass
 
     def __define_logger(self, logger_name):
         """
@@ -100,8 +111,8 @@ class Config:
         # make log file path
         if os.path.exists(self.log_dir) is False:
             os.makedirs(self.log_dir)
-        last_log = f'{self.log_dir}/last.log'
-        daily_log = f'{self.log_dir}/{logger_name}-{date.today()}.log'
+        last_log = '%s/last.log'%self.log_dir
+        daily_log = '{}/{}-{}.log'.format(self.log_dir, logger_name, date.today())
 
         # create a file handler for logging
         main = logging.FileHandler(last_log, mode='w')

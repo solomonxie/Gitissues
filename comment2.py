@@ -19,27 +19,73 @@ import datetime
 
 log = logging.getLogger('gitissues.comment')
 
-    
+def main():
+    cmt = Comment('https://github.com/solomonxie/solomonxie.github.io/issues/50#issuecomment-411722479')
+    cmt.export_to_jekyll_post()
+
+
 class Comment:
     """
     A class for storing & operating comments of an issue
     """
 
-    def __init__(self, data, issue):
-        self.cfg = issue.cfg
-        self.parent = issue.index
-        self.id = data['id']
-        self.body = data['body']
+    def __init__(self, url=None, data=None):
+        """
+        Accpet comment's url, as
+        independently retrive all self-contained information
+        according to the url, without getting information
+        from the superior Issue instance.
+        """
+        self.url = url
+        self.data = data
+        self.api = self.__url_to_api()
+
+        self.issue_index = None
+        self.target_user = ''
+        self.target_repo = ''
+
+        self.id = None
+        self.title = ''
+        self.body = ''
+
+        self.__fetch_data()
+
+    
+    def __url_to_api(self):
+        """
+        Convert normal url to api url.
+        URL: https://github.com/{{ username }}/{{ repo }}/issues/{{ issue-index }}#issuecomment-{{ comment-id }}
+        API: https://api.github.com/repos/{{ username  }}/{{ repo  }}/issues/comments/{{ comment-id }}
+        """
+        regex = r'http[s]?://(www\.)?github.com/([^/]+)/([^/]+)/issues/(\d+)(#issuecomment-)?(\d+)'
+        result = re.findall(regex, self.url)
+        if not result:
+            return ''
+        res = result[0]
+
+        self.target_user = res[1] 
+        self.target_repo = res[2]
+        self.issue_index = res[3]
+        self.id = res[5]
+
+        return f'https://api.github.com/repos/{res[1]}/{res[2]}/issues/comments/{res[5]}'
+    
+
+        
+    def __fetch_data(self):
+        r = self.cfg.request_url(self.api)
+        self.raw = r.text
+        self.json = r.json()
+        log.info(f'Retrived comment-[{self.title}] successful.')
+
         self.title = self.__get_title()
-        self.content = ''
-        self.created_at = data['created_at']
-        self.updated_at = data['updated_at']
-        self.review_dates = self.__generate_review_dates()
 
-        self.path_md = '{}/comment-{}.md'.format(issue.dir, self.id)
-        self.path_html = '{}/comment-{}.html'.format(issue.dir, self.id)
-        self.jekyll_post_path = ''
+    def load_from_url(self, url):
+        pass
+    
 
+    def load_from_json(self, data):
+        pass
 
     def export(self):
         self.export_to_markdown()
@@ -64,6 +110,10 @@ class Comment:
         log.debug(_command)
         with os.popen(_command) as p:
             log.debug(p.read())
+    
+
+    def export_to_jekyll_post(self):
+        pass
     
 
     def __generate_review_dates(self):
@@ -96,3 +146,6 @@ class Comment:
         """
         log.warn('Failed to delete. Function "delete" has not yet completed.')
     
+
+if __name__ == "__main__":
+    main()

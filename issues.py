@@ -59,7 +59,7 @@ class Issues:
         #self.git_pull()
 
         # Retrive issues-list data
-        log.info(f'Now retriving [{self.api}]...')
+        log.info('Now retriving [%s]...'%self.api)
         r = self.cfg.request_url(self.api)
         if r is None:
             log.warn('Retriving issues list failed.')
@@ -94,7 +94,7 @@ class Issues:
             Introduced filtering algorithm to avoid updating a non-changed content
         """
         if os.path.exists(self.last_issues_list_path) is False:
-            log.warn(f'[{self.last_issues_list_path}] not found.')
+            log.warn('[%s] not found.'%self.last_issues_list_path)
             return
 
         log.info('Filtering updated and deleted items...')
@@ -134,7 +134,13 @@ class Issues:
         """
         content = [] 
         for iss in self.json:
-            line = f"{iss['number']},{iss['id']},{iss['created_at']},{iss['updated_at']},{iss['title']}"
+            line = '{},{},{},{},{}'.format(
+                iss['number'],
+                iss['id'],
+                iss['created_at'],
+                iss['updated_at'],
+                iss['title']
+            )
             content.append(line)
         
         # Build directory structure
@@ -161,12 +167,12 @@ class Issues:
         # @@ prepare local git repo for the first time
         if os.path.exists(self.cfg.backup_dir) is False:
             log.warn('local repo does not exist, setting up now...')
-            with os.popen(f'git clone {self.cfg.backup_url} {self.cfg.backup_dir} 2>&1') as p:
+            with os.popen('git clone %s %s 2>&1'%(self.cfg.backup_url, self.cfg.backup_dir)) as p:
                 log.info('GIT CLONE:\n'+p.read())
 
         # @ keep local repo updated with remote before further change to avoid conflict
         log.info('Check git remote status before further updates: ')
-        with os.popen(f'git -C {self.cfg.backup_dir} pull origin master 2>&1') as p:
+        with os.popen('git -C %s pull origin master 2>&1'%self.cfg.backup_dir) as p:
             log.info('GIT PULL:\n'+p.read())
 
     
@@ -182,14 +188,15 @@ class Issues:
         # and all others are type of `str`, so needs to unify this one to str
         msg = 'Modified ' + ', '.join(self.modifications)
         # run standard git workflow to push updates
-        with os.popen(f'git -C {self.cfg.backup_dir} add . 2>&1') as p:
+        with os.popen('git -C %s add . 2>&1'%self.cfg.backup_dir) as p:
             log.info('GIT ADDED.')
-        with os.popen(f'git -C {self.cfg.backup_dir} commit -m "{msg}" 2>&1') as p:
+        with os.popen('git -C %s commit -m "%s" 2>&1'%(self.cfg.backup_dir, msg)) as p:
             log.info('GIT COMMIT:\n' + p.read())
-        with os.popen(f'git -C {self.cfg.backup_dir} push origin master 2>&1') as p:
+        with os.popen('git -C %s push origin master 2>&1'%self.cfg.backup_dir) as p:
             log.info('GIT PUSH:\n' + p.read())
     
 
 if __name__ == '__main__':
+    #import pdb;pdb.set_trace()
     issues = Issues('./.local/gitissues-config.json')
     issues.fetch() 

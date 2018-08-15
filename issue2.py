@@ -30,6 +30,36 @@ class Issue:
           which means there's no need to further requests for each comment.
     """
 
+    def __init__2(self, url):
+        """
+        Accpet issue's url, as
+        independently retrive all self-contained information
+        according to the url, without getting information
+        from the superior instance issues-list.
+        """
+        self.url = url
+        self.api = self.__get_api()
+        self.api_issue = ''
+        self.api_comments = ''
+        self.__get_api()
+        pass
+    
+    def __get_api(self):
+        """
+        Convert normal url to api url.
+        URL: https://github.com/{{ username }}/{{ repo }}/issues/{{ issue-index }}
+        API: https://api.github.com/repos/{{ username  }}/{{ repo  }}/issues/{{ issue-index }}
+        API-comments: https://api.github.com/repos/{{ username  }}/{{ repo  }}/issues/{{ issue-index }}/comment
+        """
+        regex = r'http[s]?://(www\.)?github.com/([^/]+)/([^/]+)/issues/(\d+)'
+        result = re.findall(regex, self.url)
+        if not result:
+            return ''
+        res = result[0]
+        
+        self.api_issue = f'https://api.github.com/repos/{res[1]}/{res[2]}/issues/{res[3]}'
+        self.api_comments = f'https://api.github.com/repos/{res[1]}/{res[2]}/issues/{res[3]}/comments'
+
     def __init__(self, iss, config):
         self.cfg = config
         self.title = iss['title']
