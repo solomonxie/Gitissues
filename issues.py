@@ -56,7 +56,7 @@ class Issues:
 
     def fetch(self):
         # Update local backup repo before fetching
-        # self.git_pull()
+        self.git_pull()
 
         # Retrive issues-list data
         log.info('Now retriving [%s]...'%self.api)
@@ -85,7 +85,7 @@ class Issues:
         log.info('Finished checking for this round.\n')
 
         # Update remote backup repo when fetching finished
-        # self.git_push()
+        self.git_push()
 
 
     def __filter_changes(self):
