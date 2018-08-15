@@ -46,6 +46,7 @@ class Issue:
         self.deletes = []
 
         self.dir = self.cfg.get_path_issue_dir(self.index)
+        self.local = self.cfg.get_path_issue_local(self.index)
         self.path_raw = self.cfg.get_path_issue_raw(self.index)
         self.path_csv = self.cfg.get_path_issue_csv(self.index)
         self.path_markdown = self.cfg.get_path_issue_markdown(self.index)
@@ -54,6 +55,8 @@ class Issue:
 
         if os.path.exists(self.dir) is False:
             os.makedirs(self.dir)
+        if os.path.exists(self.local) is False:
+            os.makedirs(self.local)
 
 
     def fetch_details(self):
@@ -63,6 +66,11 @@ class Issue:
         # retrive all details of an issue and all its comments
         # @@ retrive comments, @ with response validation 
         r = self.cfg.request_url(self.api)
+        if r is None or self.count == '0':
+            log.debug('No comments fetched.')
+            return False
+
+
         self.raw = r.text
         self.json = r.json()
         log.info(f'Retrived issue-{self.index}[{self.title}][{self.count} comments]  successful.')

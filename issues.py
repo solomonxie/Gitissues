@@ -45,7 +45,7 @@ class Issues:
 
 
     def __is_first_run(self):
-        return True
+        # return True
         if os.path.exists(self.cfg.backup_dir) is False or \
             os.path.exists(self.last_issues_list_path) is False:
             self.updates = [iss['number'] for iss in self.json]
@@ -56,7 +56,7 @@ class Issues:
 
     def fetch(self):
         # Update local backup repo before fetching
-        #self.git_pull()
+        # self.git_pull()
 
         # Retrive issues-list data
         log.info('Now retriving [%s]...'%self.api)
@@ -85,7 +85,7 @@ class Issues:
         log.info('Finished checking for this round.\n')
 
         # Update remote backup repo when fetching finished
-        #self.git_push()
+        # self.git_push()
 
 
     def __filter_changes(self):
@@ -197,6 +197,6 @@ class Issues:
     
 
 if __name__ == '__main__':
-    #import pdb;pdb.set_trace()
+    # import pdb;pdb.set_trace()
     issues = Issues('./.local/gitissues-config.json')
     issues.fetch() 

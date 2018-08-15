@@ -62,20 +62,23 @@ class Config:
     def get_path_issue_dir(self, index):
         return '{}/docs-{}/issue-{}'.format(self.backup_dir, self.target, index)
     
+    def get_path_issue_local(self, index):
+        return '{}/.local/{}/issue-{}'.format(self.backup_dir, self.target, index)
+    
     def get_path_issue_raw(self, index):
-        return '{}/.local/{}/issue-{}.json'.format(self.backup_dir, self.target, index)
+        return '{}/issue-{}.json'.format(self.get_path_issue_local(index), index)
     
     def get_path_issue_csv(self, index):
-        return '{}/.local/{}/issue-{}.csv'.format(self.backup_dir, self.target, index)
+        return '{}/issue-{}.csv'.format(self.get_path_issue_local(index), index)
         
     def get_path_issue_markdown(self, index):
         return '{}/issue-{}.md'.format(self.get_path_issue_dir(index), index)
 
     def get_path_issue_html(self, index):
-        return '{}/issue-{}.html'.format(self.get_path_issue_dir(index), index)
+        return '{}/issue-{}.html'.format(self.get_path_issue_local(index), index)
     
     def get_path_issue_review_dates_csv(self, index):
-        return '{}/.local/{}/issue-{}-review.csv'.format(self.backup_dir, self.target, index)
+        return '{}/issue-{}-review.csv'.format(self.get_path_issue_local(index), index)
 
     def request_url(self, url):
         try:
