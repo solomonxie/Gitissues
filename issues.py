@@ -198,5 +198,5 @@ class Issues:
 
 if __name__ == '__main__':
     # import pdb;pdb.set_trace()
-    issues = Issues('./.local/gitissues-config.json')
+    issues = Issues('./.config.json')
     issues.fetch() 

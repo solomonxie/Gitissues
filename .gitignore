@@ -1,9 +1,2 @@
-.local
-*.swp
-._*
-*.idea
-*.pyc
-*.swo
-.vscode
+.*
 __pycache__
-.DS_Store
