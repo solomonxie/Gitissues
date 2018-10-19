@@ -30,36 +30,6 @@ class Issue:
           which means there's no need to further requests for each comment.
     """
 
-    def __init__2(self, url):
-        """
-        Accpet issue's url, as
-        independently retrive all self-contained information
-        according to the url, without getting information
-        from the superior instance issues-list.
-        """
-        self.url = url
-        self.api = self.__get_api()
-        self.api_issue = ''
-        self.api_comments = ''
-        self.__get_api()
-        pass
-    
-    def __get_api(self):
-        """
-        Convert normal url to api url.
-        URL: https://github.com/{{ username }}/{{ repo }}/issues/{{ issue-index }}
-        API: https://api.github.com/repos/{{ username  }}/{{ repo  }}/issues/{{ issue-index }}
-        API-comments: https://api.github.com/repos/{{ username  }}/{{ repo  }}/issues/{{ issue-index }}/comment
-        """
-        regex = r'http[s]?://(www\.)?github.com/([^/]+)/([^/]+)/issues/(\d+)'
-        result = re.findall(regex, self.url)
-        if not result:
-            return ''
-        res = result[0]
-        
-        self.api_issue = f'https://api.github.com/repos/{res[1]}/{res[2]}/issues/{res[3]}'
-        self.api_comments = f'https://api.github.com/repos/{res[1]}/{res[2]}/issues/{res[3]}/comments'
-
     def __init__(self, iss, config):
         self.cfg = config
         self.title = iss['title']
@@ -76,6 +46,7 @@ class Issue:
         self.deletes = []
 
         self.dir = self.cfg.get_path_issue_dir(self.index)
+        self.local = self.cfg.get_path_issue_local(self.index)
         self.path_raw = self.cfg.get_path_issue_raw(self.index)
         self.path_csv = self.cfg.get_path_issue_csv(self.index)
         self.path_markdown = self.cfg.get_path_issue_markdown(self.index)
@@ -84,6 +55,8 @@ class Issue:
 
         if os.path.exists(self.dir) is False:
             os.makedirs(self.dir)
+        if os.path.exists(self.local) is False:
+            os.makedirs(self.local)
 
 
     def fetch_details(self):
@@ -93,9 +66,15 @@ class Issue:
         # retrive all details of an issue and all its comments
         # @@ retrive comments, @ with response validation 
         r = self.cfg.request_url(self.api)
+        if r is None or self.count == '0':
+            log.debug('No comments fetched.')
+            return False
+
+
         self.raw = r.text
         self.json = r.json()
-        log.info(f'Retrived issue-{self.index}[{self.title}][{self.count} comments]  successful.')
+        log.info('Retrived issue-{}[{}][{} comments] successful.'.format(
+                    self.index, self.title, self.count))
 
         # Instantiate each comment
         for c in self.json:
@@ -104,7 +83,7 @@ class Issue:
         self.__save_data_raw()
         self.__save_comments_list_csv()
         
-        log.info(f'Finished fetching for issue-{self.index}[{self.title}] with {self.count} comments.')
+        log.info('Finished fetching for issue-%s'%self.index)
     
 
     def __save_data_raw(self):
@@ -117,10 +96,11 @@ class Issue:
         including comments id and dates
         """
         if len(self.comments) == 0:
-            log.warn(f'No comments of issue-[{self.index}] was found.')
-            return
+            log.warn('No comments of issue-[%s] was found.'%self.index)
+            return False
 
-        lines = [f'{c.id},{c.created_at},{c.updated_at}' for c in self.comments]
+        lines = ['{},{},{}'.format(c.id,c.created_at,c.updated_at) \
+                    for c in self.comments]
         content = '\n'.join(lines)
 
         with open(self.path_csv, 'w+') as f:
@@ -131,7 +111,7 @@ class Issue:
     
     def export_to_markdown(self):
         # Export the issues main content
-        content = f'# {self.title}\n{self.desc} '
+        content = '# %s\n%s'%(self.title, self.desc)
         with open(self.path_markdown, 'w') as f:
             f.write(content)
         
@@ -156,7 +136,11 @@ class Issue:
         """
         # @@ prepare contents for output markdown file
         bodies = '\n\n\n'.join( [c.content for c in self.comments] ) 
-        content = f'# {self.title} \n {self.desc} \n\n\n {bodies}'
+        content = '# {} \n {} \n\n\n {}'.format(
+            self.title,
+            self.desc,
+            bodies
+        )
 
         if os.path.exists(os.path.dirname(self.dir)) is False:
             os.makedirs(os.path.dirname(self.dir))

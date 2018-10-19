@@ -7,14 +7,14 @@ Email: solomonxiewise@gmail.com
 Github: https://github.com/solomonxie
 Description: 
 Class:
-    - Issue
+    - Repo
 """
 
 def main():
     pass
 
 
-class Issue:
+class Repo:
     """
     """
 
