@@ -21,6 +21,11 @@ class Repo:
     def __init__(self, url):
         pass
 
+    def get_issue_list(self):
+        pass
+
+    def get_repo_info(self):
+        pass
 
 
 if __name__ == '__main__':
