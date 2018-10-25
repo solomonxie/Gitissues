@@ -19,10 +19,16 @@ class Comment:
     """
     """
 
-    def __init__(self, url):
+    def __init__(self, url, json=''):
         pass
 
-    def get_info(self):
+    def load_from_local(self, path):
+        pass
+
+    def load_from_url(self, url):
+        pass
+
+    def load_from_json(self, path)
         pass
 
     def get_title(self):
@@ -35,6 +41,12 @@ class Comment:
         pass
 
     def download_images(self):
+        pass
+
+    def save_content(self):
+        pass
+
+    def git_push_changes(self):
         pass
 
     def rewrite_links(self):
@@ -51,12 +63,13 @@ class Comment:
 
     def convert_to_gitbook(self):
         pass
-        
-    def save_content(self):
+
+    def sent_email(self):
         pass
 
-    def git_push_changes(self):
+    def get_notify_dates(self):
         pass
+        
 
 if __name__ == '__main__':
     main()

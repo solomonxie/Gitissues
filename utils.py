@@ -23,8 +23,9 @@ def request_url(self, url):
         return None
 
     __limit = r.headers['X-RateLimit-Remaining']
-    self.log.info('Remain %s requests limit in this hour.'%__limit)
+    self.log.debug('Remain %s requests limit in this hour.'%__limit)
     return r
+
 
 
 def __define_logger(self, logger_name):
