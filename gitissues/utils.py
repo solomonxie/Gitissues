@@ -26,8 +26,6 @@ def request_url(self, url):
     self.log.debug('Remain %s requests limit in this hour.'%__limit)
     return r
 
-
-
 def __define_logger(self, logger_name):
     """
     Should only be applied in main() function of module.
@@ -60,7 +58,6 @@ def __define_logger(self, logger_name):
     logger.addHandler(screen)
 
     return logger
-
 
 def upload_to_github(url):
     """
