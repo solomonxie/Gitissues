@@ -1,5 +1,13 @@
 # gitissues
-> Focus on making git issues to a RELIABLE notebook, with a RELIABLE backup solution and a whole set of access method such as desktop, iphone and web page(as blog).
+Based on Github Issues for the excellence of its writing experience,
+this program aims to help user generate entire blog site or sites
+without concerns of any technical  requirements.
+It lets the user fully focused on writing itself, and the program will keep eyes
+on the updates 24/7 and generate/update personal blog site automatically.
+What the program does is it retrives data through Github API,
+and organize the content into different categories automatically and
+generate entire static website in HTML and also in the format of
+trending site generators like, Jekyll, Gitbooks, Readthedocs, Hugo nad Hexo.
 
 ## Branches
 
