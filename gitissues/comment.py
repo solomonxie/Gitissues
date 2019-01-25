@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 # Python3. Preferred in pipenv virtual enviroment.
 
@@ -5,7 +6,7 @@
 Author: Solomon Xie
 Email: solomonxiewise@gmail.com
 Github: https://github.com/solomonxie
-Description: 
+Description:
 Class:
     - Comment
 """
@@ -28,7 +29,7 @@ class Comment:
     def load_from_url(self, url):
         pass
 
-    def load_from_json(self, path)
+    def load_from_json(self, path):
         pass
 
     def get_title(self):
@@ -36,7 +37,7 @@ class Comment:
 
     def get_links(self):
         pass
-        
+
     def get_images(self):
         pass
 
@@ -69,7 +70,7 @@ class Comment:
 
     def get_notify_dates(self):
         pass
-        
+
 
 if __name__ == '__main__':
     main()
