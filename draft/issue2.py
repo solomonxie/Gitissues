@@ -5,22 +5,16 @@
 Author: Solomon Xie
 Email: solomonxiewise@gmail.com
 Github: https://github.com/solomonxie
-Description:
-Class:
-    - Issue
 """
 
-import os # for folder detecting
+import os
 import re
-import json
-import requests
 import logging
 
-# This project's modules
 from comment import Comment
-from post import Post
 
 log = logging.getLogger('gitissues.issue')
+
 
 class Issue:
     """
@@ -85,7 +79,6 @@ class Issue:
         if os.path.exists(self.dir) is False:
             os.makedirs(self.dir)
 
-
     def fetch_details(self):
         """
         Retrive an specific issue with detailed information
@@ -99,13 +92,12 @@ class Issue:
 
         # Instantiate each comment
         for c in self.json:
-            self.comments.append( Comment(c, self) )
+            self.comments.append(Comment(c, self))
 
         self.__save_data_raw()
         self.__save_comments_list_csv()
 
         log.info(f'Finished fetching for issue-{self.index}[{self.title}] with {self.count} comments.')
-
 
     def __save_data_raw(self):
         with open(self.path_raw, 'w') as f:
@@ -127,8 +119,6 @@ class Issue:
             if f.read() != content:
                 f.write(content)
 
-
-
     def export_to_markdown(self):
         # Export the issues main content
         content = f'# {self.title}\n{self.desc} '
@@ -139,7 +129,6 @@ class Issue:
         for cmt in self.comments:
             cmt.export()
 
-
     def __filter_changes(self):
         """
         Filter out updated or deleted comments,
@@ -148,14 +137,12 @@ class Issue:
         self.updates = []
         self.deletes = []
 
-
-
     def export_all_comments_to_markdown(self):
         """
         Export all comments from an issue into ONE markdown file
         """
         # @@ prepare contents for output markdown file
-        bodies = '\n\n\n'.join( [c.content for c in self.comments] )
+        bodies = '\n\n\n'.join([c.content for c in self.comments])
         content = f'# {self.title} \n {self.desc} \n\n\n {bodies}'
 
         if os.path.exists(os.path.dirname(self.dir)) is False:
@@ -165,9 +152,7 @@ class Issue:
         with open(self.path_markdown, 'w') as f:
             f.write(content)
 
-        log.info('Generated markdown file for [%s] at "%s".'%(self.title, self.path_markdown))
-
-
+        log.info('Generated markdown file for [%s] at "%s".' % (self.title, self.path_markdown))
 
     def export_review_dates(self):
         """
@@ -177,7 +162,7 @@ class Issue:
         # Generate recommaned review dates according to created_at
         csv = []
         for cmt in self.comments:
-            csv.append('{},{},{}'.format( \
+            csv.append('{},{},{}'.format(
                 ','.join(cmt.review_dates),
                 cmt.title, cmt.path_html))
 
