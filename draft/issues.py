@@ -176,5 +176,5 @@ class Issues:
 
 
 if __name__ == '__main__':
-    issues = Issues('./.config.json')
+    issues = Issues('./config.json')
     issues.fetch()

@@ -4,9 +4,9 @@ MAINTAINER Solomon Xie <solomonxiewise@gmail.com>
 
 RUN apk add git
 
-RUN git clone https://github.com/solomonxie/issues_blog.git && \
-    git clone https://github.com/solomonxie/gitissues.git
+RUN git clone https://github.com/solomonxie/issues_blog.git
+COPY . /src
 
-RUN pip install requests
+RUN python3 -m pip install -f requirements.txt
 
 CMD /bin/bash
