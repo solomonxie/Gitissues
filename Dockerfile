@@ -2,11 +2,9 @@ FROM python:3-alpine
 
 MAINTAINER Solomon Xie <solomonxiewise@gmail.com>
 
-RUN apk add git
+RUN apk add --no-cache git
 
-RUN git clone https://github.com/solomonxie/issues_blog.git
-COPY . /src
+COPY . /Gitissues
+RUN python3 -m pip install -r /Gitissues/requirements.txt
 
-RUN python3 -m pip install -f requirements.txt
-
-CMD /bin/bash
+CMD ["python3", "/Gitissues/all_in_one.py 2>&1 > /info.log"]
