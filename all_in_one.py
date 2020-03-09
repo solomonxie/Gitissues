@@ -32,8 +32,10 @@ def init_bak_repo():
 
 @retry((Exception, ), tries=3, delay=3, jitter=5)
 def sync_bak_repo():
-    os.system('git -C {ROOT} reset --hard master')
-    os.system('git -C {ROOT} clean -fd')
+    p = os.popen('git -C {ROOT} reset --hard master')
+    logger.critical(p.read())
+    p = os.popen('git -C {ROOT} clean -fd')
+    logger.critical(p.read())
     p = os.popen('git -C {ROOT} pull origin master 2>&1')
     logger.critical(p.read())
 
@@ -41,7 +43,9 @@ def sync_bak_repo():
 @retry((Exception, ), tries=3, delay=3, jitter=5)
 def publish_bak_repo():
     p = os.popen('git -C {ROOT} add . 2>&1')
-    p = os.popen('git -C {ROOT} commit -m "" 2>&1')
+    logger.critical(p.read())
+    p = os.popen('git -C {ROOT} commit -m "Auto-sync with repo {USER}/{REPO}" 2>&1')
+    logger.critical(p.read())
     p = os.popen('git -C {ROOT} push --force origin master 2>&1')
     logger.critical(p.read())
 
@@ -109,7 +113,8 @@ def main():
     logger.critical('Replaced existing files with newly retrieved files')
 
     # Update Git backup-repo
-    os.system('')
+    sync_bak_repo()
+    publish_bak_repo()
 
     logger.critical('Finished whole program.')
 
