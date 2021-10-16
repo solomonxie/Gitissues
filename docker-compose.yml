@@ -1,0 +1,7 @@
+version: "2.4"
+services:
+    app:
+        build: .
+        image: solomonxie/gitissues-docker:latest
+        volumes:
+            - ~/.ssh:/root/.ssh
