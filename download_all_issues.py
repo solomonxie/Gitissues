@@ -31,8 +31,10 @@ def main():
         for p in range(1, cm_pages+1):
             cm_resp = requests.get(f'{cm_url}?page={p}&per_page={cm_limit}', headers=HEADERS)
             for cm in cm_resp.json():
-                cm_body = cm['body']
+                cm_body = cm['body'].strip()
                 stop = min(max(cm_body.find('\r'), 0), max(cm_body.find('\n'), 0))
+                if not cm_body or not stop:
+                    continue
                 cm_idx = str(len(comment_list) + 1)
                 cm_title = cm_idx + '-' + slugify(cm_body[:stop]).strip()
                 cm_content = '{}\n\n{}'.format(cm['created_at'], cm_body)
