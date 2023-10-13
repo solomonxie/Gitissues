@@ -19,8 +19,8 @@ def main():
         created_at = issue['created_at']
         tags = ' '.join(['#' + lb['name'].replace(' ', '') for lb in issue['labels']])
         body = issue.get('body') or ''
-        content = f'> tags: {tags}\n> created at: {created_at}\n{body}'
-        issue_dir = f'/tmp/issues_blog/{slugify(title)}'
+        content = f'> tags: {tags}\n> created at: {created_at}\n\n{body}'
+        issue_dir = f'/tmp/issues_blog/{title}'
         os.makedirs(issue_dir, exist_ok=True)
         open(f'{issue_dir}/README.md', 'w').write(content)
         cm_url = issue['comments_url']
